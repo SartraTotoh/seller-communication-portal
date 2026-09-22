@@ -1,0 +1,37 @@
+SELLER COMMUNICATION PORTAL v4.7.6 - LIVE ACCEPTANCE
+
+A. DEPLOYMENT
+[ ] ONE-CLICK-AUTO-DEPLOY.cmd ends with [DONE].
+[ ] No Education Portal target appears anywhere in the deploy output.
+[ ] Apps Script deployment verification reports access DOMAIN.
+[ ] Apps Script deployment verification reports executeAs USER_ACCESSING.
+[ ] If a domain-policy replacement was required, the terminal shows old deployment preserved and new DOMAIN deployment verified.
+[ ] Firebase Hosting deploys only to seller-communication-portal.
+[ ] Production HTTP verification confirms Portal v4.7.6.
+
+B. IDENTITY / ACCESS
+[ ] A provisioned shopee.com user can open the Portal.
+[ ] An unknown/unprovisioned user does not receive ADMIN fallback.
+[ ] REQUESTER / COMMS / REVIEWER / ADMIN visibility matches People & Roles.
+
+C. DATA
+[ ] Production Health shows People seed >= 503 active identities.
+[ ] PN checkpoint SUCCESS.
+[ ] SC checkpoint SUCCESS.
+[ ] Requests are live and nonzero where the source has records.
+[ ] Public static snapshot remains 0 requests / no corporate email data.
+
+D. WRITES
+[ ] Native Request create persists after refresh.
+[ ] Native Request edit persists after refresh.
+[ ] Review decision/comment persists after refresh.
+[ ] Mass Upload People preview + import works.
+[ ] Dropdown and Business Config changes persist.
+[ ] Content Hub create persists.
+[ ] Smart Link create persists.
+
+E. SECURITY / SEPARATION
+[ ] Apps Script Web App is DOMAIN, not ANYONE/ANYONE_ANONYMOUS.
+[ ] Firebase target is seller-communication-portal.
+[ ] education-portal-506713 is not modified.
+[ ] API outbound send remains fail-closed unless a verified server-side connector is configured.

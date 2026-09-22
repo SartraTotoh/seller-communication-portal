@@ -1,0 +1,15 @@
+Seller Communication Portal v4.6.7 — Version Metadata + Logic Learning
+
+CHANGED
+- Home / Dashboard now shows a low-emphasis version metadata row at the bottom of the page.
+- Functional baseline: 4.6.0.
+- UI version: 4.6.6.
+- Portal Version: 4.6.7.
+- Version metadata is Dashboard-only so it does not compete with KPI, charts, requests, or operational controls.
+- Windows and Cloud Shell safety gates recognize the separate functional, UI, and Portal version markers.
+
+UNCHANGED
+- Backend source.
+- Live Sync business logic.
+- Firebase project lock and Hosting-only deployment.
+- People import data and API contract.

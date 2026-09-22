@@ -1,0 +1,152 @@
+SELLER COMMUNICATION PORTAL v4.7.5 - FINAL VALIDATION REPORT
+Generated: 2026-09-07 19:00:01 +0700
+
+SCOPE
+- Code/package closeout validation for Seller Communication Portal v4.7.5.
+- Production target: seller-communication-portal only.
+- Functional baseline 4.6.0 and UI baseline 4.6.8 preserved.
+
+AUTOMATED CONTRACT VALIDATION
+Seller Communication Portal v4.7.5 validation: 116/116 PASS
+PASS - Portal version 4.7.5
+PASS - Functional baseline 4.6.0 preserved
+PASS - UI baseline 4.6.8 preserved
+PASS - Backend closeout release 4.7.5
+PASS - Backend release 4.7.5
+PASS - Apps Script executes as user accessing
+PASS - Apps Script domain access
+PASS - Firebase target hard-locked
+PASS - Firebase Hosting-only
+PASS - Deploy blocks THSP project
+PASS - Deploy verifies v4.7.5 before complete
+PASS - Deploy verifies USER_ACCESSING
+PASS - Public fallback has zero requests
+PASS - Public fallback contains no real corporate emails
+PASS - Frontend default user is fail-closed REQUESTER
+PASS - No EffectiveUser identity fallback
+PASS - Only explicit bootstrap admin continuity
+PASS - People seed contract remains 503
+PASS - Frontend write bridge: submitRequest
+PASS - Frontend write bridge: updateRequest
+PASS - Frontend write bridge: saveReviewDecision
+PASS - Frontend write bridge: saveReviewComment
+PASS - Frontend write bridge: saveCycleRule
+PASS - Frontend write bridge: createSmartLink
+PASS - Frontend write bridge: createContent
+PASS - Frontend write bridge: analyzeContent
+PASS - Frontend write bridge: uploadArtwork
+PASS - Frontend write bridge: saveLookup
+PASS - Frontend write bridge: deleteLookup
+PASS - Frontend write bridge: saveBusinessConfig
+PASS - Frontend write bridge: saveScoringModelVersion
+PASS - Frontend write bridge: queueApiPublication
+PASS - Frontend write bridge: testApiConnection
+PASS - Frontend write bridge: approveApiPublication
+PASS - Frontend write bridge: sendApiPublication
+PASS - Frontend write bridge: saveTeamMember
+PASS - Frontend write bridge: massImportUsers
+PASS - Embedded RPC exists: analyzeContent
+PASS - Embedded RPC exists: approveApiPublication
+PASS - Embedded RPC exists: createContent
+PASS - Embedded RPC exists: createSmartLink
+PASS - Embedded RPC exists: deleteLookup
+PASS - Embedded RPC exists: getFormMeta
+PASS - Embedded RPC exists: getPortalData
+PASS - Embedded RPC exists: massImportUsers
+PASS - Embedded RPC exists: queueApiPublication
+PASS - Embedded RPC exists: saveBusinessConfig
+PASS - Embedded RPC exists: saveCycleRule
+PASS - Embedded RPC exists: saveLookup
+PASS - Embedded RPC exists: saveReviewComment
+PASS - Embedded RPC exists: saveReviewDecision
+PASS - Embedded RPC exists: saveScoringModelVersion
+PASS - Embedded RPC exists: saveTeamMember
+PASS - Embedded RPC exists: sendApiPublication
+PASS - Embedded RPC exists: submitRequest
+PASS - Embedded RPC exists: testApiConnection
+PASS - Embedded RPC exists: updateRequest
+PASS - Embedded RPC exists: uploadArtwork
+PASS - doPost route: request.create
+PASS - doPost route: request.update
+PASS - doPost route: review.decision
+PASS - doPost route: review.comment
+PASS - doPost route: cycle.save
+PASS - doPost route: smartlink.create
+PASS - doPost route: content.create
+PASS - doPost route: content.analyze
+PASS - doPost route: artwork.upload
+PASS - doPost route: lookup.save
+PASS - doPost route: lookup.delete
+PASS - doPost route: config.save
+PASS - doPost route: scoring.version
+PASS - doPost route: api.queue
+PASS - doPost route: api.status
+PASS - doPost route: api.approve
+PASS - doPost route: api.send
+PASS - doPost route: people.save
+PASS - doPost route: people.massImport
+PASS - doPost route: sync.now
+PASS - API queue route is role-gated
+PASS - Manual sync route is role-gated
+PASS - API send remains fail-closed until verified
+PASS - API Center blocks sensitive publication
+PASS - Canonical Requests schema self-heals
+PASS - Canonical Comms_Items schema self-heals
+PASS - Native request writes canonical status
+PASS - Native request persists channels as asset_type
+PASS - Request edit maps campaign to campaign_name
+PASS - Request edit maps startDate to start_date
+PASS - Request edit persists destination to Comms_Items
+PASS - Request edit persists detail/key message
+PASS - Source-synced requester edits blocked
+PASS - Source review workflow overlay persists
+PASS - Review comments restored on reload
+PASS - Multi-channel native request DTO supported
+PASS - Artwork writes matching asset item
+PASS - Mass Upload current template complete
+PASS - Mass Upload runs through write bridge
+PASS - Team hierarchy persists
+PASS - Content create persists
+PASS - Lookup CRUD persists
+PASS - Business config persists with history
+PASS - Scoring version persists
+PASS - Production health exposed
+PASS - All data writes clear v3 cache
+PASS - Source parser read-only: parsePnSource_
+PASS - Source parser read-only: parseScSource_
+PASS - Source parser read-only: buildScFinalistMap_
+PASS - Frontend JavaScript syntax
+PASS - Backend syntax: ApiCenter.gs
+PASS - Backend syntax: Closeout.gs
+PASS - Backend syntax: CycleEngine.gs
+PASS - Backend syntax: LiveSyncEngine.gs
+PASS - Backend syntax: PeopleImportUi.gs
+PASS - Backend syntax: PeopleSeed.gs
+PASS - Backend syntax: PortalApi.gs
+PASS - Backend syntax: TrackerSync.gs
+
+SUPPLEMENTAL VALIDATION
+PASS - Node syntax: all tools/*.mjs
+PASS - Bash syntax: package .sh launchers
+PASS - HTML structure parses successfully
+PASS - 12 page panels present: dashboard, requests, command, score, calendar, content, links, api, analytics, reports, settings, account
+PASS - Public fallback JSON parses and contains zero request rows
+PASS - Firebase config is Hosting-only
+PASS - .firebaserc default target is seller-communication-portal
+PASS - Apps Script manifest access=DOMAIN / executeAs=USER_ACCESSING
+PASS - Public directory scan contains no real corporate identities; only UI placeholder examples remain
+PASS - Legacy v4.7.4 reference is confined to the verified 503-person recovery seed provenance
+
+ENVIRONMENT-BOUND TESTS
+REPORT-ONLY - PowerShell runtime is not installed in the Linux build container, so AUTO-DEPLOY.ps1 cannot be executed here. Deployment safety/target/version gates are covered by static validation and must run on the Windows operator machine.
+REPORT-ONLY - Chromium in this container cannot complete even a trivial headless data: page because the container has no usable D-Bus/browser runtime; browser smoke is therefore a live-acceptance item, not treated as a Portal code failure.
+REPORT-ONLY - The build container has no corporate DNS/auth session, so the real Firebase Hosting URL and Workspace-backed Apps Script services cannot be live-certified here.
+
+TRUTHFUL COMPLETION STATUS
+PASS - v4.7.5 code/package closeout gates: complete.
+PENDING EXTERNAL LIVE ACCEPTANCE - run ONE-CLICK-AUTO-DEPLOY.cmd with approved corporate accounts, then complete PRODUCTION-ACCEPTANCE-v4.7.5.txt.
+API CENTER outbound Send intentionally remains fail-closed until an organization-approved endpoint/auth contract is configured; this is a governance dependency, not an unfinished code path.
+HTML_STRUCTURE=PASS
+TAG_COUNT=830
+PAGE_PANEL_COUNT=12
+PAGE_PANELS=dashboard,requests,command,score,calendar,content,links,api,analytics,reports,settings,account

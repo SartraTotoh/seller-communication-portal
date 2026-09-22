@@ -1,0 +1,5 @@
+CURRENT RELEASE: Seller Communication Portal v4.9.3
+PURPOSE: Smart Link Safe Recovery / TinyURL production completion
+DATA POLICY: Preserve existing Tracking_Links / Short_Link_Routes; no reset or destructive migration
+VALIDATOR: node tools/validate-v4.9.3.mjs
+EXPECTED: see VALIDATION-v4.9.3.txt

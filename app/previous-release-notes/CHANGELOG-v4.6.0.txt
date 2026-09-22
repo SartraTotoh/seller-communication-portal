@@ -1,0 +1,36 @@
+v4.6.0 - Pro People Directory + Production Mass Import
+
+PEOPLE & ROLES LAYOUT
+- Rebuilt People & Roles into a professional admin-directory layout.
+- Sticky Member Control editor on the left; People Directory workspace on the right.
+- Added Total / Active / Privileged / Inactive KPI strip.
+- Added search, Role filter, Status filter and clear-filter controls.
+- Added prominent bulk-onboarding banner and stronger empty states.
+- Reworked member table with avatar, role, organization, manager, status and edit action.
+- Responsive behavior for desktop, tablet and smaller widths.
+- No existing Portal Settings tabs or operational features were removed.
+
+MASS UPLOAD
+- CSV and TSV auto-detection (the provided .csv file is tab-separated).
+- Supports legacy + v2 headers and aliases.
+- Supports Team (Clus.), team (Cat.), Team (Role), canonical team and manager fields.
+- Ignores structural blank rows safely; never invents an email address.
+- Corporate email + role + boolean validation remains server-side as well as client-side.
+- Max import size increased to 2,000 people per job.
+- Missing People team paths can be created in Teams Master with stable team IDs.
+- Bulk server write changed from row-by-row append/update to table-level batch reconciliation.
+- Import remains atomic on validation failure: no User rows change when any row fails.
+- Import jobs + per-row audit logs remain recorded.
+- Firebase-hosted preview routes final manual writes to the Workspace-secured Apps Script import console.
+
+PROVIDED LIST
+- Generated canonical import-ready CSV from the supplied list.
+- 502 unique corporate-email records are included.
+- One-click setup reconciles this provided list into People & Roles once, idempotently.
+- Source list is backend/setup material only and is never copied into Firebase Hosting public assets.
+
+SAFETY / ARCHITECTURE
+- Firebase deployment remains Hosting-only.
+- PN + SC source trackers remain read-only.
+- People writes go only to the Portal DB.
+- No paid Firebase / Cloud service was added.

@@ -1,0 +1,31 @@
+Seller Communication Portal v4.7.2 - VALIDATION
+
+PASS  functional baseline 4.6.0
+PASS  UI 4.6.8
+PASS  Portal 4.7.2
+PASS  Firebase hard lock
+PASS  firebase hosting only
+PASS  education target blocked in runner
+PASS  deploy only hosting
+PASS  same deployment update
+PASS  no clasp create in auto deploy
+PASS  Drive all-drives resolver
+PASS  Apps Script deployment API
+PASS  OAuth token not logged
+PASS  persistent resolver state
+PASS  resolver helper invoked
+PASS  backend unchanged LiveSyncEngine.gs
+PASS  backend unchanged PeopleSeed.gs
+PASS  backend unchanged PortalApi.gs
+PASS  backend unchanged appsscript.json
+PASS  backend unchanged ApiCenter.gs
+PASS  backend unchanged CycleEngine.gs
+PASS  backend unchanged TrackerSync.gs
+PASS  backend unchanged PeopleImportUi.gs
+PASS  backend unchanged API-CONTRACT-v1.4.md
+PASS  backend unchanged .claspignore
+PASS  PowerShell core functions present
+PASS  resolver helper JS syntax
+PASS  public inline JS syntax
+
+Checks: 27/27 PASS

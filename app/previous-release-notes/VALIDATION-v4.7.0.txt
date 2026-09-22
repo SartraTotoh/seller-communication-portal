@@ -1,0 +1,18 @@
+Seller Communication Portal v4.7.0 - Validation
+
+PASS - functional baseline 4.6.0
+PASS - UI version 4.6.8
+PASS - Portal version 4.7.0
+PASS - Firebase project lock
+PASS - Firebase config Hosting only
+PASS - Explicit Education Portal block
+PASS - Firebase deploy explicit project
+PASS - No Firestore deploy command
+PASS - Existing /exec required
+PASS - Existing deployment owner resolver
+PASS - Same deployment ID redeploy
+PASS - No Apps Script create path
+PASS - Normal localhost clasp login
+PASS - Windows launcher points to auto deploy
+
+14/14 static release checks passed.

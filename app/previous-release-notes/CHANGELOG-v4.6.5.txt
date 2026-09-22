@@ -1,0 +1,12 @@
+Seller Communication Portal v4.6.5 — People UX/UI Polish
+
+Scope
+- Portal Settings > People & Roles layout and visual hierarchy polished.
+- Add/Update Member form spacing, controls, identity note, cards and responsive behavior polished.
+- Portal Members header, actions, KPI strip, filters, bulk onboarding banner and empty state polished.
+- Mass Upload People modal rebuilt into a 3-step professional flow: Upload > Validate & Preview > Confirm.
+- Template mismatch errors now show a structured, actionable error card and a direct Download current template action.
+
+Safety
+- No field IDs, API calls, import validation rules, permissions, Firebase configuration or backend data contracts changed.
+- Existing v4.6.4 cache-first deployment tooling is preserved.

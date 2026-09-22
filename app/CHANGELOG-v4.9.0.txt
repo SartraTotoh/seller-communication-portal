@@ -1,0 +1,7 @@
+Based on Seller-Comms-Portal-v4.8.5-Immutable-Source-SelfHeal.zip.
+Added Content Operations UI + authenticated backend route and append-only journal.
+Added six operational improvements and Seller Education / THSP browser adapters.
+Fixed bootstrap admin fallback after People provisioning completes.
+Fixed bridge JSON escaping of < to prevent embedded script termination.
+Preserved legacy source parsers, role-gated API, Firebase project lock, DOMAIN and USER_ACCESSING policy, and deployment source attestation.
+Not deployed; source adapters not installed into the other portals; see README for precise limitations.

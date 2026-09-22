@@ -1,0 +1,24 @@
+Seller Communication Portal v4.8.3 - Release Lock Fix
+
+Root cause fixed
+- v4.8.2 shipped public/index.html at data-portal-version="4.8.2".
+- Its AUTO-DEPLOY.ps1 still checked data-portal-version="4.8.1".
+- The safety gate therefore stopped with "Portal version is not 4.8.2" even though the Portal file was correct.
+
+Fix
+- Advanced current release to 4.8.3.
+- Added one deployment release constant: $Release = '4.8.3'.
+- Added $ReleaseRegex derived from the release constant.
+- Portal version preflight derives from the release lock.
+- Closeout, Tracker backend and Live Sync preflight derive from the release lock.
+- Apps Script updater required release and immutable source attestation derive from the release lock.
+- Setup URL and Firebase Production verification derive from the release lock.
+- Added regression checks for stale 4.8.1/4.8.2 values in current release-critical runtime.
+
+Preserved
+- Triple Source PN + SCA + Social Media read-only sync.
+- Campaign 360.
+- Asset Approval evidence logic.
+- Beginner Guidance.
+- DOMAIN + USER_ACCESSING.
+- seller-communication-portal hard lock and Education Portal block.

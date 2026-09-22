@@ -1,0 +1,34 @@
+PASS Protected data/business logic unchanged: ApiCenter.gs
+PASS Protected data/business logic unchanged: ContentOperations.gs
+PASS Protected data/business logic unchanged: CycleEngine.gs
+PASS Protected data/business logic unchanged: LiveSyncEngine.gs
+PASS Protected data/business logic unchanged: PeopleImportUi.gs
+PASS Protected data/business logic unchanged: PeopleSeed.gs
+PASS Central data backend access = DOMAIN
+PASS Central data backend executes as deployer
+PASS Auth bridge access = DOMAIN
+PASS Auth bridge executes as user
+PASS Auth bridge OAuth scope is email only
+PASS Auth bridge requires explicit top-level Continue link
+PASS Auth bridge no longer navigates inside its sandbox iframe
+PASS Auth handoff carries signed session only in URL fragment
+PASS Backend has secret placeholder only
+PASS Backend verifies HMAC session
+PASS Viewer identity prefers signed session
+PASS Read gateway authorizes signed session
+PASS Write gateway authorizes signed session
+PASS Smart Link handlers remain present
+PASS Frontend release remains v4.9.3
+PASS Frontend auth URL is deploy-time placeholder
+PASS Frontend stores auth token in sessionStorage
+PASS Frontend GET sends signed session
+PASS Frontend POST sends signed session
+PASS Frontend no longer lets stale endpoint override deployed endpoint
+PASS Frontend redirects to Workspace auth when session missing
+PASS Auth bridge CREATE body is flat per Apps Script API
+PASS Auth bridge UPDATE body remains deploymentConfig wrapped
+PASS Central replacement CREATE body is flat
+PASS Recovery deploy scope is Hosting only
+PASS Recovery never calls setupPortalLiveSync
+PASS Recovery never names Tracking_Links for mutation
+R4.4 validation PASS

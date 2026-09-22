@@ -1,0 +1,63 @@
+SELLER COMMUNICATION PORTAL v4.7.6 - LIVE PRODUCTION ACCEPTANCE
+
+Run this checklist only after ONE-CLICK-AUTO-DEPLOY.cmd completes successfully under the approved corporate accounts.
+
+A. TARGET / RELEASE
+[ ] URL is https://seller-communication-portal.web.app/
+[ ] Firebase project is seller-communication-portal.
+[ ] No THSP / education-portal-506713 resources were changed.
+[ ] Portal Settings > System > Production Health shows Release 4.7.6.
+[ ] Production Health overall state is READY.
+[ ] Existing Apps Script production /exec URL is preserved.
+
+B. IDENTITY / ROLES
+[ ] Provisioned REQUESTER sees Requester-authorized views/actions only.
+[ ] Provisioned COMMS sees Comms-authorized views/actions only.
+[ ] Provisioned REVIEWER can save review decision + comment.
+[ ] Provisioned ADMIN can manage settings/people/config.
+[ ] Unknown/unprovisioned corporate user is denied/fail-closed; never promoted to ADMIN.
+
+C. DATA / SYNC
+[ ] People & Roles loads the expected active directory population.
+[ ] PN source checkpoint is healthy.
+[ ] SC source checkpoint is healthy.
+[ ] Request population is non-zero after live sync.
+[ ] Refresh does not erase reviewer comment/workflow overlay.
+[ ] Source-synced Requester edit is blocked with read-only guidance.
+[ ] Portal-native request can be created and reloaded with the same campaign/date/channel/key message.
+[ ] Multi-channel native request reloads with all selected channels.
+
+D. PEOPLE / MASS UPLOAD
+[ ] Download Template returns the current schema.
+[ ] Mass Upload preview validates required columns.
+[ ] Admin can insert a safe test member and reload it.
+[ ] Existing-member update preserves team_cluster/team_category/team_role/team/manager fields.
+[ ] Import History records the operation.
+
+E. CONTENT / CONFIG / GRADING
+[ ] Create Content persists and reloads in Content Hub.
+[ ] Add/Edit/Delete Dropdown Option persists across reload.
+[ ] Business Config change persists and creates Config_History.
+[ ] New Campaign Grading model version persists and reloads.
+
+F. SMART LINKS / REPORTING
+[ ] Smart Link creation persists and returns a governed tracking URL.
+[ ] Request/Content/Link exports download without runtime error.
+[ ] Dashboard / Analytics / Reports load with live data.
+
+G. API CENTER
+[ ] Queue publication persists.
+[ ] Approval/status changes persist and audit.
+[ ] Sensitive/RESTRICTED payload remains blocked.
+[ ] If no approved live delivery contract is configured, Send stays blocked. THIS IS EXPECTED AND CORRECT.
+[ ] If an approved contract is configured, connection is VERIFIED + enabled before testing one NON_SENSITIVE delivery.
+
+H. BROWSER / CONSOLE
+[ ] Hard refresh Production.
+[ ] Dashboard opens.
+[ ] Requests, Calendar, Command Center, Campaign Grading, Content Hub, Smart Links, API Center, Reports and Settings navigate without application errors.
+[ ] No application SyntaxError / ReferenceError / TypeError is emitted by Portal code.
+
+ACCEPTANCE RESULT
+[ ] PASS - v4.7.6 live production accepted
+[ ] HOLD - record the exact failed item and do not label Production 100% accepted

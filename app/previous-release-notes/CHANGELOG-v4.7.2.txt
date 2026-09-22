@@ -1,0 +1,8 @@
+Seller Communication Portal v4.7.2
+- Added Drive All-Drives Apps Script enumeration for owner resolution.
+- Added direct Apps Script Deployments API verification against the existing /exec deployment ID.
+- Added OAuth token refresh using the existing clasp authorization session; tokens are never printed.
+- Added retry/backoff for transient Google API 429/5xx responses.
+- Added persistent proven Script ID state under LOCALAPPDATA for future One Click releases.
+- Retained hard block on education-portal-506713 and Firebase Hosting-only scope.
+- Business/backend source remains unchanged from v4.7.1; only deployment resolver/release metadata changed.

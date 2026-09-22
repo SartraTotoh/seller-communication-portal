@@ -1,0 +1,24 @@
+SELLER COMMUNICATION PORTAL v4.5.0 - STATIC QA
+Date: 2026-09-02
+
+PASS
+- Frontend body version = 4.5.0
+- Frontend inline JavaScript parses with Node
+- Apps Script .gs files parse as JavaScript/V8 syntax
+- No duplicate backend function names
+- Firebase target = seller-communication-portal
+- firebase.json = Hosting only
+- Apps Script Web App = DOMAIN only / execute as USER_DEPLOYING
+- Correct PN source workbook ID present
+- Correct SC source workbook ID present
+- Legacy Working Team workbook ID absent from backend
+- Quality Gate V2 logic unit checks pass
+- PN status precedence unit checks pass
+- SC Request ID + Asset status mapping unit checks pass
+- START-HERE.sh bash syntax passes
+
+NOT CLAIMED YET
+- Apps Script deployment has not been executed in the user's Workspace from this environment.
+- Corporate Firebase -> Apps Script authenticated JSONP behavior must be proven after deployment.
+- Automatic trigger execution must be verified from Sync_Runs / Sync_Checkpoints after setup.
+- Live source counts must be verified against current PN / SC after first production sync.

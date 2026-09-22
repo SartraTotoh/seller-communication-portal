@@ -1,0 +1,31 @@
+SELLER COMMUNICATION PORTAL v4.8.3 - PRODUCTION ACCEPTANCE
+
+A. RELEASE LOCK / SAFETY GATE
+[ ] Command header says Seller Communication Portal v4.8.3.
+[ ] Validator reports 245/245 PASS.
+[ ] [1/10] Safety gate does NOT stop on "Portal version is not 4.8.3".
+[ ] [1/10] Safety gate does NOT stop on Closeout/backend/Live Sync release mismatch.
+[ ] Firebase target is seller-communication-portal.
+[ ] education-portal-506713 remains blocked.
+[ ] Apps Script Web App is DOMAIN + USER_ACCESSING.
+[ ] Backend Setup page shows Backend release: v4.8.3.
+
+B. LIVE SYNC
+[ ] PN checkpoint = OK.
+[ ] SCA checkpoint = OK.
+[ ] Social checkpoint = OK.
+[ ] No PN/SCA/Social source sheet is modified by sync.
+
+C. CAMPAIGN / ASSET LOGIC
+[ ] Campaign 360 keeps PN/SCA/Social source evidence and request IDs separate.
+[ ] SCA Title/Content Pass is not treated as Asset approval by itself.
+[ ] Blank Manager Approve remains Pending Review.
+[ ] Explicit manager approval/rejection remains evidence.
+[ ] FINALIST allocation remains separate operational evidence.
+[ ] Conflicting evidence is flagged for human review.
+
+D. FINAL LIVE ACCEPTANCE
+[ ] Hard refresh https://seller-communication-portal.web.app/.
+[ ] Dashboard / Requests / Campaign 360 / Settings load without application errors.
+[ ] REQUESTER / REVIEWER / COMMS / ADMIN permissions are correct for real corporate users.
+[ ] Production Health shows release 4.8.3 and READY only after live gates pass.

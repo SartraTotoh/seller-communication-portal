@@ -1,0 +1,24 @@
+Seller Communication Portal v4.8.5 - Immutable Source Self-Heal
+
+FIXED
+- v4.8.4 could successfully self-heal appsscript.json but create an immutable Apps Script version from stale/mismatched backend source.
+- Immutable source attestation could also be brittle when Google returned file names in a different representation.
+- LiveSyncEngine still carried a stale hard-coded SETUP_V481 marker.
+
+CHANGED
+- tools/update-apps-script-deployment.mjs now reads the local /backend package.
+- Known package source files are overlaid onto remote Google HEAD before immutable version creation.
+- Unknown remote files are preserved.
+- Unknown files containing Portal core symbols are blocked as collisions rather than silently retained.
+- Remote read-back must match all 8 bundled Apps Script code files plus DOMAIN + USER_ACCESSING policy.
+- Immutable version source is compared against the bundled files using normalized source hashes.
+- File matching tolerates path prefixes and .gs/.js/.html extensions.
+- setup trigger tag derives dynamically from PORTAL_BACKEND_RELEASE.
+- LIVE_SYNC_SETUP_RELEASE and returned setup release derive from PORTAL_BACKEND_RELEASE.
+
+UNCHANGED
+- Triple-source PN + SCA + Social model.
+- Campaign 360 and Asset Approval logic.
+- Source trackers remain read-only.
+- Firebase target seller-communication-portal only.
+- THSP Education Portal target remains blocked.

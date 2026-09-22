@@ -1,0 +1,11 @@
+Seller Communication Portal v4.7.4 - Final Live Data Recovery
+
+FIXES
+- Corrects the deployment bug: no longer relies on clasp deploy syntax to update the live Web App.
+- Creates an immutable Apps Script version through the Apps Script API and updates the existing deployment ID in place.
+- Preserves the existing /exec URL.
+- Seeds the two uploaded People files plus the Seller Education shared admin continuity identity (503 active identities total).
+- Verifies People, PN sync checkpoint, SC sync checkpoint and non-zero Portal requests before setup can report READY.
+- Self-heals missing People/Content schema before portalData reads.
+- Firebase remains Hosting-only and hard-locked to seller-communication-portal.
+- education-portal-506713 remains blocked.

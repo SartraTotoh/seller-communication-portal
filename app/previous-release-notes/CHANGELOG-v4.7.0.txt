@@ -1,0 +1,13 @@
+Seller Communication Portal v4.7.0
+ONE CLICK AUTO DEPLOY
+
+- Adds Windows ONE-CLICK-AUTO-DEPLOY.cmd for end-to-end backend + hosting release.
+- Normal clasp browser login uses localhost callback; no copy/paste OAuth callback URL.
+- Resolves the owner of the existing Apps Script Web App deployment before push.
+- Redeploys the same deployment ID to preserve the existing /exec URL.
+- Hard-locks Firebase project ID and project number.
+- Firebase scope is Hosting only.
+- Explicitly blocks education-portal-506713.
+- Refuses to create a duplicate Apps Script backend when resolution fails.
+- Adds post-deploy HTTP version verification and opens Production.
+- Functional baseline remains 4.6.0; UI remains 4.6.8; Portal version becomes 4.7.0.

@@ -1,0 +1,19 @@
+{
+  "release": "4.9.3R4.4",
+  "status": "COMPLETE",
+  "projectId": "seller-communication-portal",
+  "backendScriptId": "1EO1WlPq8wSqYpdyh0dO81-C5_4PxRS2KYmt3wzPg33XTMIKLt7z4HWRe",
+  "backendDeploymentId": "AKfycbyIZmPXPcvvjn_RdEG4dyXmjaX4QBoAjsPwB8jckqJK8mJEIQsFJk7p8--Oa266D7Wc",
+  "backendAccess": "DOMAIN",
+  "backendExecuteAs": "USER_DEPLOYING",
+  "authBridgeScriptId": "1oEusqet0beBIvZ2pUSIHC7Q9YKxNLEiIvsiXIxp_2zzNMA_VR0TGgYyU",
+  "authBridgeDeploymentId": "AKfycbwyRFFG24CHH7Y3udiFVkVmKb7_jfbP1nyLBxo6FqHS0j_jxgTURYmt8sLDukmbK_nq",
+  "authBridgeAccess": "DOMAIN",
+  "authBridgeExecuteAs": "USER_ACCESSING",
+  "authScope": "userinfo.email only",
+  "googleSheetsReset": false,
+  "trackingLinksReset": false,
+  "shortLinkRoutesReset": false,
+  "setupRun": false,
+  "completedAt": "2026-09-16T07:02:08.120Z"
+}

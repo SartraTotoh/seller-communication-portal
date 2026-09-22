@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "seller-communication-portal"
+  },
+  "targets": {
+    "seller-communication-portal": {
+      "hosting": {
+        "portal": [
+          "seller-communication-portal"
+        ],
+        "shortlink": [
+          "shp-comms"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

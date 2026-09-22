@@ -1,0 +1,28 @@
+SELLER COMMUNICATION PORTAL v4.6.1 - ONE-CLICK SAFE REPAIR
+VALIDATION REPORT
+=========================================================
+Baseline: v4.6.0 Pro People + Mass Upload
+Scope: deployment/setup hardening; Portal business/data logic preserved.
+
+PASS - Bash syntax validation
+PASS - Firebase target locked to seller-communication-portal
+PASS - Google Cloud project number lock: 795035951703
+PASS - firebase.json is Hosting-only
+PASS - v4.6.0 frontend baseline retained
+PASS - exactly one DEFAULT_ENDPOINT marker
+PASS - PeopleSeed.gs present
+PASS - canonical people import CSV present
+PASS - canonical import contains 502 data rows
+PASS - no PEOPLE_SEED_V460 marker in Firebase public assets
+PASS - Windows one-click launcher included
+PASS - PowerShell native deployment runner included
+PASS - Firebase auth resumes in the same run
+PASS - Apps Script auth resumes in the same run
+PASS - reuse-first Apps Script project binding
+PASS - existing deployment ID preservation logic
+PASS - fail-closed backend mismatch protection
+
+NOTE
+The build environment does not contain PowerShell, so the PowerShell file could not be executed here.
+It was generated as a Windows-native runner and should be used via ONE-CLICK-WINDOWS.cmd.
+External Google/Firebase authorization and live corporate permissions can only be proven when run under the authorized corporate account.

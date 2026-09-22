@@ -1,0 +1,63 @@
+SELLER COMMUNICATION PORTAL v4.8.1 — PRODUCTION ACCEPTANCE
+
+A. DEPLOYMENT IDENTITY / TARGET
+[ ] Command header says Seller Communication Portal v4.8.1.
+[ ] Automated validator passes 233/233.
+[ ] Firebase target is seller-communication-portal.
+[ ] Apps Script Web App is DOMAIN + USER_ACCESSING.
+[ ] Backend Setup page shows Backend release: v4.8.1.
+
+B. LIVE SYNC CHECKPOINTS
+[ ] PN checkpoint = OK.
+[ ] SCA checkpoint = OK.
+[ ] Social checkpoint = OK.
+[ ] Production Health reports all three checkpoints true.
+[ ] No source sheet is modified by the sync run.
+
+C. REQUESTS
+[ ] Requests page shows Source column/chips.
+[ ] PN requests appear from [2026] Seller Comm Request Tracker.
+[ ] SCA requests appear from [TH] Seller Centre Asset SCA Request & Allocation.
+[ ] Social rows appear for FB / Group / YouTube / TikTok / Instagram / LINE.
+[ ] SHP/SEH-only rows are not incorrectly labeled Social Media.
+[ ] Source-synced requests remain read-only for requester edits.
+
+D. ASSET APPROVAL
+[ ] SCA request detail shows Asset Approval card.
+[ ] Title/Content Pass is not displayed as approval by itself.
+[ ] Blank Manager Approve is not displayed as Rejected.
+[ ] Explicit manager Yes/Approved maps to Approved evidence.
+[ ] Explicit manager No/Rejected maps to Rejected evidence.
+[ ] FINALIST scheduled/READY allocation maps to Approved by Allocation.
+[ ] FINALIST Reject/Cancel/Full Slot maps to Rejected by Allocation.
+[ ] Conflicting manager vs FINALIST evidence is visibly flagged.
+[ ] Approval source row/comment is traceable where evidence exists.
+
+E. SOCIAL STATUS
+[ ] Published -> Published.
+[ ] Done -> Completed.
+[ ] Scheduled -> Scheduled.
+[ ] Ready -> Ready for Review, not Approved.
+[ ] Working/Briefed -> In Production.
+[ ] Waiting/Hold/Postponed -> Submitted/Hold state.
+[ ] Cancel -> Cancelled.
+
+F. CAMPAIGN 360
+[ ] Campaign 360 appears in navigation.
+[ ] Campaign search/source/status filters work.
+[ ] Multi-source campaign shows multiple source chips when names match.
+[ ] Source Request IDs remain separate in Campaign detail.
+[ ] `(content N)` variants roll up to the same campaign family.
+[ ] SCA Campaign IDs are shown where available.
+[ ] Asset Approval counts are separate from campaign rollup status.
+
+G. BEGINNER GUIDANCE
+[ ] Campaign 360 scroll/hover guide appears.
+[ ] Asset Approval guide appears in SCA request detail.
+[ ] Got it / Next / Disable guide controls still work.
+
+H. FINAL LIVE ACCEPTANCE
+[ ] Hard refresh https://seller-communication-portal.web.app/.
+[ ] Browser application errors = 0 for Dashboard / Requests / Campaign 360 / Settings in controlled profile.
+[ ] Real corporate user scope is correct for REQUESTER / REVIEWER / COMMS / ADMIN.
+[ ] Portal can be marked Production READY only after all applicable checks above pass.

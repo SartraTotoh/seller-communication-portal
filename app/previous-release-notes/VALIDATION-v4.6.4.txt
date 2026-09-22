@@ -1,0 +1,14 @@
+Seller Communication Portal v4.6.4 - Static validation
+======================================================
+PASS - frontend baseline remains data-ui-version="4.6.0"
+PASS - Firebase project lock = seller-communication-portal
+PASS - operator project number reference = 795035951703
+PASS - firebase.json contains Hosting only; no Functions/Firestore/Storage deploy stanza
+PASS - existing Apps Script endpoint preserved exactly
+PASS - Windows normal path contains no npx / npm exec / npm install Firebase download
+PASS - no clasp invocation in recovery script
+PASS - no Apps Script create/push/deploy in recovery script
+PASS - Firebase deploy includes --project seller-communication-portal --only hosting --non-interactive
+PASS - cached firebase-tools discovery supported
+PASS - official standalone Firebase fallback bounded to 90 seconds
+PASS - post-deploy live UI verification bounded to 4 attempts

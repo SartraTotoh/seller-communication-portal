@@ -1,0 +1,19 @@
+SELLER COMMUNICATION PORTAL v4.8.4 - CHANGELOG
+
+FIXED
+- REMOTE_MANIFEST_POLICY_NOT_READY when Google Apps Script HEAD remained ANYONE_ANONYMOUS / USER_DEPLOYING after clasp push.
+- Restored direct Apps Script API projects.updateContent self-heal before immutable version creation.
+- Self-heal patches only the manifest and preserves the full remote file set because updateContent replaces project HEAD content.
+- Added mandatory Google read-back verification after manifest self-heal.
+- Expanded legacy ANYONE migration detection to handle Workspace 400 variants when the existing deployment itself is visibly ANYONE / ANYONE_ANONYMOUS.
+- Added deployer diagnostics for manifestSelfHeal = already_ready / updated_remote_manifest.
+
+RETAINED
+- Centralized $Release deployment lock.
+- Triple Source PN + SCA + Social Media.
+- Campaign 360.
+- Asset Approval evidence and conflict handling.
+- Beginner Guidance.
+- DOMAIN + USER_ACCESSING policy.
+- Hosting-only Firebase lock and THSP project block.
+- Source trackers remain read-only.

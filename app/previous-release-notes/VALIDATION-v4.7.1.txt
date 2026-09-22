@@ -1,0 +1,11 @@
+v4.7.1 STATIC RELEASE GATE
+- target project lock present: seller-communication-portal / 795035951703
+- forbidden project lock present: education-portal-506713
+- firebase.json Hosting-only
+- functional baseline 4.6.0
+- UI version 4.6.8
+- Portal version 4.7.1
+- firebase.ps1 / clasp.ps1 are not selected by AUTO-DEPLOY
+- native CLI calls downgrade ErrorActionPreference only for the process invocation and restore it immediately
+- existing /exec deployment is required and preserved
+- duplicate Apps Script project creation is absent

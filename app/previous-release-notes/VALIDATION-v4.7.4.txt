@@ -1,0 +1,25 @@
+Seller Communication Portal v4.7.4 - Final Live Data Recovery
+
+PASS - Functional baseline: 4.6.0
+PASS - UI version: 4.6.8
+PASS - Portal version: 4.7.4
+PASS - Firebase hard lock: seller-communication-portal / 795035951703
+PASS - Firebase deploy scope: Hosting only
+PASS - education-portal-506713 absent from .firebaserc and blocked by installer
+PASS - Existing Apps Script /exec URL preserved
+PASS - Apps Script deployment update uses Versions API + Deployments Update API, not legacy clasp deploy syntax
+PASS - Backend release marker: 4.7.4
+PASS - People recovery seed: 503 unique active identities expected
+PASS - Uploaded source parts: part 01 and part 02 retained in package
+PASS - Seed runs as two <=500-row jobs (489 + 14 including bootstrap admin)
+PASS - Bootstrap admin continuity: sellereducation.th@shopee.com
+PASS - Setup refuses READY unless People, PN checkpoint, SC checkpoint, and non-zero Requests are verified
+PASS - portalData auto-recovers People seed and source sync on first live read
+PASS - Content/People schema self-heals before live reads
+PASS - Firebase Hosting write bridge added for Request, Cycle, Smart Link, Content AI, Artwork, People Save, People Mass Import
+PASS - Apps Script .gs syntax
+PASS - Frontend inline JavaScript syntax
+PASS - Resolver/update helper JavaScript syntax
+PASS - Bash syntax
+
+Live environment still requires the user's Google Workspace/Firebase authorization at runtime.

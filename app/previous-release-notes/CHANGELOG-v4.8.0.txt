@@ -1,0 +1,31 @@
+SELLER COMMUNICATION PORTAL v4.8.0 - LIVE SYNC SELF-HEAL + RUNTIME ATTESTATION
+Build date: 2026-09-08
+
+ROOT CAUSE CLOSED
+The prior recovery logic could still fail when PEOPLE_SEED_V474_STATUS=COMPLETED was stale while the signed-in Admin row was missing/inactive/wrong-role. Because the Admin gate ran before a safe repair, setup returned Admin permission required repeatedly. A second ambiguity existed because an old browser/deployment page could look identical to the current setup failure.
+
+FIX
+1. Setup now performs a non-destructive People self-heal before the Admin gate.
+2. Missing bundled identities use SKIP_EXISTING; existing user rows are not bulk-overwritten.
+3. Before the first successful LIVE_SYNC READY only, the currently signed-in identity may be repaired from its bundled row if that bundled row is an active ADMIN.
+4. After READY, automatic bootstrap repair is disabled and Users sheet role/status remains authoritative.
+5. Setup page always displays Backend release v4.8.0 and resolved Workspace identity.
+6. Requested release mismatch is rejected.
+7. Apps Script deployment updater attests the exact immutable version contains v4.8.0 TrackerSync, Closeout and LiveSync self-heal markers before setup is opened.
+
+RETAINED
+- Functional baseline 4.6.0.
+- UI baseline 4.6.8.
+- Beginner Guidance system and 28 guided hotspots.
+- DOMAIN + USER_ACCESSING.
+- Firebase hard-lock to seller-communication-portal.
+- education-portal-506713 block.
+- PN / SC read-only source contract.
+- Fail-closed public snapshot and API Send.
+
+VALIDATION
+- 179/179 automated package checks PASS.
+- Frontend JavaScript syntax PASS.
+- All Apps Script backend syntax checks PASS.
+- Immutable-source-attestation contract PASS.
+- Non-destructive People self-heal contract PASS.

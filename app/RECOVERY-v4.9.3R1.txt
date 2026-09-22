@@ -1,0 +1,19 @@
+Seller Communication Portal v4.9.3R1
+Hosting Verification Resume - Data Safe
+
+Root cause addressed:
+The original v4.9.3 flow treated a short read-back verification window on the web.app origin as a deployment failure even after Firebase Hosting CLI had returned successfully.
+
+R1 recovery behavior:
+1. Read-only verification of web.app and firebaseapp.com.
+2. Cache-busting on every request.
+3. Invoke-WebRequest plus curl.exe fallback.
+4. 60-second read-only propagation window before any write.
+5. If still not visible, exactly one Firebase Hosting-only deploy.
+6. 90-second two-origin verification after deploy.
+7. No Apps Script deployment/update.
+8. No setup action.
+9. No Google Sheets write.
+10. No Smart Link repair/migration.
+
+Existing Smart Link records are therefore outside this recovery script's write surface.

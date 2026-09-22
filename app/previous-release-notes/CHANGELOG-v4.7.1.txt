@@ -1,0 +1,10 @@
+Seller Communication Portal v4.7.1 — Windows Native CLI Safety Fix
+
+- Fixes Windows PowerShell 5.1 NativeCommandError during Firebase projects:list.
+- Never selects npm-generated firebase.ps1 or clasp.ps1 shims.
+- Prefers direct firebase-tools/clasp JavaScript entrypoints or .cmd shims.
+- Native CLI stderr is treated as progress/log output; process exit codes remain authoritative.
+- Firebase project hard lock remains seller-communication-portal / 795035951703.
+- education-portal-506713 remains explicitly blocked.
+- Firebase write scope remains Hosting only.
+- Existing Apps Script /exec deployment must be resolved and reused; duplicates are never created.

@@ -1,0 +1,8 @@
+Seller Communication Portal v4.6.8 — Workflow Intelligence
+
+1. Campaign Grading now shows read-only weekly observation of the two approved operational sources: PN/PNAR/EDM and SC. Cutoffs remain Tuesday 12:00 and Tuesday 15:00 Asia/Bangkok, calculated for the current week.
+2. Smart Link is now an explicit pre-publish communication gate. Command Center flow: Review → In Production → Scheduled → Smart Link → Published. Portal-native Published is blocked when an active Tracking Link is missing.
+3. Content Hub indexes every Request and produces structured Context / Objective / Tone & Vibes / Target / Benefit / Keyword Search Suggestions. Approved Workspace AI enrichment is server-side only; no browser-direct AI endpoint or credential.
+4. Artwork moves from link-only entry to Computer upload. PNG/JPG/WebP is inspected for file size and pixel dimensions before upload to Workspace Drive. Exact per-asset pixel dimensions are supported through Channel_Rules fields; current DB has artwork REQUIRED/CONDITIONAL rules but does not currently contain exact pixel-size values, so the UI reports SPEC PENDING instead of inventing dimensions.
+5. New backend: Content_AI_Insights, artwork upload/audit, Smart Link workflow event, pre-publish gate.
+6. Functional baseline remains 4.6.0. UI version and Portal Version are 4.6.8.

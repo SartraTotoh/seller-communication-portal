@@ -1,0 +1,10 @@
+SELLER COMMUNICATION PORTAL v4.6.9 - RESOLVER REPAIR
+
+- Functional baseline remains 4.6.0.
+- UI remains 4.6.8 Workflow Intelligence.
+- Portal release advances to 4.6.9.
+- Fixes Cloud Shell backend reuse when the existing Apps Script project title differs from the current expected title.
+- Resolver checks explicit override, saved state, historical .clasp.json files under Cloud Shell home, title matches, then every Apps Script project visible to clasp.
+- Every candidate is verified against the existing live deployment ID before source push.
+- Existing /exec URL is preserved.
+- If the owner cannot be proven, setup stops without creating a duplicate Apps Script project.

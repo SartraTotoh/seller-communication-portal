@@ -1,0 +1,46 @@
+SELLER COMMUNICATION PORTAL v4.6.0 - QA GATE
+
+STATIC / SYNTAX
+- Frontend inline JavaScript parses successfully with Node --check.
+- PortalApi.gs parses successfully with Node --check.
+- TrackerSync.gs parses successfully with Node --check.
+- LiveSyncEngine.gs parses successfully with Node --check.
+- PeopleImportUi.gs parses successfully with Node --check.
+- PeopleSeed.gs parses successfully with Node --check.
+
+PEOPLE LIST INPUT
+- Source format detected: TSV content with .csv extension.
+- Physical data rows after header: 958.
+- Nonblank source rows: 549.
+- Importable rows with corporate email: 502.
+- Structural rows without email ignored: 47.
+- Unique emails: 502 / 502.
+- Roles: 488 REQUESTER, 6 COMMS, 4 ADMIN, 4 REVIEWER.
+- Departments: 474 BD, 28 REVIEWER.
+- Distinct Department + Team paths: 238.
+
+IMPORT CONTRACT
+- Canonical identity key = lower-case corporate email.
+- Duplicate email inside a file blocks the job.
+- Invalid corporate email blocks the job.
+- Invalid role / boolean blocks the job.
+- Custom People department is accepted without changing requester-department master behavior.
+- Team hierarchy is preserved as Cluster / Category / Role path and separately on Teams columns.
+- Missing team path becomes Unassigned under the supplied department.
+- Missing Teams Master paths are created only in Portal DB.
+- UPSERT_BY_EMAIL updates existing and inserts new.
+- SKIP_EXISTING leaves existing User records untouched.
+- Validation failure logs the failed job and makes no User changes.
+- Successful jobs batch-write Users / Teams and append audit rows.
+
+DEPLOYMENT
+- START-HERE.sh still verifies project seller-communication-portal / 795035951703.
+- Firebase target remains Hosting only.
+- Apps Script setup is domain-only and imports the provided seed once.
+
+IN-MEMORY BACKEND SIMULATION
+- First provided-list seed run: 502 inserted, 0 updated, 0 skipped, 0 errors.
+- Teams Master paths created: 238.
+- User_Import_Rows audit entries: 502.
+- Admin-role rows from supplied list: 4.
+- Second setup seed run: ALREADY_IMPORTED; Users remain 502 and no second import job is created.

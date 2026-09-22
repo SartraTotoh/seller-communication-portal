@@ -1,0 +1,33 @@
+Seller Communication Portal v4.8.1
+TRIPLE SOURCE + CAMPAIGN 360 + ASSET APPROVAL
+
+Added
+- Social Media live source: 1. New Channel Landscape dashboard 2026 - Seller Education.
+- Triple checkpoint validation: PN / SCA / Social.
+- Campaign 360 page, filters, source chips and detail matrix.
+- Backend Campaign 360 aggregation in portal payload.
+- SCA Asset Approval evidence from PopUp Request Approval.
+- SCA approval conflict detection and approval detail UI.
+- Social channel/status parser for 2026 rows.
+- Beginner guidance for Campaign 360 and Asset Approval.
+
+Changed
+- Seller Centre Asset source is labeled SCA in the Portal.
+- SCA sync ruleset upgraded to V3.
+- Quality Gate upgraded to V3.
+- Production Health now requires all three source checkpoints.
+- Grading UI clarifies SCA grading/readiness vs PN/Social campaign context.
+
+Approval logic
+- Validation Pass does not equal Approved.
+- Blank Manager Approve does not equal Rejected.
+- Explicit manager decisions are retained as evidence.
+- FINALIST allocation is final operational evidence.
+- Conflicting evidence is flagged for human review.
+
+Safety retained
+- Source spreadsheets read-only.
+- Firebase target hard-locked to seller-communication-portal.
+- education-portal-506713 blocked.
+- Apps Script DOMAIN + USER_ACCESSING.
+- Public request snapshot remains sanitized/zero-company-data.

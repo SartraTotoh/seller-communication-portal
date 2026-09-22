@@ -1,0 +1,9 @@
+Seller Communication Portal v4.7.3 — LIVE SYNC RECOVERY
+
+- Fixes the production state where Firebase UI was current but the Portal DB had never completed PN + SC reconciliation.
+- One Click now updates the existing Apps Script deployment using clasp -i and then opens action=setup automatically.
+- Setup creates/extends Content_AI_Insights + Attachments schema and installs the recurring Live Sync trigger.
+- Dashboard now shows a prominent Live Data warning when it falls back to packaged snapshot.
+- Empty time-of-day heatmap is replaced with useful date-only weekday demand when no explicit publish times exist.
+- Project lock remains seller-communication-portal / 795035951703.
+- Firebase remains Hosting-only. Education Portal is blocked.

@@ -1,0 +1,13 @@
+# Firebase / build
+.firebase/
+*.log
+firebase-debug.log
+.cache/
+
+# Node
+node_modules/
+
+# System
+.DS_Store
+Thumbs.db
+~$*

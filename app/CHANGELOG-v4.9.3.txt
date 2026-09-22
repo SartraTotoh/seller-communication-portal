@@ -1,0 +1,10 @@
+SELLER COMMUNICATION PORTAL v4.9.3 - SMART LINK SAFE RECOVERY
+
+- TinyURL modern authenticated /create API hardened with retry for transient 429/5xx responses.
+- Custom alias conflict automatically falls back to an auto TinyURL while preserving the requested alias in the original Tracking_Links row.
+- New Smart Links connection/status bar: CONNECTED / TOKEN REQUIRED, existing count, short-link count, pending repair count.
+- Admin can connect the TinyURL token directly from Smart Links; secret remains in Apps Script Script Properties only.
+- Existing incomplete Smart Links can be backfilled without deleting or rebuilding rows.
+- Repair changes only short_url, status (only when previously incomplete), and updated_at. UTM, generated URL, destination, ID and created metadata are preserved.
+- Local preview-only Smart Link creation is disabled; Firebase mode must use the production write bridge.
+- New short-link creates fail closed if no real short URL is returned, preventing further phantom/preview records.

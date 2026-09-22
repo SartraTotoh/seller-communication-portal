@@ -1,0 +1,30 @@
+SELLER COMMUNICATION PORTAL v4.7.6 - DOMAIN POLICY FIX
+Build: 2026-09-07
+
+INCIDENT CLOSED
+- v4.7.5 successfully pushed backend source, but the Apps Script deployment update returned HTTP 400:
+  "ANYONE access has been disabled by your domain administrator."
+- Company policy is correct. This release does NOT ask for ANYONE access and does NOT require a Domain Admin change.
+
+FIX
+1. Apps Script manifest remains locked to webapp.access=DOMAIN and executeAs=USER_ACCESSING.
+2. One-Click validates both policy values before any deployment update.
+3. After clasp push, the updater polls Apps Script projects.getContent until Google HEAD itself reports DOMAIN + USER_ACCESSING.
+4. A new immutable version is created only after that remote-policy gate passes.
+5. The immutable version manifest is fetched again by versionNumber and verified before deployment.
+6. The existing deployment is updated first and kept when Google permits it.
+7. If and only if Google returns the exact legacy policy error that ANYONE is disabled, the updater creates one new DOMAIN deployment from the verified version.
+8. The old deployment is NOT deleted; it remains rollback history.
+9. The One-Click rewrites the Firebase frontend backend ID to the verified replacement deployment and verifies the rewrite before Firebase Hosting deploy.
+10. Firebase remains hard-locked to seller-communication-portal and Hosting only. education-portal-506713 remains blocked.
+
+NO USER ACTION REQUIRED IN DOMAIN ADMIN
+- Do not enable ANYONE.
+- Do not weaken Workspace sharing/security policy.
+- Double-click ONE-CLICK-AUTO-DEPLOY.cmd.
+
+LOCAL VALIDATION
+- 126 / 126 contracts PASS.
+- Frontend JavaScript syntax PASS.
+- All Apps Script .gs syntax gates PASS.
+- Domain-only deployment recovery contract PASS.

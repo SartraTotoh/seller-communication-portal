@@ -1,0 +1,18 @@
+Seller Communication Portal v4.6.6 — One-Click UI Gate Fix
+
+Root cause
+- v4.6.5 correctly changed data-ui-version to 4.6.5 after the People & Roles UX/UI polish.
+- The inherited v4.6.4 Windows and Cloud Shell safety gates still required data-ui-version=4.6.0 exactly.
+- That made a valid UI-only patch fail before deployment.
+
+Fix
+- Added explicit data-functional-baseline=4.6.0 to public/index.html.
+- Kept data-ui-version=4.6.5 for the polished frontend.
+- Windows and Cloud Shell now validate the functional baseline separately from the UI patch version.
+- Approved UI contract is the v4.6.5+ patch line within v4.6.x.
+- Live Hosting verification uses the same contract instead of an exact 4.6.0 UI string.
+- Firebase project lock, Hosting-only rule, and expected Live Sync backend URL checks are unchanged.
+
+Scope
+- Deployment gate / metadata fix only.
+- No People import logic, backend API, Firebase project, or UX/UI layout was reverted.

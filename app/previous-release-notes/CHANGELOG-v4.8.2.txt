@@ -1,0 +1,17 @@
+Seller Communication Portal v4.8.2 - Safety Gate Closeout Fix
+
+Scope
+- Deployment hotfix on top of v4.8.1 Triple Source + Campaign 360.
+- No PN/SCA/Social source mapping or Asset Approval business logic is removed.
+
+Root cause fixed
+- v4.8.1 packaged backend/Closeout.gs correctly at release 4.8.1.
+- AUTO-DEPLOY.ps1 incorrectly validated PORTAL_CLOSEOUT_RELEASE against 4.8.0.
+- This caused the safety gate to stop with "v4.8.1 closeout backend is missing" even though the file was present.
+
+Fix
+- Portal/backend/deployment release advanced to 4.8.2.
+- Safety gate now validates Closeout.gs against exactly 4.8.2.
+- Validator now explicitly inspects the closeout gate line and fails on a stale 4.8.0/4.8.1 release check.
+- Validator confirms Closeout.gs is a required preflight file and that AUTO-DEPLOY uses validate-v4.8.2.mjs.
+- Existing fail-closed project lock, DOMAIN + USER_ACCESSING policy, triple-source read-only sync, Campaign 360, Asset Approval and Beginner Guidance are preserved.

@@ -1,0 +1,18 @@
+PASS Data/backend logic unchanged: ApiCenter.gs
+PASS Data/backend logic unchanged: Closeout.gs
+PASS Data/backend logic unchanged: ContentOperations.gs
+PASS Data/backend logic unchanged: CycleEngine.gs
+PASS Data/backend logic unchanged: LiveSyncEngine.gs
+PASS Data/backend logic unchanged: PeopleImportUi.gs
+PASS Data/backend logic unchanged: PeopleSeed.gs
+PASS Data/backend logic unchanged: PortalApi.gs
+PASS Data/backend logic unchanged: TrackerSync.gs
+PASS Web app access = DOMAIN
+PASS Web app executes as deployment owner
+PASS Broken per-user OAuth link removed
+PASS Setup consent gate is bypassed
+PASS Identity still uses active Workspace user
+PASS No EffectiveUser identity fallback
+PASS Portal release remains v4.9.3
+PASS Existing backend URL remains embedded for in-place update
+R4 access validation PASS

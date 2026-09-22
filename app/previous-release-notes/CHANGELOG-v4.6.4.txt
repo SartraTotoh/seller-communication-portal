@@ -1,0 +1,10 @@
+Seller Communication Portal v4.6.4
+==================================
+- Removed npm/npx Firebase CLI bootstrap from the normal Windows flow.
+- Added cache-first Firebase CLI discovery under global npm and Windows npm _npx cache.
+- Added official standalone Firebase CLI fallback with bounded 90-second download.
+- Removed broad projects:list release gate that could false-negative on corporate networking.
+- Uses exact --project seller-communication-portal on Hosting deploy.
+- Preserves existing Apps Script Live Sync endpoint and does not run clasp in recovery mode.
+- Hosting-only deployment remains enforced.
+- Added post-deploy UI v4.6.0 live verification with bounded retries.

@@ -1,0 +1,20 @@
+SELLER COMMUNICATION PORTAL v4.6.9 - RESOLVER REPAIR VALIDATION
+
+Version contract
+- Functional baseline: 4.6.0
+- UI version: 4.6.8
+- Portal version: 4.6.9
+
+Resolver repair
+- Existing live deployment ID is read from the frontend endpoint.
+- Explicit script override, saved state, historical .clasp.json bindings, title matches, and all clasp-visible script IDs are candidate sources.
+- Every candidate is tested with clasp deployments against the exact live deployment ID.
+- Candidate probe is bounded by a 45-second timeout per project.
+- No project is created while a live deployment ID exists but ownership is unresolved.
+- Existing /exec deployment ID is reused for deploy --deploymentId.
+
+Safety
+- Firebase project remains seller-communication-portal / 795035951703.
+- Firebase deployment remains Hosting-only.
+- Backend source bytes are unchanged from v4.6.8 Workflow Intelligence.
+- UI feature bytes are unchanged except release metadata (Portal Version 4.6.9).

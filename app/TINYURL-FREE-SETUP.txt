@@ -1,0 +1,21 @@
+SELLER COMMUNICATION PORTAL v4.9.3 - TINYURL FREE SETUP
+
+NO DATA RESET / NO LINK REBUILD
+Existing Tracking_Links rows are preserved. The repair only fills missing short_url/status/updated_at fields.
+
+ONE-TIME CONNECTION
+1. In Seller Communication Portal open: Smart Links.
+2. Click: Connect TinyURL.
+3. Paste a TinyURL Free API token that has Create TinyURL permission.
+4. Click: Save, Test & Repair Existing.
+
+The token is stored server-side in Apps Script Script Properties only. It is not stored in Firebase Hosting, localStorage, or Google Sheets.
+The repair automatically backfills existing rows that have generated_url but no short_url.
+If a requested custom alias is already taken, the Portal falls back to TinyURL auto-alias so a working short URL is still returned.
+
+DATA SAFETY CONTRACT
+- Never delete Tracking_Links rows.
+- Never rewrite original_url or generated_url during repair.
+- Never rewrite UTM fields during repair.
+- Never change tracking_id or created_at during repair.
+- Short_Link_Routes insert is deduplicated by tracking_id / short_url.

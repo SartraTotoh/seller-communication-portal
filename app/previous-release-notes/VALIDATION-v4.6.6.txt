@@ -1,0 +1,12 @@
+Seller Communication Portal v4.6.6 - Static validation
+
+PASS - public/index.html declares data-functional-baseline="4.6.0"
+PASS - public/index.html declares data-ui-version="4.6.5"
+PASS - v4.6.5 People & Roles / Mass Upload UX/UI polish remains present
+PASS - Windows gate validates baseline separately from UI patch version
+PASS - Windows live verification uses the same frontend contract
+PASS - Cloud Shell gate validates baseline separately from UI patch version
+PASS - Firebase target remains seller-communication-portal
+PASS - firebase.json remains Hosting-only
+PASS - expected Live Sync backend endpoint remains present
+PASS - backend and import assets preserved from v4.6.5

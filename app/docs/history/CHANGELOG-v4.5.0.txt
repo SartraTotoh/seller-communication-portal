@@ -1,0 +1,12 @@
+v4.5.0 - Live Sync One-Click
+- Adds executable PN + SC Live Sync Engine v2.0.
+- Adds one-command Cloud Shell setup and one unavoidable Google authorization/setup click.
+- Frontend Sync now now forces backend source reconciliation instead of only reloading snapshot.
+- Portal Data now comes from Production DB after reconciliation, not directly from permissive source parser.
+- Quality Gate V2 filters structural, NA/N/A, near-empty, missing-identity, insufficient-payload, and no-state rows while auditing exclusions.
+- PN status precedence mirrors current source workflow.
+- SC joins SUBMISSION FORM + FINALIST at Request ID + Asset Type level.
+- Status/payload changes use stable source hashes and append Ticket_Events only on change.
+- Logic mapping and key quality/readiness switches are Config-driven.
+- Source trackers remain read-only.
+- Firebase remains Hosting only.

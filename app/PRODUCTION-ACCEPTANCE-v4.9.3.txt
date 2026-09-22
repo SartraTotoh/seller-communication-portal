@@ -1,0 +1,12 @@
+SELLER COMMUNICATION PORTAL v4.9.3 - SMART LINK PRODUCTION ACCEPTANCE
+
+[ ] START.bat finishes with [DONE]
+[ ] Portal footer/top UI shows Portal Version 4.9.3
+[ ] Smart Links status bar shows CONNECTED after TinyURL token is saved
+[ ] Existing Smart Links still show the same Tracking ID, generated URL, UTM values and created data
+[ ] Existing missing Short URL rows are backfilled after Repair existing links
+[ ] New Auto Alias returns a real https://tinyurl.com/... URL
+[ ] New Custom Alias returns requested alias when available
+[ ] If Custom Alias is unavailable, Portal returns a working auto TinyURL and shows the fallback message
+[ ] No row displays PREVIEW ONLY - TINYURL BACKEND NOT CONNECTED for a newly created Smart Link
+[ ] Refresh page and confirm repaired/new short URLs remain persisted

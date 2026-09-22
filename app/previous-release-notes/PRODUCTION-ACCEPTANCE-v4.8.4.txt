@@ -1,0 +1,34 @@
+SELLER COMMUNICATION PORTAL v4.8.4 - PRODUCTION ACCEPTANCE
+
+A. PACKAGE / SAFETY
+[ ] Terminal header shows Seller Communication Portal v4.8.4.
+[ ] Safety gate shows 251/251 PASS.
+[ ] Firebase target is seller-communication-portal.
+[ ] education-portal-506713 remains blocked.
+
+B. APPS SCRIPT POLICY
+[ ] Step [6/10] runs remote manifest self-heal / verification.
+[ ] Terminal reports remote Apps Script manifest = DOMAIN + USER_ACCESSING.
+[ ] Immutable Apps Script source attestation proves backend release 4.8.4.
+[ ] If deployment replacement occurs, old deployment ID is retained for rollback.
+[ ] New deployment ID is automatically rebound into public/index.html before Firebase deploy.
+
+C. LIVE SETUP
+[ ] Setup page visibly shows Backend release: v4.8.4.
+[ ] Signed-in Workspace identity is visible/resolved.
+[ ] People/Admin setup passes.
+[ ] PN checkpoint = OK.
+[ ] SCA checkpoint = OK.
+[ ] Social checkpoint = OK.
+
+D. PORTAL
+[ ] Production Portal reports version 4.8.4.
+[ ] Campaign 360 loads PN + SCA + Social source evidence.
+[ ] Asset Approval distinguishes validation / manager approval / allocation.
+[ ] Beginner Guides are available.
+[ ] Source-synced records remain read-only in the Portal.
+
+E. FINAL
+[ ] ONE-CLICK-AUTO-DEPLOY.cmd ends with [DONE].
+[ ] No REMOTE_MANIFEST_POLICY_NOT_READY error remains.
+[ ] No Production release is marked complete if any verification above fails.

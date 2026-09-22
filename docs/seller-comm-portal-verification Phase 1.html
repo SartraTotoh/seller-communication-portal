@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Communication Portal — Production Verification Checklist</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --border: #2a2f3a;
+    --text: #e8eaed;
+    --text-dim: #9aa1ac;
+    --green: #34d399;
+    --green-bg: rgba(52,211,153,0.12);
+    --orange: #fbbf24;
+    --orange-bg: rgba(251,191,36,0.12);
+    --red: #f87171;
+    --red-bg: rgba(248,113,113,0.12);
+    --blue: #60a5fa;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", "Sarabun", Roboto, sans-serif;
+    line-height: 1.5;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  header { margin-bottom: 20px; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .sub { color: var(--text-dim); font-size: 0.9rem; }
+  .meta-bar {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px; margin: 16px 0 24px;
+  }
+  .meta-field { flex: 1; min-width: 160px; }
+  .meta-field label { display:block; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 4px; }
+  .meta-field input {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 6px; padding: 7px 9px; font-size: 0.9rem;
+  }
+  .progress-bar-outer {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg); padding: 10px 0 14px;
+  }
+  .progress-track {
+    height: 8px; background: var(--panel-2); border-radius: 4px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .3s ease; }
+  .progress-label { font-size: 0.78rem; color: var(--text-dim); margin-top: 6px; display:flex; justify-content: space-between; }
+
+  section.card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 18px 20px; margin-bottom: 18px;
+  }
+  section.card h2 {
+    font-size: 1.05rem; margin: 0 0 4px; display:flex; align-items:center; gap: 10px;
+  }
+  .goal { color: var(--text-dim); font-size: 0.85rem; margin: 4px 0 14px; }
+  .badge-num {
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--panel-2);
+    border: 1px solid var(--border); font-size: 0.8rem; color: var(--text-dim);
+  }
+
+  table.check-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+  table.check-table th {
+    text-align: left; color: var(--text-dim); font-weight: 500; font-size: 0.78rem;
+    padding: 6px 8px; border-bottom: 1px solid var(--border);
+  }
+  table.check-table td {
+    padding: 9px 8px; border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  table.check-table tr:last-child td { border-bottom: none; }
+  .row-id { color: var(--text-dim); font-variant-numeric: tabular-nums; width: 34px; }
+  .evidence-text { color: var(--text-dim); font-size: 0.82rem; }
+  .note-hint { color: #f0b45f; font-size: 0.8rem; }
+
+  .pf-group { display: flex; gap: 6px; flex-wrap: nowrap; }
+  .pf-btn {
+    border: 1px solid var(--border); background: var(--panel-2); color: var(--text-dim);
+    border-radius: 6px; padding: 5px 10px; font-size: 0.78rem; cursor: pointer;
+    white-space: nowrap; user-select: none;
+  }
+  .pf-btn.on-pass { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .pf-btn.on-fail { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+  .status4-group { display: flex; gap: 6px; flex-wrap: wrap; }
+  .status4-btn {
+    border: 1px solid var(--border); background: var(--panel-2); color: var(--text-dim);
+    border-radius: 6px; padding: 5px 9px; font-size: 0.74rem; cursor: pointer; white-space: nowrap;
+  }
+  .status4-btn.on-live { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .status4-btn.on-disabled { background: var(--orange-bg); border-color: var(--orange); color: var(--orange); }
+  .status4-btn.on-review { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+  .status4-btn.on-design { background: rgba(96,165,250,0.12); border-color: var(--blue); color: var(--blue); }
+
+  input.note-input, textarea.note-input {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 6px; padding: 6px 8px; font-size: 0.82rem;
+    font-family: inherit; resize: vertical;
+  }
+
+  .final-status-row {
+    display: flex; align-items: center; gap: 10px; margin-top: 14px;
+    padding-top: 14px; border-top: 1px dashed var(--border);
+    flex-wrap: wrap;
+  }
+  .final-status-label { font-size: 0.85rem; color: var(--text-dim); }
+  .rag-group { display: flex; gap: 8px; }
+  .rag-btn {
+    width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--border);
+    background: var(--panel-2); cursor: pointer; font-size: 1rem;
+  }
+  .rag-btn.g { border-color: var(--green); }
+  .rag-btn.o { border-color: var(--orange); }
+  .rag-btn.r { border-color: var(--red); }
+  .rag-btn.g.active { background: var(--green); }
+  .rag-btn.o.active { background: var(--orange); }
+  .rag-btn.r.active { background: var(--red); }
+  .rag-auto-note { font-size: 0.75rem; color: var(--text-dim); margin-left: auto; }
+
+  .warning-box {
+    background: var(--red-bg); border: 1px solid var(--red); color: #ffc4c4;
+    border-radius: 8px; padding: 10px 12px; font-size: 0.82rem; margin-bottom: 14px;
+  }
+
+  /* Summary table */
+  table.summary-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  table.summary-table th {
+    text-align: left; color: var(--text-dim); font-weight: 500; font-size: 0.76rem;
+    padding: 8px; border-bottom: 1px solid var(--border);
+  }
+  table.summary-table td { padding: 9px 8px; border-bottom: 1px solid var(--border); }
+  .pill {
+    display: inline-flex; align-items:center; gap:5px; padding: 3px 9px; border-radius: 999px;
+    font-size: 0.76rem; font-weight: 600;
+  }
+  .pill.green { background: var(--green-bg); color: var(--green); }
+  .pill.orange { background: var(--orange-bg); color: var(--orange); }
+  .pill.red { background: var(--red-bg); color: var(--red); }
+  .pill.gray { background: var(--panel-2); color: var(--text-dim); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  .signoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .signoff-grid { grid-template-columns: 1fr; } }
+  .signoff-field label { font-size: 0.8rem; color: var(--text-dim); display:block; margin-bottom: 4px; }
+  .signoff-field input {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 6px; padding: 7px 9px; font-size: 0.88rem;
+  }
+  .final-question {
+    margin-top: 16px; padding: 14px; background: var(--panel-2); border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .final-yn { display: flex; gap: 10px; margin-top: 8px; }
+  .yn-btn {
+    padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--text-dim); cursor: pointer; font-size: 0.85rem;
+  }
+  .yn-btn.on-yes.active { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .yn-btn.on-no.active { background: var(--orange-bg); border-color: var(--orange); color: var(--orange); }
+
+  .footer-actions {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 24px; gap: 10px; flex-wrap: wrap;
+  }
+  .save-status { font-size: 0.78rem; color: var(--text-dim); }
+  .reset-btn {
+    background: transparent; border: 1px solid var(--red); color: var(--red);
+    padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+  }
+  .export-btn {
+    background: transparent; border: 1px solid var(--blue); color: var(--blue);
+    padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+  }
+  small.gate-rule {
+    display:block; margin-top: 10px; font-size: 0.78rem; color: var(--text-dim);
+    background: var(--panel-2); padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Seller Communication Portal — Production Verification Checklist</h1>
+    <div class="sub">ใช้คู่กับ Master Handover Summary (10-09-2026) · ห้ามติ๊ก 🟢 จนกว่าจะมีหลักฐานจริง</div>
+  </header>
+
+  <div class="meta-bar">
+    <div class="meta-field">
+      <label>ผู้ตรวจ</label>
+      <input type="text" id="meta-inspector" placeholder="ชื่อผู้ตรวจ">
+    </div>
+    <div class="meta-field">
+      <label>วันที่ตรวจ</label>
+      <input type="date" id="meta-date">
+    </div>
+    <div class="meta-field">
+      <label>Corporate Workspace session ใช้บัญชี</label>
+      <input type="text" id="meta-account" placeholder="account@company.com">
+    </div>
+  </div>
+
+  <div class="progress-bar-outer">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-label">
+      <span id="progress-text">0 / 0 ข้อย่อยตรวจแล้ว</span>
+      <span id="progress-pct">0%</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <section class="card">
+    <h2><span class="badge-num">1</span> Production Version Reconciliation</h2>
+    <div class="goal">คำถามที่ต้องตอบ: Production ตอนนี้รัน source ตรงกับ package v4.8.5 จริงหรือไม่</div>
+    <table class="check-table">
+      <thead><tr><th style="width:34px">#</th><th>ขั้นตอน</th><th>หลักฐานที่ต้องได้</th><th style="width:150px">ผล</th></tr></thead>
+      <tbody id="s1-body"></tbody>
+    </table>
+    <div class="final-status-row">
+      <span class="final-status-label">สถานะสุดท้ายข้อ 1:</span>
+      <div class="rag-group" data-final="s1"></div>
+      <span class="rag-auto-note" id="s1-auto-note"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="card">
+    <h2><span class="badge-num">2</span> Production Acceptance <span style="color:var(--text-dim); font-weight:400; font-size:0.8rem;">(/PRODUCTION-ACCEPTANCE-v4.8.5.txt)</span></h2>
+    <div class="goal">ต้องผ่านทุกบรรทัดจาก Corporate Workspace session จริง (ไม่ใช่ local/dev)</div>
+    <table class="check-table">
+      <thead><tr><th style="width:34px">#</th><th>เช็คพอยต์</th><th>วิธี Verify</th><th style="width:130px">ผล</th></tr></thead>
+      <tbody id="s2-body"></tbody>
+    </table>
+    <small class="gate-rule">เงื่อนไขปิดข้อนี้เป็น 🟢: ต้อง OK ครบ 2.1–2.10 เท่านั้น ถ้ามีข้อใดค้างเป็น FAIL ให้คงสถานะรวมเป็น 🟠 หรือ 🔴 และห้ามประกาศว่า "Production v4.8.5 Complete"</small>
+    <div class="final-status-row">
+      <span class="final-status-label">สถานะสุดท้ายข้อ 2:</span>
+      <div class="rag-group" data-final="s2"></div>
+      <span class="rag-auto-note" id="s2-auto-note"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="card">
+    <h2><span class="badge-num">3</span> RBAC Smoke Test</h2>
+    <div class="goal">ทดสอบ login จริงทีละ Role — โฟกัสพิเศษที่ Unknown User ต้องไม่ได้ ADMIN</div>
+    <table class="check-table">
+      <thead><tr><th style="width:170px">Role</th><th>สิ่งที่ต้องเห็น/ทำได้</th><th>สิ่งที่ต้องเห็น "ไม่ได้"</th><th style="width:130px">ผล</th></tr></thead>
+      <tbody id="s3-body"></tbody>
+    </table>
+    <div class="final-status-row">
+      <span class="final-status-label">สถานะสุดท้ายข้อ 3:</span>
+      <div class="rag-group" data-final="s3"></div>
+      <span class="rag-auto-note" id="s3-auto-note"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="card">
+    <h2><span class="badge-num">4</span> Write Persistence Test</h2>
+    <div class="goal">ทำ create/update จริง แล้ว Refresh หน้าเว็บ (ไม่ใช่แค่ปิด modal) เพื่อยืนยันว่าข้อมูลไม่หาย</div>
+    <table class="check-table">
+      <thead><tr><th>รายการ</th><th>โน้ต</th><th style="width:130px">ผล</th></tr></thead>
+      <tbody id="s4-body"></tbody>
+    </table>
+    <div class="final-status-row">
+      <span class="final-status-label">สถานะสุดท้ายข้อ 4:</span>
+      <div class="rag-group" data-final="s4"></div>
+      <span class="rag-auto-note" id="s4-auto-note"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="card">
+    <h2><span class="badge-num">5</span> Integration / Cross-Portal Verification</h2>
+    <div class="warning-box">ห้ามตีความว่า "มี UI" = "Integration Live" — ต้องจัดแต่ละ connection เข้า 1 ใน 4 สถานะเท่านั้น</div>
+    <table class="check-table">
+      <thead><tr><th style="width:220px">Integration</th><th style="width:260px">สถานะจริง</th><th>หลักฐาน / โน้ต</th></tr></thead>
+      <tbody id="s5-body"></tbody>
+    </table>
+    <div class="final-status-row">
+      <span class="final-status-label">สถานะสุดท้ายข้อ 5:</span>
+      <div class="rag-group" data-final="s5"></div>
+      <span class="rag-auto-note" id="s5-auto-note"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 6: SUMMARY -->
+  <section class="card">
+    <h2><span class="badge-num">6</span> สรุปผล — Updated RAG Status</h2>
+    <div class="goal">อัปเดตอัตโนมัติจากสถานะสุดท้ายของแต่ละข้อด้านบน (แถวที่ยังไม่ตรวจจะคง 🟠 ไว้)</div>
+    <table class="summary-table">
+      <thead><tr><th>Area</th><th>Status เดิม (Package)</th><th>Status หลัง Verify</th><th>อ้างอิงข้อ</th></tr></thead>
+      <tbody id="summary-body"></tbody>
+    </table>
+    <small class="gate-rule">กฎสำคัญ: แถวไหนยังไม่ได้ตรวจจริง ให้คง 🟠 ไว้ — เอกสารนี้เป็น "สิ่งที่ต้องทำ" ไม่ใช่ "ใบรับรองสำเร็จรูป" (Handover Rule ข้อ 29: Production source of truth = สิ่งที่ Production Health + Live Acceptance ยืนยันเท่านั้น)</small>
+  </section>
+
+  <!-- SECTION 7: SIGN-OFF -->
+  <section class="card">
+    <h2><span class="badge-num">7</span> Sign-off</h2>
+    <div class="goal">กรอกเมื่อข้อ 1–5 เป็น 🟢 ครบเท่านั้น</div>
+    <div class="signoff-grid">
+      <div class="signoff-field">
+        <label>ผู้ตรวจ Production</label>
+        <input type="text" id="so-verifier">
+      </div>
+      <div class="signoff-field">
+        <label>วันที่ (ผู้ตรวจ)</label>
+        <input type="date" id="so-verifier-date">
+      </div>
+      <div class="signoff-field">
+        <label>ผู้รับ Handover (Owner ใหม่)</label>
+        <input type="text" id="so-owner">
+      </div>
+      <div class="signoff-field">
+        <label>วันที่ (ผู้รับ Handover)</label>
+        <input type="date" id="so-owner-date">
+      </div>
+    </div>
+    <div class="final-question">
+      <div>ยืนยันว่า Production v4.8.5 = Complete?</div>
+      <div class="final-yn">
+        <button class="yn-btn on-yes" data-final-yn="yes">☐ ใช่</button>
+        <button class="yn-btn on-no" data-final-yn="no">☐ ยังไม่ใช่</button>
+      </div>
+      <div id="pending-warning" style="display:none; margin-top:10px; color:var(--orange); font-size:0.82rem;"></div>
+      <div style="margin-top:10px;">
+        <label style="font-size:0.8rem; color:var(--text-dim); display:block; margin-bottom:4px;">ระบุข้อที่ค้าง (ถ้ามี)</label>
+        <input type="text" class="note-input" id="so-pending-items" placeholder="เช่น ข้อ 2.7, ข้อ 5 (403 permission)">
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-actions">
+    <span class="save-status" id="save-status">กำลังโหลด...</span>
+    <div style="display:flex; gap:10px;">
+      <button class="export-btn" id="export-btn">⬇ Export เป็น Markdown</button>
+      <button class="reset-btn" id="reset-btn">รีเซ็ตทั้งหมด</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'seller-comm-portal-verification-v1';
+
+// ---------- Data definitions ----------
+const s1Items = [
+  {id:'1.1', step:'เปิด https://seller-communication-portal.web.app/ ด้วย login จริง (ไม่ใช่ fetch แบบไม่ auth)', evidence:'หน้า title/header ไม่ขึ้น "UI v3.7" อีกต่อไป (ค่าล่าสุดที่ crawler เห็นคือ v3.7 — ต้อง re-check เพราะอาจเป็น static fallback title ไม่ใช่ตัวบ่งชี้ version จริง)'},
+  {id:'1.2', step:'ไปที่ Portal Settings > System > Production Health', evidence:'หน้าจอแสดง release number ชัดเจน — จด version ที่เห็นจริง', hasNote:true, notePlaceholder:'version ที่เห็นจริง: ______'},
+  {id:'1.3', step:'เทียบ SHA-256 source fingerprint ใน Production Health กับไฟล์ backend ใน package v4.8.5 (ใช้ /tools/validate-v4.8.5.mjs หรือค่า attestation ที่บันทึกไว้ตอน build)', evidence:'ค่า hash ตรงกัน'},
+  {id:'1.4', step:'ถ้าไม่ตรง (1.1–1.3 ไม่ผ่าน)', evidence:'ห้าม deploy v4.8.5 ทับทันที — ต้องหาก่อนว่า production รันจาก source ไหน และมี data/config ที่ยังไม่ถูก merge เข้า package หรือไม่', investigateLabel:true},
+];
+
+const s2Items = [
+  {id:'2.1', point:'Backend = v4.8.5', method:'เทียบ deployment ID ของ Apps Script กับที่บันทึกใน package manifest'},
+  {id:'2.2', point:'DOMAIN policy', method:'เปิด Apps Script deployment settings → ยืนยัน Access = DOMAIN (ไม่ใช่ ANYONE)'},
+  {id:'2.3', point:'USER_ACCESSING', method:'ยืนยัน Execute As = User accessing the web app'},
+  {id:'2.4', point:'LIVE SYNC READY', method:'เปิด Portal Settings > System → sync status ต้องไม่ค้างที่ "Loading..." หรือ error'},
+  {id:'2.5', point:'PN = OK', method:'Sync tracker [2026] Seller Comm Request Tracker แล้ว request แสดงจริง ไม่ใช่ค่าว่าง'},
+  {id:'2.6', point:'SCA = OK', method:'Sync tracker [TH] Seller Centre Asset SCA Request & Allocation แล้วเห็น approval evidence จริง'},
+  {id:'2.7', point:'Social = OK', method:'Sync Channel Schedule 2026 จาก New Channel Landscape dashboard 2026 แล้วข้อมูลขึ้นจริง'},
+  {id:'2.8', point:'Campaign 360 ทำงาน', method:'เปิดหน้า Campaign 360 (ถ้ามีใน nav) → เห็นการ group campaign จาก PN+SCA+Social โดย Source Request ID เดิมไม่หาย'},
+  {id:'2.9', point:'Production Health reachable', method:'หน้า Production Health โหลดและอัปเดต timestamp ล่าสุดไม่ค้าง'},
+  {id:'2.10', point:'Portal แสดง version 4.8.5', method:'ตรงกับที่เช็คในข้อ 1.2'},
+];
+
+const s3Items = [
+  {role:'REQUESTER', can:'Submit request, ดู request ของตัวเองตาม data scope', cannot:'แก้ source-synced request ต้นทาง'},
+  {role:'COMMS', can:'Production/Assignment/Prioritization/Scheduling', cannot:'ADMIN settings'},
+  {role:'REVIEWER/APPROVER', can:'Save review decision/comment', cannot:'Bulk People & Roles edit'},
+  {role:'ADMIN', can:'People & Roles, Business Config, Production Health', cannot:'—'},
+  {role:'Unknown/unprovisioned user', can:'เข้าไม่ได้ หรือเข้าได้แบบ fail-closed เท่านั้น', cannot:'ต้องไม่กลายเป็น ADMIN โดย fallback', highlight:true},
+];
+
+const s4Items = [
+  'Request create/update',
+  'Review decision/comment',
+  'Content create (Content Hub)',
+  'Smart Link create (createSmartLink)',
+  'Dropdown CRUD',
+  'Business Config change',
+  'Scoring Model Version (Campaign Grading Settings)',
+  'Mass Upload People (CSV)',
+];
+
+const s5Items = [
+  {name:'API Center — Connections', evidence:''},
+  {name:'API Center — Internal PR handoff (Classroom/Seller Education)', evidence:'เอกสารเดิมระบุว่าต้อง Human Review เสมอ — ยืนยันว่ายังเป็นแบบนี้จริงในโค้ด'},
+  {name:'SeaTalk connector', evidence:'คาดว่า DESIGN ONLY จนกว่าจะตรวจ — ห้าม handover ว่า Live'},
+  {name:'Gemini / AI provider (analyzeContent)', evidence:'ตรวจว่าใช้ Google Workspace-native capability (ไม่มี subscription cost เพิ่ม) ตามที่โครงการกำหนดไว้จริงหรือไม่'},
+  {name:'Seller Education Portal ↔ Seller Communication Portal sync', evidence:''},
+  {name:'THSP Education Portal downstream sync', evidence:''},
+  {name:'AI Agent source-of-truth Sheet connector', evidence:'เอกสารเดิมระบุว่าล่าสุดติด 403 — ต้องแก้ permission ก่อน ไม่ใช่แค่ retry'},
+];
+
+const summaryRows = [
+  {area:'Product architecture', orig:'🟢', locked:'🟢 (คงเดิม — เป็น design ไม่ต้อง live verify)', ref:'—'},
+  {area:'Latest source package (v4.8.5)', orig:'🟢', locked:'🟢 (คงเดิม — 259/259 PASS คือ local validation)', ref:'—'},
+  {area:'Production Version = v4.8.5', orig:'🟠', section:'s1', ref:'ข้อ 1'},
+  {area:'Production Acceptance ครบ 10 ข้อ', orig:'🟠', section:'s2', ref:'ข้อ 2'},
+  {area:'Triple-source Live checkpoints (PN/SCA/Social)', orig:'🟠', section:'s2', ref:'ข้อ 2.5–2.7'},
+  {area:'Campaign 360 Live', orig:'🟢 Package', section:'s2', ref:'ข้อ 2.8'},
+  {area:'RBAC / Unknown user fail-closed', orig:'🟢 Package', section:'s3', ref:'ข้อ 3'},
+  {area:'Write Persistence (ทุกโมดูล)', orig:'🟢 Package', section:'s4', ref:'ข้อ 4'},
+  {area:'API Center outbound', orig:'🟢 Governance', section:'s5', ref:'ข้อ 5'},
+  {area:'Cross-Portal Sync', orig:'🟠', section:'s5', ref:'ข้อ 5'},
+  {area:'Live Gemini/AI provider', orig:'🟠', section:'s5', ref:'ข้อ 5'},
+  {area:'AI Agent source-of-truth Sheet (403)', orig:'🟠', section:'s5', ref:'ข้อ 5 — ต้องแก้ permission ก่อน'},
+];
+
+const STATUS4 = [
+  {key:'LIVE', label:'LIVE', cls:'on-live'},
+  {key:'CONNECTED_DISABLED', label:'CONNECTED BUT DISABLED', cls:'on-disabled'},
+  {key:'REVIEW_REQUIRED', label:'REVIEW REQUIRED', cls:'on-review'},
+  {key:'DESIGN_ONLY', label:'DESIGN ONLY', cls:'on-design'},
+];
+
+// ---------- State ----------
+let state = {
+  meta: {inspector:'', date:'', account:''},
+  s1: {items:{}, final:null},
+  s2: {items:{}, final:null},
+  s3: {items:{}, final:null},
+  s4: {items:{}, notes:{}, final:null},
+  s5: {items:{}, notes:{}, final:null},
+  signoff: {verifier:'', verifierDate:'', owner:'', ownerDate:'', finalYN:null, pendingItems:''},
+};
+
+let saveTimer = null;
+function scheduleSave() {
+  document.getElementById('save-status').textContent = 'กำลังบันทึก...';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+      document.getElementById('save-status').textContent = 'บันทึกแล้ว ✓';
+    } catch (e) {
+      document.getElementById('save-status').textContent = 'บันทึกไม่สำเร็จ (ลองใหม่)';
+      console.error(e);
+    }
+  }, 400);
+}
+
+async function loadState() {
+  try {
+    const result = await window.storage.get(STORAGE_KEY, false);
+    if (result && result.value) {
+      const loaded = JSON.parse(result.value);
+      state = Object.assign(state, loaded);
+    }
+  } catch (e) {
+    // no existing data yet
+  }
+  document.getElementById('save-status').textContent = 'พร้อมใช้งาน';
+}
+
+// ---------- Render helpers ----------
+function el(tag, attrs = {}, children = []) {
+  const e = document.createElement(tag);
+  for (const k in attrs) {
+    if (k === 'class') e.className = attrs[k];
+    else if (k === 'html') e.innerHTML = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  }
+  (Array.isArray(children) ? children : [children]).forEach(c => {
+    if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return e;
+}
+
+function passFailControl(sectionKey, itemId, currentVal, onChange) {
+  const group = el('div', {class:'pf-group'});
+  const passBtn = el('button', {class:'pf-btn' + (currentVal === 'pass' ? ' on-pass' : '')}, 'ผ่าน');
+  const failBtn = el('button', {class:'pf-btn' + (currentVal === 'fail' ? ' on-fail' : '')}, 'ไม่ผ่าน');
+  passBtn.onclick = () => onChange(currentVal === 'pass' ? null : 'pass');
+  failBtn.onclick = () => onChange(currentVal === 'fail' ? null : 'fail');
+  group.appendChild(passBtn);
+  group.appendChild(failBtn);
+  return group;
+}
+
+function okFailControl(currentVal, onChange) {
+  const group = el('div', {class:'pf-group'});
+  const okBtn = el('button', {class:'pf-btn' + (currentVal === 'ok' ? ' on-pass' : '')}, 'OK');
+  const failBtn = el('button', {class:'pf-btn' + (currentVal === 'fail' ? ' on-fail' : '')}, 'FAIL');
+  okBtn.onclick = () => onChange(currentVal === 'ok' ? null : 'ok');
+  failBtn.onclick = () => onChange(currentVal === 'fail' ? null : 'fail');
+  group.appendChild(okBtn);
+  group.appendChild(failBtn);
+  return group;
+}
+
+function status4Control(currentVal, onChange) {
+  const group = el('div', {class:'status4-group'});
+  STATUS4.forEach(s => {
+    const btn = el('button', {class:'status4-btn' + (currentVal === s.key ? ' ' + s.cls : '')}, s.label);
+    btn.onclick = () => onChange(currentVal === s.key ? null : s.key);
+    group.appendChild(btn);
+  });
+  return group;
+}
+
+function ragControl(container, sectionKey, currentVal, onChange) {
+  container.innerHTML = '';
+  const map = [{k:'green', c:'g', label:'🟢'}, {k:'orange', c:'o', label:'🟠'}, {k:'red', c:'r', label:'🔴'}];
+  map.forEach(m => {
+    const btn = el('button', {class:'rag-btn ' + m.c + (currentVal === m.k ? ' active' : ''), title: m.label}, '');
+    btn.onclick = () => onChange(currentVal === m.k ? null : m.k);
+    container.appendChild(btn);
+  });
+}
+
+// ---------- Render sections ----------
+function renderS1() {
+  const body = document.getElementById('s1-body');
+  body.innerHTML = '';
+  s1Items.forEach(item => {
+    const tr = el('tr');
+    tr.appendChild(el('td', {class:'row-id'}, item.id));
+    tr.appendChild(el('td', {}, item.step));
+    const evTd = el('td', {class:'evidence-text'}, item.evidence);
+    if (item.hasNote) {
+      const noteInput = el('input', {class:'note-input', type:'text', placeholder: item.notePlaceholder, style:'margin-top:6px;'});
+      noteInput.value = state.s1.items[item.id]?.note || '';
+      noteInput.oninput = () => {
+        if (!state.s1.items[item.id]) state.s1.items[item.id] = {};
+        state.s1.items[item.id].note = noteInput.value;
+        scheduleSave();
+      };
+      evTd.appendChild(noteInput);
+    }
+    tr.appendChild(evTd);
+    const resultTd = el('td');
+    if (item.investigateLabel) {
+      const curVal = state.s1.items[item.id]?.result;
+      const btn = el('button', {class:'pf-btn' + (curVal === 'investigated' ? ' on-pass' : '')}, 'สืบสาเหตุแล้ว');
+      btn.onclick = () => {
+        if (!state.s1.items[item.id]) state.s1.items[item.id] = {};
+        state.s1.items[item.id].result = curVal === 'investigated' ? null : 'investigated';
+        scheduleSave();
+        renderAll();
+      };
+      resultTd.appendChild(btn);
+    } else {
+      const curVal = state.s1.items[item.id]?.result;
+      resultTd.appendChild(passFailControl('s1', item.id, curVal, (v) => {
+        if (!state.s1.items[item.id]) state.s1.items[item.id] = {};
+        state.s1.items[item.id].result = v;
+        scheduleSave();
+        renderAll();
+      }));
+    }
+    tr.appendChild(resultTd);
+    body.appendChild(tr);
+  });
+  const finalContainer = document.querySelector('[data-final="s1"]');
+  ragControl(finalContainer, 's1', state.s1.final, (v) => { state.s1.final = v; scheduleSave(); renderSummary(); });
+  updateAutoNote('s1', s1Items.map(i => i.id), 'pf');
+}
+
+function renderS2() {
+  const body = document.getElementById('s2-body');
+  body.innerHTML = '';
+  s2Items.forEach(item => {
+    const tr = el('tr');
+    tr.appendChild(el('td', {class:'row-id'}, item.id));
+    tr.appendChild(el('td', {}, item.point));
+    tr.appendChild(el('td', {class:'evidence-text'}, item.method));
+    const resultTd = el('td');
+    const curVal = state.s2.items[item.id]?.result;
+    resultTd.appendChild(okFailControl(curVal, (v) => {
+      if (!state.s2.items[item.id]) state.s2.items[item.id] = {};
+      state.s2.items[item.id].result = v;
+      scheduleSave();
+      renderAll();
+    }));
+    tr.appendChild(resultTd);
+    body.appendChild(tr);
+  });
+  const finalContainer = document.querySelector('[data-final="s2"]');
+  ragControl(finalContainer, 's2', state.s2.final, (v) => { state.s2.final = v; scheduleSave(); renderSummary(); });
+
+  const allOK = s2Items.every(i => state.s2.items[i.id]?.result === 'ok');
+  const anyFail = s2Items.some(i => state.s2.items[i.id]?.result === 'fail');
+  const note = document.getElementById('s2-auto-note');
+  if (anyFail) note.textContent = 'มีข้อ FAIL — ห้ามปิดเป็น 🟢';
+  else if (allOK) note.textContent = 'ครบ OK ทั้ง 10 ข้อแล้ว';
+  else note.textContent = '';
+}
+
+function renderS3() {
+  const body = document.getElementById('s3-body');
+  body.innerHTML = '';
+  s3Items.forEach((item, idx) => {
+    const tr = el('tr');
+    if (item.highlight) tr.style.background = 'rgba(248,113,113,0.06)';
+    tr.appendChild(el('td', {}, item.role));
+    tr.appendChild(el('td', {}, item.can));
+    tr.appendChild(el('td', {}, item.cannot));
+    const resultTd = el('td');
+    const curVal = state.s3.items[idx]?.result;
+    resultTd.appendChild(passFailControl('s3', idx, curVal, (v) => {
+      if (!state.s3.items[idx]) state.s3.items[idx] = {};
+      state.s3.items[idx].result = v;
+      scheduleSave();
+      renderAll();
+    }));
+    tr.appendChild(resultTd);
+    body.appendChild(tr);
+  });
+  const finalContainer = document.querySelector('[data-final="s3"]');
+  ragControl(finalContainer, 's3', state.s3.final, (v) => { state.s3.final = v; scheduleSave(); renderSummary(); });
+}
+
+function renderS4() {
+  const body = document.getElementById('s4-body');
+  body.innerHTML = '';
+  s4Items.forEach((label, idx) => {
+    const tr = el('tr');
+    tr.appendChild(el('td', {}, label));
+    const noteTd = el('td');
+    const noteInput = el('input', {class:'note-input', type:'text', placeholder:'โน้ต (ถ้ามี)'});
+    noteInput.value = state.s4.notes[idx] || '';
+    noteInput.oninput = () => { state.s4.notes[idx] = noteInput.value; scheduleSave(); };
+    noteTd.appendChild(noteInput);
+    tr.appendChild(noteTd);
+    const resultTd = el('td');
+    const curVal = state.s4.items[idx];
+    resultTd.appendChild(passFailControl('s4', idx, curVal, (v) => {
+      state.s4.items[idx] = v;
+      scheduleSave();
+      renderAll();
+    }));
+    tr.appendChild(resultTd);
+    body.appendChild(tr);
+  });
+  const finalContainer = document.querySelector('[data-final="s4"]');
+  ragControl(finalContainer, 's4', state.s4.final, (v) => { state.s4.final = v; scheduleSave(); renderSummary(); });
+}
+
+function renderS5() {
+  const body = document.getElementById('s5-body');
+  body.innerHTML = '';
+  s5Items.forEach((item, idx) => {
+    const tr = el('tr');
+    tr.appendChild(el('td', {}, item.name));
+    const statusTd = el('td');
+    const curVal = state.s5.items[idx];
+    statusTd.appendChild(status4Control(curVal, (v) => {
+      state.s5.items[idx] = v;
+      scheduleSave();
+      renderAll();
+    }));
+    tr.appendChild(statusTd);
+    const noteTd = el('td');
+    if (item.evidence) noteTd.appendChild(el('div', {class:'evidence-text', style:'margin-bottom:6px;'}, item.evidence));
+    const noteInput = el('input', {class:'note-input', type:'text', placeholder:'หลักฐานที่พบ'});
+    noteInput.value = state.s5.notes[idx] || '';
+    noteInput.oninput = () => { state.s5.notes[idx] = noteInput.value; scheduleSave(); };
+    noteTd.appendChild(noteInput);
+    tr.appendChild(noteTd);
+    body.appendChild(tr);
+  });
+  const finalContainer = document.querySelector('[data-final="s5"]');
+  ragControl(finalContainer, 's5', state.s5.final, (v) => { state.s5.final = v; scheduleSave(); renderSummary(); });
+}
+
+function updateAutoNote(sectionKey, ids, type) {
+  const note = document.getElementById(sectionKey + '-auto-note');
+  if (!note) return;
+  const items = state[sectionKey].items;
+  const anyFail = ids.some(id => items[id]?.result === 'fail');
+  const allPass = ids.every(id => items[id]?.result === 'pass' || items[id]?.result === 'investigated');
+  if (anyFail) note.textContent = 'มีข้อไม่ผ่าน — ตรวจสอบก่อนปิดเป็น 🟢';
+  else if (allPass) note.textContent = 'ครบทุกข้อแล้ว';
+  else note.textContent = '';
+}
+
+function ragEmoji(v) {
+  if (v === 'green') return '🟢';
+  if (v === 'orange') return '🟠';
+  if (v === 'red') return '🔴';
+  return null;
+}
+
+function renderSummary() {
+  const body = document.getElementById('summary-body');
+  body.innerHTML = '';
+  summaryRows.forEach(row => {
+    const tr = el('tr');
+    tr.appendChild(el('td', {}, row.area));
+    tr.appendChild(el('td', {}, row.orig));
+    const statusTd = el('td');
+    if (row.locked) {
+      statusTd.appendChild(el('span', {class:'pill green'}, [el('span', {class:'dot'}), row.locked]));
+    } else {
+      const finalVal = state[row.section]?.final;
+      const emoji = ragEmoji(finalVal);
+      if (emoji === '🟢') statusTd.appendChild(el('span', {class:'pill green'}, [el('span', {class:'dot'}), '🟢']));
+      else if (emoji === '🟠') statusTd.appendChild(el('span', {class:'pill orange'}, [el('span', {class:'dot'}), '🟠']));
+      else if (emoji === '🔴') statusTd.appendChild(el('span', {class:'pill red'}, [el('span', {class:'dot'}), '🔴']));
+      else statusTd.appendChild(el('span', {class:'pill gray'}, [el('span', {class:'dot'}), '🟠 (ยังไม่ตรวจ)']));
+    }
+    tr.appendChild(statusTd);
+    tr.appendChild(el('td', {class:'evidence-text'}, row.ref));
+    body.appendChild(tr);
+  });
+}
+
+function renderProgress() {
+  let total = 0, done = 0;
+  s1Items.forEach(i => { total++; if (state.s1.items[i.id]?.result) done++; });
+  s2Items.forEach(i => { total++; if (state.s2.items[i.id]?.result) done++; });
+  s3Items.forEach((_, idx) => { total++; if (state.s3.items[idx]?.result) done++; });
+  s4Items.forEach((_, idx) => { total++; if (state.s4.items[idx]) done++; });
+  s5Items.forEach((_, idx) => { total++; if (state.s5.items[idx]) done++; });
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = done + ' / ' + total + ' ข้อย่อยตรวจแล้ว';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function renderMeta() {
+  document.getElementById('meta-inspector').value = state.meta.inspector;
+  document.getElementById('meta-date').value = state.meta.date;
+  document.getElementById('meta-account').value = state.meta.account;
+}
+
+function renderSignoff() {
+  document.getElementById('so-verifier').value = state.signoff.verifier;
+  document.getElementById('so-verifier-date').value = state.signoff.verifierDate;
+  document.getElementById('so-owner').value = state.signoff.owner;
+  document.getElementById('so-owner-date').value = state.signoff.ownerDate;
+  document.getElementById('so-pending-items').value = state.signoff.pendingItems;
+
+  document.querySelectorAll('[data-final-yn]').forEach(btn => {
+    btn.classList.toggle('active', state.signoff.finalYN === btn.dataset.finalYn);
+  });
+
+  const allSectionsGreen = ['s1','s2','s3','s4','s5'].every(s => state[s].final === 'green');
+  const warn = document.getElementById('pending-warning');
+  if (state.signoff.finalYN === 'yes' && !allSectionsGreen) {
+    warn.style.display = 'block';
+    warn.textContent = '⚠️ ข้อ 1–5 ยังไม่เป็น 🟢 ครบทุกข้อ — ตาม gate rule ของเอกสารต้นฉบับ ไม่ควรยืนยัน Complete จนกว่าจะครบ';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+function renderAll() {
+  renderS1();
+  renderS2();
+  renderS3();
+  renderS4();
+  renderS5();
+  renderSummary();
+  renderProgress();
+  renderSignoff();
+}
+
+// ---------- Wire up static fields ----------
+document.getElementById('meta-inspector').oninput = (e) => { state.meta.inspector = e.target.value; scheduleSave(); };
+document.getElementById('meta-date').oninput = (e) => { state.meta.date = e.target.value; scheduleSave(); };
+document.getElementById('meta-account').oninput = (e) => { state.meta.account = e.target.value; scheduleSave(); };
+
+document.getElementById('so-verifier').oninput = (e) => { state.signoff.verifier = e.target.value; scheduleSave(); };
+document.getElementById('so-verifier-date').oninput = (e) => { state.signoff.verifierDate = e.target.value; scheduleSave(); };
+document.getElementById('so-owner').oninput = (e) => { state.signoff.owner = e.target.value; scheduleSave(); };
+document.getElementById('so-owner-date').oninput = (e) => { state.signoff.ownerDate = e.target.value; scheduleSave(); };
+document.getElementById('so-pending-items').oninput = (e) => { state.signoff.pendingItems = e.target.value; scheduleSave(); };
+
+document.querySelectorAll('[data-final-yn]').forEach(btn => {
+  btn.onclick = () => {
+    state.signoff.finalYN = state.signoff.finalYN === btn.dataset.finalYn ? null : btn.dataset.finalYn;
+    scheduleSave();
+    renderSignoff();
+  };
+});
+
+// ---------- Export to Markdown ----------
+function pfMark(val) {
+  if (val === 'pass') return '☑ ผ่าน　☐ ไม่ผ่าน';
+  if (val === 'fail') return '☐ ผ่าน　☑ ไม่ผ่าน';
+  if (val === 'investigated') return '☑ สืบสาเหตุแล้ว';
+  return '☐ ผ่าน　☐ ไม่ผ่าน';
+}
+function okMark(val) {
+  if (val === 'ok') return '☑ OK　☐ FAIL';
+  if (val === 'fail') return '☐ OK　☑ FAIL';
+  return '☐ OK　☐ FAIL';
+}
+function status4Mark(val) {
+  return STATUS4.map(s => (val === s.key ? '☑' : '☐') + ' ' + s.label).join('　');
+}
+function ragMark(val) {
+  const map = {green: '☑ 🟢　☐ 🟠　☐ 🔴', orange: '☐ 🟢　☑ 🟠　☐ 🔴', red: '☐ 🟢　☐ 🟠　☑ 🔴'};
+  return map[val] || '☐ 🟢　☐ 🟠　☐ 🔴';
+}
+
+function buildMarkdown() {
+  const d = state;
+  let md = '';
+  md += '# Seller Communication Portal — Production Verification Checklist\n';
+  md += '**ใช้คู่กับ:** Master Handover Summary (10-09-2026)\n\n';
+  md += '**ผู้ตรวจ:** ' + (d.meta.inspector || '_______________') + '\n';
+  md += '**วันที่ตรวจ:** ' + (d.meta.date || '_______________') + '\n';
+  md += '**Corporate Workspace session ใช้บัญชี:** ' + (d.meta.account || '_______________') + '\n\n---\n\n';
+
+  md += '## 1. Production Version Reconciliation\n\n';
+  md += '| # | ขั้นตอน | หลักฐานที่ต้องได้ | ผล |\n|---|---|---|---|\n';
+  s1Items.forEach(item => {
+    const rec = d.s1.items[item.id] || {};
+    let ev = item.evidence;
+    if (item.hasNote && rec.note) ev += ' — บันทึก: ' + rec.note;
+    const mark = item.investigateLabel ? (rec.result === 'investigated' ? '☑ สืบสาเหตุแล้ว' : '☐ สืบสาเหตุแล้ว') : pfMark(rec.result);
+    md += '| ' + item.id + ' | ' + item.step + ' | ' + ev + ' | ' + mark + ' |\n';
+  });
+  md += '\n**สถานะสุดท้ายข้อ 1:** ' + ragMark(d.s1.final) + '\n\n---\n\n';
+
+  md += '## 2. Production Acceptance (/PRODUCTION-ACCEPTANCE-v4.8.5.txt)\n\n';
+  md += '| # | เช็คพอยต์ | วิธี Verify | ผล |\n|---|---|---|---|\n';
+  s2Items.forEach(item => {
+    const rec = d.s2.items[item.id] || {};
+    md += '| ' + item.id + ' | ' + item.point + ' | ' + item.method + ' | ' + okMark(rec.result) + ' |\n';
+  });
+  md += '\n**สถานะสุดท้ายข้อ 2:** ' + ragMark(d.s2.final) + '\n\n---\n\n';
+
+  md += '## 3. RBAC Smoke Test\n\n';
+  md += '| Role | สิ่งที่ต้องเห็น/ทำได้ | สิ่งที่ต้องเห็น "ไม่ได้" | ผล |\n|---|---|---|---|\n';
+  s3Items.forEach((item, idx) => {
+    const rec = d.s3.items[idx] || {};
+    md += '| ' + item.role + ' | ' + item.can + ' | ' + item.cannot + ' | ' + pfMark(rec.result) + ' |\n';
+  });
+  md += '\n**สถานะสุดท้ายข้อ 3:** ' + ragMark(d.s3.final) + '\n\n---\n\n';
+
+  md += '## 4. Write Persistence Test\n\n';
+  md += '| รายการ | โน้ต | ผล |\n|---|---|---|\n';
+  s4Items.forEach((label, idx) => {
+    md += '| ' + label + ' | ' + (d.s4.notes[idx] || '') + ' | ' + pfMark(d.s4.items[idx]) + ' |\n';
+  });
+  md += '\n**สถานะสุดท้ายข้อ 4:** ' + ragMark(d.s4.final) + '\n\n---\n\n';
+
+  md += '## 5. Integration / Cross-Portal Verification\n\n';
+  md += '| Integration | สถานะจริง | หลักฐาน |\n|---|---|---|\n';
+  s5Items.forEach((item, idx) => {
+    const note = d.s5.notes[idx] || item.evidence || '';
+    md += '| ' + item.name + ' | ' + status4Mark(d.s5.items[idx]) + ' | ' + note + ' |\n';
+  });
+  md += '\n**สถานะสุดท้ายข้อ 5:** ' + ragMark(d.s5.final) + '\n\n---\n\n';
+
+  md += '## 6. สรุปผล — Updated RAG Status\n\n';
+  md += '| Area | Status เดิม (Package) | Status หลัง Verify | อ้างอิงข้อ |\n|---|---|---|---|\n';
+  summaryRows.forEach(row => {
+    let statusText;
+    if (row.locked) statusText = row.locked;
+    else {
+      const e = ragEmoji(d[row.section]?.final);
+      statusText = e ? e : '🟠 (ยังไม่ตรวจ)';
+    }
+    md += '| ' + row.area + ' | ' + row.orig + ' | ' + statusText + ' | ' + row.ref + ' |\n';
+  });
+  md += '\n---\n\n';
+
+  md += '## 7. Sign-off\n\n';
+  md += '- ผู้ตรวจ Production: ' + (d.signoff.verifier || '_________________________') + ' วันที่: ' + (d.signoff.verifierDate || '_______') + '\n';
+  md += '- ผู้รับ Handover (Owner ใหม่): ' + (d.signoff.owner || '_________________________') + ' วันที่: ' + (d.signoff.ownerDate || '_______') + '\n';
+  const ynMark = d.signoff.finalYN === 'yes' ? '☑ ใช่　☐ ยังไม่ใช่' : (d.signoff.finalYN === 'no' ? '☐ ใช่　☑ ยังไม่ใช่' : '☐ ใช่　☐ ยังไม่ใช่');
+  md += '- ยืนยันว่า Production v4.8.5 = Complete: ' + ynMark + ' (ระบุข้อที่ค้าง: ' + (d.signoff.pendingItems || '_______') + ')\n';
+
+  md += '\n---\n_Exported จากเช็คลิสต์แบบโต้ตอบ เมื่อ ' + new Date().toLocaleString('th-TH') + '_\n';
+
+  return md;
+}
+
+document.getElementById('export-btn').onclick = () => {
+  const md = buildMarkdown();
+  const blob = new Blob([md], {type: 'text/markdown;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dateStr = state.meta.date || new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = 'seller-comm-portal-verification-' + dateStr + '.md';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById('reset-btn').onclick = async () => {
+  if (!confirm('ต้องการรีเซ็ตข้อมูลทั้งหมดในเช็คลิสต์นี้หรือไม่? การกระทำนี้ย้อนกลับไม่ได้')) return;
+  state = {
+    meta: {inspector:'', date:'', account:''},
+    s1: {items:{}, final:null},
+    s2: {items:{}, final:null},
+    s3: {items:{}, final:null},
+    s4: {items:{}, notes:{}, final:null},
+    s5: {items:{}, notes:{}, final:null},
+    signoff: {verifier:'', verifierDate:'', owner:'', ownerDate:'', finalYN:null, pendingItems:''},
+  };
+  await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+  renderMeta();
+  renderAll();
+  document.getElementById('save-status').textContent = 'รีเซ็ตแล้ว';
+};
+
+// ---------- Init ----------
+(async () => {
+  await loadState();
+  renderMeta();
+  renderAll();
+})();
+</script>
+</body>
+</html>

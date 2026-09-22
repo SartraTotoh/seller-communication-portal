@@ -1,0 +1,41 @@
+SELLER COMMUNICATION PORTAL v4.9.3R4.2 - LOCAL VALIDATION
+================================================================
+Generated UTC: 2026-09-11T08:50:31Z
+
+PASS Protected data/business logic unchanged: ApiCenter.gs
+PASS Protected data/business logic unchanged: ContentOperations.gs
+PASS Protected data/business logic unchanged: CycleEngine.gs
+PASS Protected data/business logic unchanged: LiveSyncEngine.gs
+PASS Protected data/business logic unchanged: PeopleImportUi.gs
+PASS Protected data/business logic unchanged: PeopleSeed.gs
+PASS Central data backend access = DOMAIN
+PASS Central data backend executes as deployer
+PASS Auth bridge access = DOMAIN
+PASS Auth bridge executes as user
+PASS Auth bridge OAuth scope is email only
+PASS Backend has secret placeholder only
+PASS Backend verifies HMAC session
+PASS Viewer identity prefers signed session
+PASS Read gateway authorizes signed session
+PASS Write gateway authorizes signed session
+PASS Smart Link handlers remain present
+PASS Frontend release remains v4.9.3
+PASS Frontend auth URL is deploy-time placeholder
+PASS Frontend stores auth token in sessionStorage
+PASS Frontend GET sends signed session
+PASS Frontend POST sends signed session
+PASS Frontend no longer lets stale endpoint override deployed endpoint
+PASS Frontend redirects to Workspace auth when session missing
+PASS Recovery deploy scope is Hosting only
+PASS Recovery never calls setupPortalLiveSync
+PASS Recovery never names Tracking_Links for mutation
+R4.2 validation PASS
+
+PASS frontend inline JavaScript syntax
+PASS Auth Bridge Apps Script syntax
+PASS Auth Session backend syntax
+PASS Closeout/TrackerSync/PortalApi syntax
+PASS recovery Node.js syntax
+PASS auth-bridge Node.js helper syntax
+
+Live Workspace/Firebase acceptance still runs on the user machine.

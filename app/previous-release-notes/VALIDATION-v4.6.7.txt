@@ -1,0 +1,17 @@
+Seller Communication Portal v4.6.7 - Static validation
+
+PASS - Functional baseline marker = 4.6.0
+PASS - UI version marker = 4.6.6
+PASS - Portal Version marker = 4.6.7
+PASS - Version metadata is rendered only on Home / Dashboard, at the bottom after primary content
+PASS - Version metadata uses low-emphasis styling and responsive wrapping
+PASS - v4.6.5 People & Roles / Mass Upload UX/UI polish remains present
+PASS - Backend source is byte-identical to v4.6.6
+PASS - People import data is byte-identical to v4.6.6
+PASS - Firebase target/config is byte-identical to v4.6.6
+PASS - Firebase deployment remains Hosting-only
+PASS - START-HERE.sh bash syntax
+PASS - Inline JavaScript syntax
+PASS - Windows/Cloud Shell version gates recognize Functional baseline + UI version + Portal Version separately
+
+Production Hosting deployment still requires an authorized Firebase account.

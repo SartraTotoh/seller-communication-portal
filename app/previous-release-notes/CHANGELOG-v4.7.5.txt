@@ -1,0 +1,56 @@
+Seller Communication Portal v4.7.5 - 100% CODE / PACKAGE CLOSEOUT
+
+RELEASE INTENT
+- Close all Portal-owned functional gaps found in v4.7.4 Final Live Data Recovery.
+- Preserve the existing Seller Communication Portal production target and Apps Script deployment URL.
+- Fail closed whenever Workspace identity, role, source data, or outbound delivery contract cannot be verified.
+
+FUNCTIONAL CLOSEOUT
+- Request create/update now writes the canonical Requests + Comms_Items schema.
+- Native multi-channel requests persist one canonical communication item per selected channel.
+- Request edit maps campaign/start date/destination/key message to their real storage fields.
+- Source-synced requester edits are blocked because PN/SC source trackers remain read-only.
+- Review decisions use a Portal workflow overlay for source-synced rows so source refresh does not erase workflow state.
+- Reviewer comments are persisted and restored after reload.
+- Artwork updates the matching asset/channel item instead of always the first item.
+- Content Hub Create Content persists to Content_Master.
+- Dropdown Options CRUD persists to Portal_Lookups.
+- Business Config persists with Config_History audit rows.
+- Campaign Grading model versions persist to Scoring_Models / Scoring_Rules.
+- Mass Upload completes through the secured write bridge and preserves team hierarchy fields.
+- Smart Links, cycles, people, request/review, content, scoring and API queue writes all clear shared data cache.
+
+FIREBASE / APPS SCRIPT BRIDGE
+- Firebase Hosting write bridge now routes every writable production action to Apps Script.
+- Matching google.script.run RPC functions exist for embedded Apps Script mode.
+- POST routes exist for request, review, cycle, smart link, content, artwork, lookup, config, scoring, API, people and sync actions.
+- Same authorization/persistence rules are used in both Firebase Hosting and embedded Apps Script runtimes.
+
+SECURITY / DATA PROTECTION
+- Apps Script Web App executes as USER_ACCESSING and is limited to DOMAIN access.
+- Workspace identity is fail-closed; no default ADMIN fallback.
+- Only the explicit bootstrap Admin continuity identity is retained.
+- Public Firebase fallback contains zero company request rows and no real corporate identities.
+- Shared cache excludes viewer-specific identity/permissions and attaches them after cache retrieval.
+- Firebase remains Hosting-only and hard-locked to seller-communication-portal.
+- education-portal-506713 is an explicit blocked deployment target.
+
+LIVE SYNC / DATA AUTHORITY
+- PN + SC trackers remain READ ONLY.
+- Portal-native state remains in the Portal-owned master DB tables.
+- Source parser contracts remain read-only.
+- Portal workflow overlay protects review state from upstream refresh.
+- Production Health checks expose release/schema/people/source/request readiness.
+
+API CENTER
+- Queue, approval, status and audit persistence are complete.
+- Outbound Send is fail-closed by design.
+- Delivery is allowed only when an Admin has configured an organization-approved VERIFIED + enabled server-side endpoint/auth contract.
+- Sensitive/restricted publication remains blocked.
+- No endpoint, token or credential is guessed or embedded in this package.
+
+DEPLOYMENT
+- ONE-CLICK-AUTO-DEPLOY.cmd targets Seller Communication Portal only.
+- Apps Script deployment is updated in place; the existing /exec deployment ID/URL is preserved.
+- Firebase Hosting is deployed only after project ID/project number and package safety gates pass.
+- Production HTTP verification fails closed; the script does not print success when verification is unproven.

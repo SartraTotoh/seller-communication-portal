@@ -1,0 +1,9 @@
+LIVE SYNC SETUP - SIMPLE PATH
+
+Run only:
+  bash START-HERE.sh
+
+The script verifies the correct Firebase project, prepares/deploys the Google Apps Script backend, connects the frontend, and deploys Firebase Hosting.
+At the end, open the printed setup URL once to authorize and run the first PN + SC sync.
+
+Do NOT deploy to any project other than seller-communication-portal / project number 795035951703.

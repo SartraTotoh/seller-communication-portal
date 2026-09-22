@@ -1,0 +1,46 @@
+SELLER COMMUNICATION PORTAL v4.8.0 - LIVE ACCEPTANCE
+Production: https://seller-communication-portal.web.app/
+
+DEPLOYMENT / SOURCE ATTESTATION
+[ ] ONE-CLICK-AUTO-DEPLOY.cmd header shows v4.8.0.
+[ ] Automated validation passes 179/179.
+[ ] Immutable Apps Script source attestation reports backend release 4.8.0.
+[ ] Apps Script deployment is DOMAIN + USER_ACCESSING.
+[ ] Firebase target is seller-communication-portal only.
+[ ] No Education Portal target was touched.
+[ ] Production HTTP serves data-portal-version=4.8.0.
+
+LIVE SYNC SETUP
+[ ] Setup page visibly shows Backend release: v4.8.0.
+[ ] Setup page visibly shows Signed in as <expected corporate email>.
+[ ] Setup does not stop at Admin permission required for a bundled active ADMIN.
+[ ] Missing bundled People identities are inserted without bulk-overwriting existing rows.
+[ ] Current bundled ADMIN may be repaired only before the first READY state.
+[ ] People Seed verifies the expected baseline.
+[ ] PN checkpoint = OK.
+[ ] SC checkpoint = OK.
+[ ] Portal requests reconciled > 0.
+[ ] LIVE SYNC SETUP STATUS = READY.
+[ ] PN / SC source trackers remain read-only.
+
+ROLE SAFETY
+[ ] After READY, Users sheet role/status is authoritative.
+[ ] Deactivated/non-admin users cannot regain Admin through bootstrap repair.
+[ ] No domain-wide admin fallback exists.
+
+BEGINNER GUIDANCE
+[ ] Top Bar shows Beginner Guides ON for first-time state.
+[ ] Hover/focus tips work on difficult controls.
+[ ] Scroll guide card appears on complex sections.
+[ ] Got it / Next / Don't show again work.
+[ ] Help > Beginner Guide Center can restart current page guide.
+
+REGRESSION
+[ ] Requests load/filter normally.
+[ ] Review / Content / Smart Link / Config writes persist through backend gateway.
+[ ] People & Roles / Mass Upload operate normally.
+[ ] API Send stays fail-closed until server connection is VERIFIED.
+[ ] Production Health shows release 4.8.0 and READY after setup.
+
+FINAL
+[ ] PASS - v4.8.0 live production accepted.

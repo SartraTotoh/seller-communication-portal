@@ -1,0 +1,11 @@
+Seller Communication Portal v4.6.1
+One-Click Safe Repair
+
+- Kept v4.6.0 Portal UI and business/data logic unchanged.
+- Reworked setup/deployment to be rerun-safe and project-locked.
+- Added Windows native one-click launcher and PowerShell deployment runner.
+- Firebase and Apps Script auth now resume in the same run.
+- Existing Apps Script project/deployment is reused when safely identifiable.
+- Existing live backend URL is preserved when the deployment belongs to the bound script.
+- Mismatches fail closed to prevent accidental duplicate backend or wrong-project deployment.
+- Firebase remains Hosting-only.

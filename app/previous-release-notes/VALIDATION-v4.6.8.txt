@@ -1,0 +1,33 @@
+SELLER COMMUNICATION PORTAL v4.6.8 — WORKFLOW INTELLIGENCE VALIDATION
+
+Release identity
+- Functional baseline: 4.6.0
+- UI version: 4.6.8
+- Portal version: 4.6.8
+
+Implemented contracts
+- Campaign Grading observes PN/PNAR/EDM + SC sources read-only.
+- Weekly cutoffs: Tuesday 12:00 PN; Tuesday 15:00 SC; Asia/Bangkok.
+- Smart Link is an explicit pre-publish stage and Portal-native Published is gated by an active Tracking Link.
+- Content Hub indexes every Request and exposes Context / Objective / Tone & Vibes / Target / Benefit / Keyword Search Suggest.
+- Optional AI enrichment is server-side only through PORTAL_AI_ENDPOINT; no public API key is packaged.
+- Artwork uses Computer upload with PNG/JPEG/WebP validation, file-size check, pixel-resolution detection, Workspace Drive storage, and audit metadata.
+- Artwork REQUIRED/CONDITIONAL behavior is driven by Channel_Rules. Exact target pixels are enforced only when configured; missing dimensions surface SPEC PENDING instead of an invented requirement.
+
+Static validation
+- public/index.html inline JavaScript: PASS (node --check)
+- backend/*.gs JavaScript syntax: PASS (node --check)
+- START-HERE.sh syntax: PASS (bash -n)
+- Firebase config: PASS, Hosting-only
+- Expected live-sync endpoint preserved: PASS
+- Firebase project lock preserved: seller-communication-portal / 795035951703
+- Source trackers preserved read-only by sync contract
+
+Authorization change
+- Apps Script manifest now requests Google Drive scope because artwork upload must create files in Workspace Drive.
+- A one-time Workspace re-authorization is therefore expected when the backend source is updated.
+
+Deployment note
+- ONE-CLICK-WINDOWS.cmd intentionally preserves the existing Apps Script backend and deploys Hosting only, consistent with the recovery-safe baseline.
+- START-HERE.sh contains the reuse-first Apps Script update path and updates the existing deployment when it can resolve the saved/live deployment binding.
+- Backend-dependent v4.6.8 functions (AI persistence, Workspace artwork upload, server-side publish gate/audit) require the v4.6.8 backend source to be pushed to the existing Apps Script project.

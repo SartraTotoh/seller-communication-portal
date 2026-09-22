@@ -1,0 +1,23 @@
+Seller Communication Portal v4.7.3 — LIVE SYNC RECOVERY
+
+VALIDATION SUMMARY
+PASS - frontend inline JavaScript syntax
+PASS - Apps Script backend JavaScript syntax
+PASS - functional baseline 4.6.0 retained
+PASS - UI version 4.6.8 retained
+PASS - Portal version 4.7.3
+PASS - Firebase project lock seller-communication-portal
+PASS - Education Portal hard-block remains
+PASS - Firebase config is Hosting-only
+PASS - existing /exec deployment reuse remains mandatory
+PASS - existing deployment update uses clasp deploy -i <deploymentId>
+PASS - One Click automatically opens ?action=setup for PN + SC initialization
+PASS - setup ensures People + Content Intelligence / Attachments schema
+PASS - Snapshot mode now shows a prominent Live Data warning
+PASS - empty time-of-day heat grid now falls back to date-only weekday demand
+
+LIVE ACCEPTANCE REQUIRED
+- Browser/company Google authorization may still be requested by Google.
+- The Apps Script setup tab must show LIVE SYNC READY.
+- Portal Dashboard must show Live Tracker sync, not Snapshot mode.
+- Requests / Sync_Runs / Sync_Checkpoints must populate in the Portal DB after first successful setup.

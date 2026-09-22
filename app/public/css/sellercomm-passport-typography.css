@@ -1,0 +1,118 @@
+/* sellercomm-passport-typography-v1
+   Typography reference: Shopee Passport / Workspace visual scale
+   Applies the same reading density as the Seller Edu Workspace Passport.
+   Font families are already loaded in <head>; this file only enforces the scale. */
+
+:root{
+  --scomm-font-ui: 'Inter','Noto Sans Thai','Segoe UI',Arial,Tahoma,sans-serif;
+  --scomm-text: 15px;
+  --scomm-text-sm: 13px;
+  --scomm-text-xs: 12px;
+  --scomm-nav: 13.5px;
+  --scomm-h1: 32px;
+  --scomm-h2: 23px;
+  --scomm-h3: 17px;
+  --scomm-kpi: 29px;
+}
+
+html{font-size:16px;}
+body,button,input,select,textarea,table{
+  font-family:var(--scomm-font-ui);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body,#app{
+  font-size:var(--scomm-text);
+  line-height:1.52;
+  letter-spacing:-0.012em;
+}
+
+/* Keep icon fonts intact. */
+.material-symbols-rounded,.material-symbols-outlined,.material-icons,.material-icons-outlined{
+  font-family:'Material Symbols Rounded','Material Symbols Outlined','Material Icons';
+  letter-spacing:normal;
+}
+
+/* Page and section hierarchy - same visual scale as the Passport. */
+h1,.page-title,.page-heading h1,.hero-title,.view-title,.role-title,
+.landing-hero h1{
+  font-family:var(--scomm-font-ui);
+  font-size:var(--scomm-h1);
+  line-height:1.16;
+  letter-spacing:-0.035em;
+  font-weight:750;
+}
+h2,.section-title,.section-heading h2,.panel-title,.executive-summary h2,
+.calendar-toolbar h2,.settings-list-panel .panel-heading h2,.panel-heading h2{
+  font-size:var(--scomm-h2);
+  line-height:1.24;
+  letter-spacing:-0.027em;
+  font-weight:720;
+}
+h3,.card h3,.content-record h3,.dashboard-card h3,.panel h3,.api-section-title h2,.beginner-guide-card-head h3{
+  font-size:var(--scomm-h3);
+  line-height:1.32;
+  letter-spacing:-0.018em;
+  font-weight:700;
+}
+p,.description,.subtitle,.page-subtitle,.section-copy,.card p,.page-header p,.role-dashboard-head p{
+  font-size:15px;
+  line-height:1.58;
+}
+
+/* Top navigation: readable without making the bar bulky. */
+header,nav,.topbar,.top-bar,.navbar,.main-nav,.top-nav,.app-header{font-family:var(--scomm-font-ui);}
+nav a,nav button,.topbar a,.topbar button,.navbar a,.navbar button,.main-nav a,.main-nav button,.nav-item,.menu-item,.tab,.tab-btn,.sidebar-item{
+  font-size:var(--scomm-nav);
+  font-weight:600;
+  line-height:1.2;
+  letter-spacing:-0.01em;
+}
+#app .nav-item{font-size:var(--scomm-nav);}
+
+/* KPI cards / dashboard numbers. */
+.kpi-value,.metric-value,.stat-value,.summary-value,.dashboard-kpi strong,.metric-card strong,.stat-card strong,.hero-metric strong,.report-stat strong,.kpi-big{
+  font-size:var(--scomm-kpi);
+  line-height:1.05;
+  letter-spacing:-0.04em;
+  font-weight:760;
+}
+.kpi-label,.metric-label,.stat-label,.summary-label,.dashboard-kpi span,.metric-card span,.stat-card span,.eyebrow,.overline{
+  font-size:12.5px;
+  line-height:1.35;
+  font-weight:700;
+  letter-spacing:0.015em;
+}
+
+/* Cards, tables and operational rows. */
+.card,.panel,.dashboard-card,.metric-card,.stat-card,.content-record,.person-card,.connector-row,.quality-row,.metric-row{
+  font-size:14px;
+  line-height:1.48;
+}
+.card small,.panel small,.muted,.helper,.help-text,small{
+  font-size:var(--scomm-text-sm);
+  line-height:1.48;
+}
+table,tbody,td{font-size:13.5px;line-height:1.45;}
+thead,th{font-size:12.5px;line-height:1.35;font-weight:700;}
+
+/* Forms follow the Passport page sizing. */
+label,.field-label,.form-label{font-size:12.5px;font-weight:650;line-height:1.35;}
+input,select,textarea{font-size:14px;line-height:1.4;}
+button,.btn,[role='button']{font-size:14px;font-weight:650;}
+
+/* Avoid compact 10-11px feel in dashboard status text. */
+.badge,.pill,.chip,.status,.status-pill,.connector-state,.content-status{
+  font-size:12px;
+  line-height:1.2;
+  font-weight:650;
+}
+
+/* Notebook tuning: preserve dashboard density while keeping the Passport scale. */
+@media (max-width:1366px){
+  :root{--scomm-text:14.5px;--scomm-nav:13px;--scomm-h1:30px;--scomm-h2:22px;--scomm-h3:16.5px;--scomm-kpi:27px;}
+  p,.description,.subtitle,.page-subtitle,.section-copy,.card p,.page-header p,.role-dashboard-head p{font-size:14.5px;}
+}
+@media (max-width:900px){
+  :root{--scomm-text:14px;--scomm-nav:12.5px;--scomm-h1:27px;--scomm-h2:20px;--scomm-h3:16px;--scomm-kpi:25px;}
+}

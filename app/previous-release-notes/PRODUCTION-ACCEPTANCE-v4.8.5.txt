@@ -1,0 +1,41 @@
+SELLER COMMUNICATION PORTAL v4.8.5 - PRODUCTION ACCEPTANCE
+
+A. PACKAGE
+[ ] Terminal header says Seller Communication Portal v4.8.5.
+[ ] [1/10] Safety gate passes.
+[ ] Validator reports 259/259 PASS.
+
+B. APPS SCRIPT SOURCE + POLICY
+[ ] [5/10] backend push completes.
+[ ] [6/10] does NOT stop with VERSION_SOURCE_ATTESTATION_FAILED.
+[ ] Console shows a remote source/policy self-heal status or already-ready status.
+[ ] Console says immutable Apps Script source attested as backend release 4.8.5.
+[ ] Deployment result is DOMAIN + USER_ACCESSING.
+[ ] If a new DOMAIN replacement deployment is created, old deployment ID is preserved for rollback and frontend is rebound automatically.
+
+C. LIVE SYNC SETUP
+[ ] Setup page says Backend release: v4.8.5.
+[ ] Setup page shows the signed-in corporate email.
+[ ] Setup ends at LIVE SYNC READY.
+[ ] PN checkpoint = OK.
+[ ] SCA checkpoint = OK.
+[ ] Social checkpoint = OK.
+[ ] People active-user verification passes.
+
+D. DATA / LOGIC
+[ ] PN records appear.
+[ ] SCA Asset records appear.
+[ ] Social records appear.
+[ ] Campaign 360 combines related PN/SCA/Social records without overwriting source IDs.
+[ ] Asset title/content validation is separate from Manager Approval.
+[ ] FINALIST allocation is separate from Manager Approval and conflict state is visible when evidence disagrees.
+[ ] Source trackers are read-only from Portal sync.
+
+E. FRONTEND
+[ ] https://seller-communication-portal.web.app/ loads after hard refresh.
+[ ] Portal version displays 4.8.5.
+[ ] Beginner Guides toggle is present.
+[ ] Campaign 360 page is present.
+[ ] Portal Settings > System > Production Health is reachable.
+
+Production should only be marked complete after all applicable checks above pass in the corporate Workspace session.

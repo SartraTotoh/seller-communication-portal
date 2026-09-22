@@ -1,0 +1,127 @@
+Seller Communication Portal v4.7.6 validation: 126/126 PASS
+PASS - Portal version 4.7.6
+PASS - Functional baseline 4.6.0 preserved
+PASS - UI baseline 4.6.8 preserved
+PASS - Backend closeout release 4.7.6
+PASS - Backend release 4.7.6
+PASS - Apps Script executes as user accessing
+PASS - Apps Script domain access
+PASS - Firebase target hard-locked
+PASS - Firebase Hosting-only
+PASS - Deploy blocks THSP project
+PASS - Deploy verifies v4.7.6 before complete
+PASS - Deploy verifies USER_ACCESSING
+PASS - Updater waits for remote DOMAIN manifest
+PASS - Updater verifies immutable version policy
+PASS - Updater detects Workspace ANYONE policy block
+PASS - Updater creates DOMAIN replacement only on exact policy block
+PASS - Updater preserves old deployment for rollback
+PASS - Updater verifies replacement DOMAIN access
+PASS - One-click handles replacement deployment ID
+PASS - One-click rewrites frontend backend ID safely
+PASS - One-click refuses non-DOMAIN deployment result
+PASS - Legacy PowerShell entry delegates to policy-safe flow
+PASS - Public fallback has zero requests
+PASS - Public fallback contains no real corporate emails
+PASS - Frontend default user is fail-closed REQUESTER
+PASS - No EffectiveUser identity fallback
+PASS - Only explicit bootstrap admin continuity
+PASS - People seed contract remains 503
+PASS - Frontend write bridge: submitRequest
+PASS - Frontend write bridge: updateRequest
+PASS - Frontend write bridge: saveReviewDecision
+PASS - Frontend write bridge: saveReviewComment
+PASS - Frontend write bridge: saveCycleRule
+PASS - Frontend write bridge: createSmartLink
+PASS - Frontend write bridge: createContent
+PASS - Frontend write bridge: analyzeContent
+PASS - Frontend write bridge: uploadArtwork
+PASS - Frontend write bridge: saveLookup
+PASS - Frontend write bridge: deleteLookup
+PASS - Frontend write bridge: saveBusinessConfig
+PASS - Frontend write bridge: saveScoringModelVersion
+PASS - Frontend write bridge: queueApiPublication
+PASS - Frontend write bridge: testApiConnection
+PASS - Frontend write bridge: approveApiPublication
+PASS - Frontend write bridge: sendApiPublication
+PASS - Frontend write bridge: saveTeamMember
+PASS - Frontend write bridge: massImportUsers
+PASS - Embedded RPC exists: analyzeContent
+PASS - Embedded RPC exists: approveApiPublication
+PASS - Embedded RPC exists: createContent
+PASS - Embedded RPC exists: createSmartLink
+PASS - Embedded RPC exists: deleteLookup
+PASS - Embedded RPC exists: getFormMeta
+PASS - Embedded RPC exists: getPortalData
+PASS - Embedded RPC exists: massImportUsers
+PASS - Embedded RPC exists: queueApiPublication
+PASS - Embedded RPC exists: saveBusinessConfig
+PASS - Embedded RPC exists: saveCycleRule
+PASS - Embedded RPC exists: saveLookup
+PASS - Embedded RPC exists: saveReviewComment
+PASS - Embedded RPC exists: saveReviewDecision
+PASS - Embedded RPC exists: saveScoringModelVersion
+PASS - Embedded RPC exists: saveTeamMember
+PASS - Embedded RPC exists: sendApiPublication
+PASS - Embedded RPC exists: submitRequest
+PASS - Embedded RPC exists: testApiConnection
+PASS - Embedded RPC exists: updateRequest
+PASS - Embedded RPC exists: uploadArtwork
+PASS - doPost route: request.create
+PASS - doPost route: request.update
+PASS - doPost route: review.decision
+PASS - doPost route: review.comment
+PASS - doPost route: cycle.save
+PASS - doPost route: smartlink.create
+PASS - doPost route: content.create
+PASS - doPost route: content.analyze
+PASS - doPost route: artwork.upload
+PASS - doPost route: lookup.save
+PASS - doPost route: lookup.delete
+PASS - doPost route: config.save
+PASS - doPost route: scoring.version
+PASS - doPost route: api.queue
+PASS - doPost route: api.status
+PASS - doPost route: api.approve
+PASS - doPost route: api.send
+PASS - doPost route: people.save
+PASS - doPost route: people.massImport
+PASS - doPost route: sync.now
+PASS - API queue route is role-gated
+PASS - Manual sync route is role-gated
+PASS - API send remains fail-closed until verified
+PASS - API Center blocks sensitive publication
+PASS - Canonical Requests schema self-heals
+PASS - Canonical Comms_Items schema self-heals
+PASS - Native request writes canonical status
+PASS - Native request persists channels as asset_type
+PASS - Request edit maps campaign to campaign_name
+PASS - Request edit maps startDate to start_date
+PASS - Request edit persists destination to Comms_Items
+PASS - Request edit persists detail/key message
+PASS - Source-synced requester edits blocked
+PASS - Source review workflow overlay persists
+PASS - Review comments restored on reload
+PASS - Multi-channel native request DTO supported
+PASS - Artwork writes matching asset item
+PASS - Mass Upload current template complete
+PASS - Mass Upload runs through write bridge
+PASS - Team hierarchy persists
+PASS - Content create persists
+PASS - Lookup CRUD persists
+PASS - Business config persists with history
+PASS - Scoring version persists
+PASS - Production health exposed
+PASS - All data writes clear v3 cache
+PASS - Source parser read-only: parsePnSource_
+PASS - Source parser read-only: parseScSource_
+PASS - Source parser read-only: buildScFinalistMap_
+PASS - Frontend JavaScript syntax
+PASS - Backend syntax: ApiCenter.gs
+PASS - Backend syntax: Closeout.gs
+PASS - Backend syntax: CycleEngine.gs
+PASS - Backend syntax: LiveSyncEngine.gs
+PASS - Backend syntax: PeopleImportUi.gs
+PASS - Backend syntax: PeopleSeed.gs
+PASS - Backend syntax: PortalApi.gs
+PASS - Backend syntax: TrackerSync.gs
