@@ -6,7 +6,7 @@ function doPost(e){
     let body;
     if (bridge) body={action:String(e.parameter.action||''),payload:JSON.parse(String(e.parameter.payload||'{}'))};
     else body=JSON.parse((e&&e.postData&&e.postData.contents)||'{}');
-    const action=String(body.action||''),payload=body.payload||{};
+    const action=String(body.action||''),payload=canonicalizePayload_(body.payload||{});
     const sessionToken=bridge?String(e.parameter.session||''):String(body.session||'');
     portalAuthorizeHttpSession_(sessionToken);
     const email=portalCurrentEmail_();portalViewerContext_(email);ensurePortalCloseoutSchema_();

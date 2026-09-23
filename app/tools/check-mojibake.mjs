@@ -8,10 +8,12 @@ function scan(file) {
   let susp = 0; const m = s.match(SUSP); if (m) susp = m.length;
   return { file, ff, c1, susp };
 }
+const backendFiles = fs.readdirSync('app/backend').filter(f => f.endsWith('.gs')).map(f => 'app/backend/' + f);
 const targets = [
   'app/public/index.html',
   'app/public/new/index.html',
   'app/public/new/js/app.js',
+  ...backendFiles,
 ];
 const ok = [];
 for (const p of targets) {

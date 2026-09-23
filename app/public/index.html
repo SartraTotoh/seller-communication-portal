@@ -5398,7 +5398,7 @@ async function handleRequestBulkFile(event){
   try{
     const buf=await file.arrayBuffer(),wb=XLSX.read(buf,{type:'array'}),sheet=wb.Sheets?.[wb.SheetNames?.[0]];
     if(!sheet)return renderRequestImportFatal('The workbook has no readable sheet.');
-    const matrix=XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:''}).filter(r=>r.some(v=>String(v).trim()));
+    const matrix=XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:''}).map(r=>r.map(repairCell)).filter(r=>r.some(v=>String(v).trim()));
     const result=validateRequestImport(matrix);
     if(result.rows.length>REQUEST_IMPORT_MAX_ROWS)return renderRequestImportFatal(`This file contains ${result.rows.length} importable requests. Maximum is ${REQUEST_IMPORT_MAX_ROWS.toLocaleString()} per job.`);
     result.fileName=file.name;window.__requestImportตัวอย่าง=result;renderRequestImportตัวอย่าง(result);
@@ -5577,6 +5577,40 @@ function downloadPeopleImportTemplate(){
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='seller-comms-people-import-template-v2.csv';a.click();URL.revokeObjectURL(url);toast('People import template downloaded.','success');
 }
 function csvCell(v){return `"${String(v??'').replace(/"/g,'""')}"`;}
+const W874_MAP=(()=>{const m={};for(let i=0;i<=0x7f;i++)m[i]=i;for(let i=0x0e01;i<=0x0e5b;i++)m[i]=0xa1+(i-0x0e01);const sp=[[0x20ac,0x80],[0x201a,0x82],[0x0192,0x83],[0x201e,0x84],[0x2026,0x85],[0x2020,0x86],[0x2021,0x87],[0x02c6,0x88],[0x2030,0x89],[0x0160,0x8a],[0x2039,0x8b],[0x0152,0x8c],[0x017d,0x8d],[0x2018,0x91],[0x2019,0x92],[0x201c,0x93],[0x201d,0x94],[0x2022,0x95],[0x2013,0x96],[0x2014,0x97],[0x02dc,0x98],[0x2122,0x99],[0x0161,0x9a],[0x203a,0x9b],[0x0153,0x9c],[0x017e,0x9d],[0x0178,0x9f]];for(let i=0;i<sp.length;i++)m[sp[i][0]]=sp[i][1];return m;})();
+const W874_THAI=/[\u0e00-\u0e7f]/,W874_HARD=/[\u0080-\u009f\u20ac]/;
+function containsThaiChars(s){return W874_THAI.test(String(s||''));}
+function w874HardSig(s){return W874_HARD.test(String(s||''));}
+function w874SepDot(s){
+  let found=false;
+  for(let i=0;i<s.length-1;i++){
+    if(s.charCodeAt(i)===0x0e22&&s.charCodeAt(i+1)===0x0e17){
+      found=true;
+      const prev=i>0?s.charCodeAt(i-1):-1,next=i+2<s.length?s.charCodeAt(i+2):-1;
+      const prevThai=prev>=0x0e00&&prev<=0x0e7f,nextThai=next>=0x0e00&&next<=0x0e7f;
+      if(prevThai||nextThai)return false;
+    }
+  }
+  return found;
+}
+function w874Roundtrip(s){
+  const bytes=new Uint8Array(s.length);
+  for(let i=0;i<s.length;i++){const cp=s.charCodeAt(i);bytes[i]=W874_MAP[cp]===undefined?0x3f:W874_MAP[cp];}
+  try{return new TextDecoder('utf-8',{fatal:true}).decode(bytes);}catch(err){return null;}
+}
+function w874Genuine(s){const r=w874Roundtrip(s);if(r===null||r===s)return false;return W874_THAI.test(r)||w874SepDot(s);}
+const W874_SAFE=new Set(['—','…','·','–','’','“','”','\"','\'']);
+function repairMojibake(s){
+  s=String(s==null?'':s);
+  if(!containsThaiChars(s))return s;
+  if(!w874HardSig(s)&&!w874Genuine(s))return s;
+  const r=w874Roundtrip(s);if(r===null||r===s)return s;
+  if(containsThaiChars(r))return r;
+  if(W874_SAFE.has(r))return r;
+  if(w874SepDot(s))return r;
+  return s;
+}
+function repairCell(v){return repairMojibake(String(v??''));}
 function importHeaderKey(value){
   const raw=String(value||'').trim().toLowerCase().replace(/[()]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
   return PEOPLE_IMPORT_ALIASES[raw]||raw;
@@ -5597,7 +5631,7 @@ function parseCsvText(text){
     else cell+=ch;
   }
   if(cell.length||row.length){row.push(cell.replace(/\r$/,''));rows.push(row);}
-  return {delimiter,rows:rows.filter(r=>r.some(v=>String(v).trim()))};
+  return {delimiter,rows:rows.filter(r=>r.some(v=>String(v).trim())).map(r=>r.map(repairCell))};
 }
 function normalizeImportBool(v){const x=normalize(v);if(['true','yes','y','1','active'].includes(x))return true;if(['false','no','n','0','inactive',''].includes(x))return false;return null;}
 function corporateEmail(v){return /^[^\s@]+@(shopee\.com|shopeemobile-external\.com)$/i.test(String(v||'').trim());}
