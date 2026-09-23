@@ -53,7 +53,7 @@ function bridgeOutput_(bridgeId,obj){
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 function jsonOutput_(obj){return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);}
-function assertCorporateUser_(email){if(!/@shopee\.com$|@shopeemobile-external\.com$/i.test(String(email||'')))throw new Error('Corporate Workspace account required.');}
+function assertCorporateUser_(email){if(!corporateEmail_(email))throw new Error('Corporate Workspace account required.');}
 function dbSheet_(name){
   const sh=SpreadsheetApp.openById(PORTAL_DB_SPREADSHEET_ID).getSheetByName(name);
   if(!sh)throw new Error('DB sheet not found: '+name);

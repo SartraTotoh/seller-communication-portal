@@ -20,7 +20,7 @@ function sendNotificationOnce_(rule,r,cycle,now){
   const log=SpreadsheetApp.openById(PORTAL_DB_SPREADSHEET_ID).getSheetByName('Notification_Log'),dedupe=[rule.notification_rule_id,r.id,cycle.cycle_id].join('|');
   const existing=log.getLastRow()>1?log.getRange(2,11,log.getLastRow()-1,1).getDisplayValues().flat():[];if(existing.indexOf(dedupe)>=0)return;
   const cutoff=cycle.cutoff_at,subject=renderTpl_(rule.subject_template,{cutoff_at:cutoff,request_id:r.id,campaign:r.campaign}),body=renderTpl_(rule.body_template,{cutoff_at:cutoff,request_id:r.id,campaign:r.campaign});let status='PORTAL_ONLY',err='';
-  if(String(rule.email_enabled).toUpperCase()!=='FALSE'&&/@shopee(mobile-external)?\.com$/i.test(r.requestor)){try{MailApp.sendEmail({to:r.requestor,subject:subject,htmlBody:'<p>'+escapeHtml_(body)+'</p><p><strong>Request:</strong> '+escapeHtml_(r.campaign)+'</p>'});status='SENT'}catch(e){status='ERROR';err=String(e.message||e)}}
+  if(String(rule.email_enabled).toUpperCase()!=='FALSE'&&/^[^\s@]+@(shopee\.com|shopeemobile-external\.com)$/i.test(r.requestor)){try{MailApp.sendEmail({to:r.requestor,subject:subject,htmlBody:'<p>'+escapeHtml_(body)+'</p><p><strong>Request:</strong> '+escapeHtml_(r.campaign)+'</p>'});status='SENT'}catch(e){status='ERROR';err=String(e.message||e)}}
   log.appendRow(['NTF-'+Utilities.getUuid(),rule.event_type,r.id,cycle.cycle_id,r.requestor,status==='PORTAL_ONLY'?'PORTAL':'EMAIL+PORTAL',status,'',status==='SENT'?now:'',err,dedupe,now]);
 }
 function closeCycle_(cycle,now){
