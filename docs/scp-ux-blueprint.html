@@ -3,269 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SCP UX Blueprint — Structure first, style later</title>
+<title>SCP+EDU UX Blueprint v2 — Click Depth L1–L5</title>
 <style>
   :root{
     --ink:#1a1e29; --ink-2:#4a5468; --ink-3:#8a94a8;
     --line:#e4e8f0; --line-2:#eef1f6;
     --bg:#ffffff; --bg-2:#f7f8fb; --bg-hi:#fffdf5;
-    --acc:#111827;
+    --edu:#0f766e; --comm:#1d4ed8; --shared:#7c3aed;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"Segoe UI","Prompt",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding:40px 20px 80px}
   .wrap{max-width:1180px;margin:0 auto}
-  header.page-head{margin-bottom:44px;border-bottom:1px solid var(--line);padding-bottom:24px}
+  header.page-head{margin-bottom:40px;border-bottom:1px solid var(--line);padding-bottom:24px}
   .kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:10px}
-  h1{font-size:28px;font-weight:800;letter-spacing:-.01em}
-  .sub{color:var(--ink-2);font-size:14px;margin-top:8px;max-width:840px}
-  h2{font-size:17px;font-weight:800;margin:40px 0 6px;letter-spacing:-.01em}
-  .rule-line{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--ink-3);margin-bottom:20px}
+  h1{font-size:27px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-2);font-size:14px;margin-top:8px;max-width:880px}
+  h2{font-size:17px;font-weight:800;margin:44px 0 4px;letter-spacing:-.01em}
+  .rule-line{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--ink-3);margin:14px 0 22px}
   .rule-line::after{content:"";flex:1;height:1px;background:var(--line)}
-  .legend{display:flex;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--ink-2);margin:14px 0 6px}
-  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--bg-2)}
-  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-  .theme-neutral{background:var(--ink-3)}
-  .theme-owner{background:#eab308}
-  .theme-admin{background:#f97316}
-  .theme-user{background:#3b82f6}
+
+  /* level legend */
+  .lv-row{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 4px}
+  .lv{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:12px;color:var(--ink-2);background:var(--bg-2)}
+  .lv b{background:var(--ink);color:#fff;width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+  .lv.l2 b{background:#0f766e}.lv.l3 b{background:#1d4ed8}.lv.l4 b{background:#7c3aed}.lv.l5 b{background:#be185d}
+  .lv small{color:var(--ink-3)}
+
+  /* flow tracks */
+  .track{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
+  @media(max-width:960px){.track{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.track{grid-template-columns:1fr}}
+  .col{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg-2);display:flex;flex-direction:column;gap:8px}
+  .col>.lvtag{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:2px 0 4px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .col>.lvtag .d{font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink-3);font-size:10px}
+  .node{border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:8px 10px;font-size:11.5px;color:var(--ink-2)}
+  .node b{color:var(--ink);font-weight:700}
+  .node .sub2{display:block;font-size:10.5px;color:var(--ink-3);margin-top:2px}
+  .node .sub2 .k{display:inline-block;background:var(--bg-2);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:9.5px;margin-right:4px;color:var(--ink-3)}
+  .node.leaf{border-style:dashed;color:var(--ink-3)}
+  .node.leaf b{color:var(--ink-2)}
+  .node.feat{border-color:#c7d2fe;background:#f5f7ff}
+  .node.feat b{color:#1d4ed8}
+  .node.warn{border-color:#fde68a;background:#fffbeb}
+  .node.warn b{color:#92400e}
+  .arrow{align-self:center;color:var(--ink-3);font-size:11px;text-align:center}
+  @media(max-width:600px){.arrow{transform:rotate(90deg)}}
+
   .note{background:var(--bg-hi);border:1px solid #f0e8c8;border-radius:10px;padding:12px 14px;font-size:13px;color:#5a5233;margin:18px 0}
   .note b{color:#4a4428}
-
-  /* tools */
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--ink-2);background:var(--bg-2)}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .d-edu{background:var(--edu)}.d-comm{background:var(--comm)}.d-shared{background:var(--shared)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
   .th-tip{position:relative;cursor:help;border-bottom:1px dashed var(--ink-3)}
-  .th-tip:hover::after{
-    content:attr(data-th);
-    position:absolute;left:0;bottom:calc(100% + 8px);z-index:50;
-    background:#111827;color:#fff;font-size:12px;line-height:1.4;
-    padding:6px 10px;border-radius:7px;white-space:nowrap;
-    box-shadow:0 4px 14px rgba(0,0,0,.18);pointer-events:none;
-  }
-
-  /* zone = unit of layout */
-  .zone{display:grid;gap:14px}
-  .zone+.zone{margin-top:26px}
-  .zone-label{font-size:13px;font-weight:700;color:var(--ink-2);display:flex;align-items:center;gap:8px;margin-bottom:2px}
-  .zone-label .cnt{font-size:10.5px;color:var(--ink-3);font-weight:500;border:1px solid var(--line);border-radius:999px;padding:1px 8px}
-
-  /* block types */
-  .blk{border:1px solid var(--line);border-radius:12px;background:var(--bg);display:flex;flex-direction:column;min-height:56px}
-  .blk > .blk-head{display:flex;align-items:center;gap:8px;padding:9px 13px;font-size:12px;font-weight:700;border-bottom:1px solid var(--line-2)}
-  .blk > .blk-body{padding:12px 13px;font-size:12.5px;color:var(--ink-2)}
-  .blk .tag{font-size:10px;color:var(--ink-3);background:var(--bg-2);border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-left:auto;white-space:nowrap}
-  .blk .inner-line{font-size:12px;padding:5px 0;border-bottom:1px solid var(--line-2);display:flex;gap:8px;align-items:center}
-  .blk .inner-line:last-child{border-bottom:0}
-  .blk .ico{width:16px;text-align:center;color:var(--ink-3);flex:0 0 16px}
-  .blk .link{color:#111827;font-weight:600;text-decoration:none}
-  .blk .link:hover{text-decoration:underline}
-  .dim{color:var(--ink-3)}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:760px){.row{grid-template-columns:1fr}}
-
-  /* nav rail skeleton (edu = 5, comm = 9 admin / 5 user) */
-  .nav-skel{border:1px solid var(--line);border-radius:12px;background:var(--bg-2);padding:10px;display:flex;flex-direction:column;gap:4px;width:210px;flex:0 0 210px}
-  .nav-skel .n{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;font-size:12.5px;color:var(--ink-2);border:1px solid transparent}
-  .nav-skel .n.n-top{border-bottom:1px solid var(--line);margin-bottom:2px;color:var(--ink-3);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em}
-  .nav-skel .n .sq{width:14px;height:14px;border:1.5px solid var(--ink-3);border-radius:4px;flex:0 0 14px}
-  .nav-skel .n.act{background:var(--bg);border-color:var(--line);font-weight:700;color:var(--ink)}
-  .nav-skel .n .pill{margin-left:auto;font-size:9.5px;border:1px solid var(--line);color:var(--ink-3);border-radius:999px;padding:0 6px}
-  .app-shell{display:flex;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:330px}
-  .app-main{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}
-  .app-main .toprow{display:flex;gap:8px;align-items:center;padding-bottom:0}
-  .app-main .crumb{font-size:11px;color:var(--ink-3)}
-  .app-main .crumb b{color:var(--ink)}
-  .searchbar{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:12.5px;color:var(--ink-3);background:var(--bg-2);max-width:420px}
-  .searchbar .kbd{margin-left:auto;font-size:10px;border:1px solid var(--line);border-radius:5px;padding:0 6px;color:var(--ink-3)}
-  .zonebar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .zpill{font-size:11.5px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);cursor:pointer}
-  .zpill.act{border:1.5px solid var(--ink);color:var(--ink);font-weight:700;background:var(--bg-hi)}
-  .content-card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--ink-2)}
-  .content-card b{color:var(--ink)}
-  .content-card .meta{display:flex;gap:10px;margin-top:7px;font-size:11px;color:var(--ink-3)}
-  .content-card .status{font-size:10px;border-radius:999px;padding:2px 9px;border:1px solid var(--line)}
-  .content-card .status.c1{background:#ecfdf5;border-color:#bbf7d0;color:#166534}
-  .content-card .status.c2{background:#eff6ff;border-color:#bfdbfe;color:#1e40af}
-  .content-card .status.c3{background:#fffbeb;border-color:#fde68a;color:#92400e}
-  .content-card .status.c4{background:#fef2f2;border-color:#fecaca;color:#991b1b}
-  .cardrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  @media(max-width:760px){.cardrow{grid-template-columns:1fr}}
-
-  /* table skel */
-  .tbl{border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:11.5px}
-  .tbl .tr{display:grid;grid-template-columns:2fr 1.4fr 1fr 1fr 1fr;border-bottom:1px solid var(--line-2)}
-  .tbl .tr:last-child{border-bottom:0}
-  .tbl .th{background:var(--bg-2);font-weight:700;color:var(--ink-2);padding:8px 10px;font-size:11px}
-  .tbl .td{padding:8px 10px;color:var(--ink-2)}
-  .two{display:grid;grid-template-columns:300px 1fr;gap:0}
-  @media(max-width:820px){.two{grid-template-columns:1fr}}
-
-  footer{margin-top:60px;border-top:1px solid var(--line);padding-top:18px;font-size:12px;color:var(--ink-3)}
+  .th-tip:hover::after{content:attr(data-th);position:absolute;left:0;bottom:calc(100% + 8px);z-index:50;background:#111827;color:#fff;font-size:12px;line-height:1.4;padding:6px 10px;border-radius:7px;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.18);pointer-events:none}
+  footer{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;font-size:12px;color:var(--ink-3)}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header class="page-head">
-  <div class="kicker">UX Blueprint · Structure First, Style Later</div>
-  <h1>โครงสร้างฟังก์ชัน — Seller Education &amp; Communication Portals</h1>
-  <div class="sub">เอกสารนี้เป็นการขึ้นโครง (wireframe) ของหน้าจอทั้งสองพอร์ทัล — <span class="dim">ยังไม่มีการลงสี ไม่มี product branding</span> เพื่อโฟกัสที่ <b>หน้าที่ของแต่ละโซน</b> ก่อนลงรายละเอียดดีไซน์ ใช้ mouse ชี้ที่คำที่มีเส้นประใต้ <span class="th-tip" data-th="เช่นนี้ = มีคำอธิบายภาษาไทยบน hover">เพื่อดูคำอธิบายไทย</span></div>
-
-  <div class="legend">
-    <span class="chip"><span class="dot theme-neutral"></span> Neutral / system</span>
-    <span class="chip"><span class="dot theme-owner"></span> Owner zone</span>
-    <span class="chip"><span class="dot theme-admin"></span> Admin-visible</span>
-    <span class="chip"><span class="dot theme-user"></span> All-visible</span>
-    <span class="chip" style="border-style:dashed">EN = base label · <span class="th-tip" data-th="โชว์ภาษาไทยเมื่อนำเมาส์ชี้">ไทย = tooltip</span></span>
+  <div class="kicker">UX Blueprint v2 · Click-Depth Map</div>
+  <h1>แผนผังระดับการเข้าถึง (L1–L5) — Seller Education &amp; Seller Communication Portals</h1>
+  <div class="sub">
+    แสดงลำดับการคลิกจากจุดเริ่มต้นไปยังข้อมูล/การกระทำในแต่ละพอร์ทัล ตามโครงสร้างจริงของหน้าเวอร์ชันล่าสุด —
+    <b>EDU</b> เป็น <span class="th-tip" data-th="หน้าเดียวสลับ section ผ่าน nav ด้านข้าง ไม่เปลี่ยน URL">single-page (nav → section → modal/action)</span>
+    ส่วน <b>COMM</b> เป็น <span class="th-tip" data-th="แต่ละเมนูคือหน้าที่แยกกัน เปลี่ยน URL/page">multi-page (12 เมนู)</span>
   </div>
-
-  <div class="note"><b>หลักการที่ใช้:</b> <span class="th-tip" data-th="ส่วนที่นำทางไปยังข้อมูล ไม่ใช่ตัวข้อมูลเอง">Navigation พาผู้ใช้ไปยังข้อมูล</span> · <span class="th-tip" data-th="ส่วนที่ให้ข้อมูลจริง แสดงผลเต็มที่">Content ให้ข้อมูลแก่ผู้ใช้</span> · นำ <b>จารึกเทคนิค / ป้ายจัดลำดับ / grading tooling</b> ออกจากหน้าผู้ใช้ทั่วไป → เก็บไว้ใต้ <span class="th-tip" data-th="ผู้ดูแลระบบ / เจ้าภาพเท่านั้น">Admin &amp; Owner</span></div>
+  <div class="legend">
+    <span class="chip"><span class="dot d-edu"></span> EDU</span>
+    <span class="chip"><span class="dot d-comm"></span> COMM</span>
+    <span class="chip"><span class="dot d-shared"></span> Shared</span>
+  </div>
+  <div class="lv-row">
+    <span class="lv"><b>L1</b> หน้าแรก <small>จุดเริ่มต้น</small></span>
+    <span class="lv l2"><b>L2</b> คลิก 1 ครั้ง <small>จากหน้าแรก</small></span>
+    <span class="lv l3"><b>L3</b> คลิก 2 ครั้ง</small></span>
+    <span class="lv l4"><b>L4</b> คลิก 3 ครั้ง</small></span>
+    <span class="lv l5"><b>L5</b> คลิก 4 ครั้ง <small>ระดับลึกสุด</small></span>
+  </div>
 </header>
 
 <!-- ============ EDU ============ -->
-<h2>1 · Seller Education Portal <span class="dim" style="font-weight:500">— 5 menus</span></h2>
-<div class="rule-line">Role: <span class="th-tip" data-th="เจ้าภาพระบบ + Seller Education เจ้าของ portal">Owner</span> · <span class="th-tip" data-th="ทีมที่ดูแลการสื่อสาร+การศึกษา seller">Admin/ทีมงาน</span> · <span class="th-tip" data-th="ผู้ใช้ทั่วไป ดู workload/ภาพรวม">User</span> · Default language: <span class="th-tip" data-th="ภาษาอังกฤษเป็น base ภาษาไทยเป็น tooltip">EN + ไทย tooltip</span></div>
+<h2>1 · Seller Education Portal — click depth</h2>
+<div class="rule-line">SPA · 8 nav pages (Overview, Task Hub, Hours &amp; Capacity, Insights, Content Sync, People, Portal Settings, Team Productivity X) · 5 modals กลาง · <span class="th-tip" data-th="เปลี่ยนภาษาหน้าจอ, สลับ portal (COMM/THSP), ปุ่มค้นหา">เครื่องมือบนสุดแชร์ทุกหน้า</span></div>
 
-<div class="two">
-  <!-- nav rail -->
-  <div class="nav-skel">
-    <div class="n n-top">Menu · 5</div>
-    <div class="n act"><span class="sq"></span> Overview <span class="th-tip" data-th="ภาพรวมงาน / สถานะระบบ">i</span></div>
-    <div class="n"><span class="sq"></span> Task Workload</div>
-    <div class="n"><span class="sq"></span> Campaign Score</div>
-    <div class="n"><span class="sq"></span> Team Capacity</div>
-    <div class="n"><span class="sq"></span> <span class="th-tip" data-th="ปรับ role/view + ตั้งค่าระบบ">Settings</span></div>
-    <div style="margin-top:8px;border-top:1px solid var(--line);padding-top:6px;display:flex;flex-direction:column;gap:4px">
-      <div class="n" style="font-size:10.5px;color:var(--ink-3)">Owner only</div>
-      <div class="n" style="border:1px solid #f0e0a0;color:#7a6c2a"><span class="sq" style="border-color:#7a6c2a"></span> Live Source Map</div>
-    </div>
+<div class="track">
+  <!-- L1 -->
+  <div class="col" style="border-color:#0f766e;border-width:2px">
+    <div class="lvtag">L1 · หน้าแรก <span class="d">Overview</span></div>
+    <div class="node feat"><b>Hero</b><span class="sub2">ภาพรวมงาน + ปุ่มตรงเข้า Task Hub / View Team</span></div>
+    <div class="node"><b>Stat tiles (3)</b><span class="sub2">AI Inbox / Reported effort / Content</span></div>
+    <div class="node"><b>What needs attention</b><span class="sub2">รายการที่ต้องรีบดูแล → Task Hub / Content / People</span></div>
+    <div class="node"><b>Workspace 01–03</b><span class="sub2">Capture → Collaborate → Learn</span></div>
+    <div class="node leaf"><b>Top bar</b><span class="sub2">Search · portal switch · lang · user · settings ⚙</span></div>
   </div>
-
-  <div class="app-main">
-    <div class="toprow">
-      <span class="crumb"><b>Overview</b> / Workload snapshot</span>
-      <span class="searchbar">🔍 Search tasks <span class="kbd">Ctrl K</span></span>
-    </div>
-    <div class="zonebar">
-      <span class="zpill act">All Zones</span>
-      <span class="zpill">Seller Educ</span>
-      <span class="zpill">Comms</span>
-      <span class="zpill">Design</span>
-      <span class="zpill">Ops</span>
-    </div>
-    <div class="cardrow">
-      <div class="blk"><div class="blk-head">Tasks completed <span class="tag">MTD</span></div></div>
-      <div class="blk"><div class="blk-head">Active workload <span class="tag">7d</span></div></div>
-      <div class="blk"><div class="blk-head">Team capacity <span class="tag">now</span></div></div>
-    </div>
-    <div class="zone">
-      <div class="zone-label">Zone · Task workload</div>
-      <div class="content-card"><b>Pod A — Seller Educ</b> <span class="dim">·</span> 4 members
-        <div class="meta"><span class="status c1">On track</span><span class="status c3">2 at risk</span><span class="dim">updated 09:24</span></div>
-      </div>
-    </div>
-    <div class="zone">
-      <div class="zone-label">Zone · Latest status change</div>
-      <div class="content-card"><b>Content #214</b> moved DRAFT → REVIEW <span class="dim">· 2h ago</span>
-        <div class="meta"><span class="status c2">In review</span><span class="dim">by totoh.taponchai</span></div>
-      </div>
-    </div>
+  <!-- L2 -->
+  <div class="col" style="border-color:#0f766e;border-width:2px">
+    <div class="lvtag l2">L2 · คลิก 1 ที</div>
+    <div class="node feat"><b>Open Task Hub</b><span class="sub2">tab: AI Inbox / Tasks / Approvals / Completed</span></div>
+    <div class="node feat"><b>Hours &amp; Capacity</b><span class="sub2">KPI + Effort Ledger + Capacity + Workload</span></div>
+    <div class="node feat"><b>Insights</b><span class="sub2">Period/Compare/Team/Person filters</span></div>
+    <div class="node feat"><b>Content Sync</b><span class="sub2">Channel records / groups / open work</span></div>
+    <div class="node feat"><b>People</b><span class="sub2">Skill arena · heat · team directory</span></div>
+    <div class="node"><b>Team Productivity (X)</b><span class="sub2">มุมมองพิเศษที่ nav</span></div>
+    <div class="node"><b>Portal Settings</b><span class="sub2">สถานะ portal · translator · prefs · banner</span></div>
+    <div class="node"><b>Search (Ctrl/?K)</b><span class="sub2">ค้นข้ามหน้าทันที</span></div>
+  </div>
+  <!-- L3 -->
+  <div class="col">
+    <div class="lvtag l3">L3 · คลิก 2 ครั้ง</div>
+    <div class="node feat"><b>เปิด Ticket</b><span class="sub2">detail: meta · activity tabs · comment toolbar</span></div>
+    <div class="node feat"><b>Edit Ticket</b><span class="sub2">หัวกระดาษ + AI structure / free-text brief</span></div>
+    <div class="node"><b>Convert / Route</b><span class="sub2">rail: เปลี่ยนเป็นงาน/ส่งต่อ</span></div>
+    <div class="node"><b>Seller App preview</b><span class="sub2">ดู preview ก่อนส่ง</span></div>
+    <div class="node"><b>insert image / attach</b><span class="sub2">รูป + ไฟล์แนบ</span></div>
+    <div class="node"><b>People → member</b><span class="sub2">Work profile (personModal)</span></div>
+    <div class="node"><b>Task → log effort</b><span class="sub2">timeLogModal</span></div>
+    <div class="node"><b>Settings → card</b><span class="sub2">เปิดการ์ดใดก็ได้ตามหัวข้อ</span></div>
+  </div>
+  <!-- L4 -->
+  <div class="col">
+    <div class="lvtag l4">L4 · คลิก 3 ครั้ง</div>
+    <div class="node"><b>Task action</b><span class="sub2">taskActionModal (เปลี่ยนสถานะ/consent)</span></div>
+    <div class="node"><b>Activity</b><span class="sub2">tab: comments / refs / history</span></div>
+    <div class="node"><b>Attachment</b><span class="sub2">ภาพในตัว + แก้คำอธิบาย</span></div>
+    <div class="node"><b>Consent flow</b><span class="sub2">ยืนยันก่อนส่งต่อข้อมูล</span></div>
+  </div>
+  <!-- L5 -->
+  <div class="col">
+    <div class="lvtag l5">L5 · คลิก 4 ครั้ง</div>
+    <div class="node leaf"><b>ลึกสุดแล้ว</b><span class="sub2">EDU ลึกสุดแค่ L4 · L5 = แชร์ modal กลาง</span></div>
+    <div class="node"><b>Privacy / Connections / Admin</b><span class="sub2">openPrivacy/openConnections/openAdmin</span></div>
   </div>
 </div>
+
+<div class="note"><b>จุดเด่น EDU:</b> ทุกหน้าคือ L2 จากหน้าแรก (1 คลิก) เพราะเป็น SPA — ลึกสุดที่ L4 (เปิด ticket → action/detail) ไม่มีทางเข้าที่ต้องคลิกลึกเกิน 4 ครั้งจาก Overview</div>
 
 <!-- ============ COMM ============ -->
-<h2 style="margin-top:52px">2 · Seller Communication Portal <span class="dim" style="font-weight:500">— 9 menus (Admin) / 5 menus (User)</span></h2>
-<div class="rule-line">Role: <span class="th-tip" data-th="เจ้าภาพระบบ เห็นทุกโซน+เครื่องมือเทคนิค">Owner</span> · <span class="th-tip" data-th="ทีมสื่อสาร เห็นเมนูทั้งหมด ยกเว้นบางโซนเทคนิค">Admin/ทีมงาน</span> · <span class="th-tip" data-th="ผู้ใช้ทั่วไป เห็น 5 เมนูพื้นฐาน">User</span> · EN base + ไทย tooltip</div>
+<h2>2 · Seller Communication Portal — click depth</h2>
+<div class="rule-line">Multi-page · 12 เมนู admin (dashboard, requests, campaigns, calendar, reports, command, score, content, links, operations, api, settings) · user = subset · <span class="th-tip" data-th="ปุ่ม + หน้าแรก = dashboard">หน้าแรก L1 = Dashboard</span></div>
 
-<div class="two">
-  <div class="nav-skel">
-    <div class="n n-top">Menu · Admin view</div>
-    <div class="n act"><span class="sq"></span> Dashboard</div>
-    <div class="n"><span class="sq"></span> Requests</div>
-    <div class="n"><span class="sq"></span> Campaigns</div>
-    <div class="n"><span class="sq"></span> Calendar</div>
-    <div class="n"><span class="sq"></span> Content Hub</div>
-    <div class="n"><span class="sq"></span> Smart Links</div>
-    <div class="n"><span class="sq"></span> Reports</div>
-    <div class="n"><span class="sq"></span> People</div>
-    <div class="n"><span class="sq"></span> Settings</div>
-    <div style="margin-top:8px;border-top:1px solid var(--line);padding-top:6px;display:flex;flex-direction:column;gap:4px">
-      <div class="n" style="font-size:10.5px;color:var(--ink-3)">Owner only</div>
-      <div class="n" style="border:1px solid #f0e0a0;color:#7a6c2a"><span class="sq" style="border-color:#7a6c2a"></span> Command Center</div>
-      <div class="n" style="border:1px solid #f0e0a0;color:#7a6c2a"><span class="sq" style="border-color:#7a6c2a"></span> API Center</div>
-    </div>
+<div class="track">
+  <!-- L1 -->
+  <div class="col" style="border-color:#1d4ed8;border-width:2px">
+    <div class="lvtag">L1 · หน้าแรก <span class="d">Dashboard</span></div>
+    <div class="node feat"><b>Stat cards</b><span class="sub2">All / Pending / Ready / Urgent</span></div>
+    <div class="node"><b>Status chart</b><span class="sub2">อัตราสถานะของคำขอ</span></div>
+    <div class="node"><b>Channel chart</b><span class="sub2">สัดส่วนช่องทาง</span></div>
+    <div class="node"><b>Upcoming campaigns</b><span class="sub2">แคมเปญที่จะถึง → calendar</span></div>
+    <div class="node"><b>ดูคำขอทั้งหมด</b><span class="sub2">→ requests</span></div>
+    <div class="node"><b>ดูรายงานผล</b><span class="sub2">→ reports</span></div>
+    <div class="node leaf"><b>Top bar</b><span class="sub2">sync · user · account · ตัวสลับภาษา</span></div>
   </div>
-
-  <div class="app-main">
-    <div class="toprow">
-      <span class="crumb"><b>Dashboard</b> / overview</span>
-      <span class="searchbar">🔍 Search requests <span class="kbd">Ctrl K</span></span>
-    </div>
-    <div class="zonebar">
-      <span class="zpill act">All</span>
-      <span class="zpill">Pending</span>
-      <span class="zpill">Reviewing</span>
-      <span class="zpill">Scheduled</span>
-      <span class="zpill">Live</span>
-    </div>
-    <div class="cardrow">
-      <div class="blk"><div class="blk-head">Open requests <span class="tag">now</span></div></div>
-      <div class="blk"><div class="blk-head">In review <span class="tag">7d</span></div></div>
-      <div class="blk"><div class="blk-head">Scheduled <span class="tag">next 14d</span></div></div>
-    </div>
-    <div class="zone">
-      <div class="zone-label">Zone · Requests by status</div>
-      <div class="tbl">
-        <div class="tr th"><span>Request</span><span>Channel</span><span>Owner</span><span>Status</span><span>SLA</span></div>
-        <div class="tr"><span class="td">Launch Q3 banner</span><span class="td">Comms</span><span class="td">toto</span><span class="td"><span class="status c2" style="padding:0 7px">In review</span></span><span class="td">2d left</span></div>
-        <div class="tr"><span class="td">Thai dropdown copy</span><span class="td">EDU</span><span class="td">selledu</span><span class="td"><span class="status c1" style="padding:0 7px">Scheduled</span></span><span class="td">—</span></div>
-        <div class="tr"><span class="td">New seller onboarding</span><span class="td">EDU</span><span class="td">selledu</span><span class="td"><span class="status c3" style="padding:0 7px">At risk</span></span><span class="td">12h</span></div>
-      </div>
-    </div>
-    <div class="zone">
-      <div class="zone-label">Zone · Campaign timeline</div>
-      <div class="content-card"><b>Back-to-School 2026</b> <span class="dim">· delivers 14 Mar</span>
-        <div class="meta"><span class="status c1">Scheduled</span><span class="dim">3 assets · 2 channels</span></div>
-      </div>
-    </div>
+  <!-- L2 -->
+  <div class="col" style="border-color:#1d4ed8;border-width:2px">
+    <div class="lvtag l2">L2 · คลิก 1 ที</div>
+    <div class="node feat"><b>Requests</b><span class="sub2">ตารางคำขอ + filter + search</span></div>
+    <div class="node feat"><b>Campaigns</b><span class="sub2">ตารางแคมเปญ + คัตออฟ</span></div>
+    <div class="node feat"><b>Calendar</b><span class="sub2">มุมมองรายเดือน/สัปดาห์</span></div>
+    <div class="node feat"><b>Reports</b><span class="sub2">analytics · bar/status/priority charts</span></div>
+    <div class="node feat"><b>New Request</b><span class="sub2">FAB → ฟอร์มขอ (อาจเป็น modal)</span></div>
+    <div class="node"><b>Command Center</b><span class="sub2">owner/admin</span></div>
+    <div class="node"><b>Score Analyst</b><span class="sub2">จัดลำดับความสำคัญ</span></div>
+    <div class="node"><b>Content / Links / Operations / API / Settings</b><span class="sub2">เมนูเหลือ 5 หน้า</span></div>
+  </div>
+  <!-- L3 -->
+  <div class="col">
+    <div class="lvtag l3">L3 · คลิก 2 ครั้ง</div>
+    <div class="node feat"><b>Request → open detail</b><span class="sub2">ดู/แก้/ส่งต่อคำขอ</span></div>
+    <div class="node feat"><b>Campaign → detail</b><span class="sub2">assets · channels · status</span></div>
+    <div class="node"><b>Command → sub</b><span class="sub2">ระบบ/การตั้งค่าภายใน</span></div>
+    <div class="node"><b>Score → rule</b><span class="sub2">ดู/แก้เกณฑ์</span></div>
+    <div class="node"><b>Content → item</b><span class="sub2">ดู/แก้ชิ้นงาน</span></div>
+    <div class="node"><b>API center → key/usage</b><span class="sub2">endpoint stats</span></div>
+    <div class="node"><b>Settings → section</b><span class="sub2">business config / cycle / export</span></div>
+  </div>
+  <!-- L4 -->
+  <div class="col">
+    <div class="lvtag l4">L4 · คลิก 3 ครั้ง</div>
+    <div class="node"><b>Request detail → edit/status</b><span class="sub2">บันทึก / เปลี่ยนสถานะ</span></div>
+    <div class="node"><b>Campaign → edit asset</b><span class="sub2">แก้/อัปโหลด asset</span></div>
+    <div class="node"><b>Score → run</b><span class="sub2">คำนวณจัดลำดับอีกครั้ง</span></div>
+    <div class="node"><b>Export → run center</b><span class="sub2">export filters → สรุป</span></div>
+  </div>
+  <!-- L5 -->
+  <div class="col">
+    <div class="lvtag l5">L5 · คลิก 4 ครั้ง</div>
+    <div class="node"><b>ส่งคำขอจริง</b><span class="sub2">submit → processingModal</span></div>
+    <div class="node"><b>ยืนยัน / พิมพ์ / download</b><span class="sub2">ขั้นสุดท้ายก่อนออก</span></div>
   </div>
 </div>
 
-<!-- ============ SHARED PATTERNS ============ -->
-<h2 style="margin-top:52px">3 · Shared patterns</h2>
-<div class="rule-line">ใช้หลักเดียวกันทั้งสองพอร์ทัล</div>
+<div class="note"><b>จุดเด่น COMM:</b> เป็น multi-page ลึกสุดที่ L5 (dashboard → requests → detail → edit → submit) — ระบบหลักมีทางเข้าผ่าน Dashboard (L1) และ Requests (L2) เป็นหลัก</div>
+
+<!-- ============ UI COPY RULES :::VIZSIMAI::: ============ -->
+<h2>3 · UI copy rules — how we write on screens <span class="dim" style="font-weight:500">(บังคับทั้ง 2 portal)</span></h2>
+<div class="rule-line"><b style="color:var(--ink)">กฎแกน:</b> สั้น · ง่าย · ภาษาอังกฤษ · ภาษาคน · คนอ่านปุ๊บเข้าใจปั๊บ</div>
+
 <div class="row">
   <div class="blk">
-    <div class="blk-head">Navigation <span class="tag">EN + ไทย tooltip</span></div>
+    <div class="blk-head"><b>DO — เขียนแบบนี้</b> <span class="tag">yes</span></div>
     <div class="blk-body">
-      <div class="inner-line"><span class="ico">▸</span> Label EN เป็น base ครบทุกเมนู</div>
-      <div class="inner-line"><span class="ico">▸</span> คำอธิบายไทยแสดงเป็น tooltip บนคำที่มีเส้นประใต้ (hover)</div>
-      <div class="inner-line"><span class="ico">▸</span> เมนูเทคนิคถูกซ่อนจากหน้า User → เฉพาะ Owner/Admin เห็น</div>
+      <div class="inner-line"><span class="ico">▸</span> <b>New Request</b> (ไม่ใช่ "Create Communication Submission")</div>
+      <div class="inner-line"><span class="ico">▸</span> <b>Upload file</b> — สั้น ตรงไปตรงมา</div>
+      <div class="inner-line"><span class="ico">▸</span> <b>Who needs it?</b> — คำถามภาษาคน</div>
+      <div class="inner-line"><span class="ico">▸</span> <b>Send</b>, <b>Save</b>, <b>Cancel</b> — 1 คำ รู้ทันที</div>
+      <div class="inner-line"><span class="ico">▸</span> <b>When is it due?</b> — ภาษาที่คนอ่านเข้าใจ</div>
     </div>
   </div>
   <div class="blk">
-    <div class="blk-head">Content <span class="tag">ข้อมูลจริง</span></div>
+    <div class="blk-head"><b>DON'T — ห้ามแบบนี้</b> <span class="tag">no</span></div>
     <div class="blk-body">
-      <div class="inner-line"><span class="ico">▸</span> Card / Table / Timeline แสดงเฉพาะใน Content zone</div>
-      <div class="inner-line"><span class="ico">▸</span> ไม่มีโซนข้อมูลใน nav — nav ทำหน้าที่นำทางเท่านั้น</div>
-    </div>
-  </div>
-  <div class="blk">
-    <div class="blk-head">Search <span class="tag">compact</span></div>
-    <div class="blk-body">
-      <div class="inner-line"><span class="ico">▸</span> ช่องค้นหาสั้น อยู่ขวาบนของหน้า (Ctrl K)</div>
-      <div class="inner-line"><span class="ico">▸</span> แสดงผลเป็น drop-down ไทยใต้ช่องค้นหาเท่านั้น</div>
-    </div>
-  </div>
-  <div class="blk">
-    <div class="blk-head">Status / SLA <span class="tag">color = state</span></div>
-    <div class="blk-body">
-      <div class="inner-line"><span class="ico">▸</span> เขียว = on-track · น้ำเงิน = in-review · เหลือง = at-risk · แดง = late</div>
-      <div class="inner-line"><span class="ico">▸</span> สีใช้เพื่อบอกสถานะ ไม่ใช่เพื่อตกแต่ง</div>
+      <div class="inner-line"><span class="ico">✕</span> ศัพท์ AI / เทคนิค: <span class="dim">"prioritize by heuristic weighting"</span></div>
+      <div class="inner-line"><span class="ico">✕</span> นักเทคนิคคุยกันเอง: <span class="dim">"consume from data connector layer"</span></div>
+      <div class="inner-line"><span class="ico">✕</span> ประโยคยาว: <span class="dim">"Please ensure that you have selected the appropriate target segment"</span></div>
+      <div class="inner-line"><span class="ico">✕</span> ตัวย่อที่คนนอกไม่รู้: <span class="dim">"SLA", "ROI", "P0" — อธิบายถ้าจำเป็นจริง</span></div>
+      <div class="inner-line"><span class="ico">✕</span> ศัพท์ AI: <span class="dim">"Insights", "Smart", "Agent", "Pipeline"...</span> เปลี่ยนเป็นคำคน</div>
     </div>
   </div>
 </div>
 
+<div class="note"><b>หลักง่าย ๆ:</b> ถ้าเพื่อนที่ไม่ได้ทำงานระบบนี้อ่านแล้วต้องเข้าใจได้ภายใน 1 วินาที แปลว่าผ่าน — ข้อความทุกคำต้องตอบได้ว่า <b>"ผู้ใช้ต้องทำอะไร / เห็นอะไร"</b></div>
+
+<h2 style="margin-top:12px">4 · Label sheet — แต่งคำใหม่ทั้ง 2 portal</h2>
+<div class="rule-line">แก้จากคำเทคนิค → คำคน (ใช้ 1 คำ–3 คำ, ภาษาอังกฤษ)</div>
+
+<div class="blk">
+  <div class="blk-head">EDU — Menu ใหม่ <span class="tag">common English</span></div>
+  <div class="blk-body">
+    <div class="inner-line"><span class="ico">▸</span> <s>Insights</s> → <b>Results</b> <span class="dim">(คนอ่านรู้ว่าดูผลงาน ไม่ใช่ "ข้อมูลเชิงลึก")</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Task Hub</s> → <b>Tasks</b> <span class="dim">(สั้น เดิมก็โอเค)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Hours &amp; Capacity</s> → <b>Hours</b> <span class="dim">(เหลือ 1 คำ)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Content Sync</s> → <b>Content</b> <span class="dim">(sync = เทคนิค เอา "ช่วงเวลา" ออก)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>AI Inbox</s> → <b>Inbox</b> <span class="dim">(ห้ามโชว์ "AI")</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Approvals &amp; Consent</s> → <b>Approvals</b></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Convert / Route</s> → <b>Send to</b> <span class="dim">(ภาษาคน)</span></div>
+  </div>
+</div>
+
+<div class="blk" style="margin-top:14px">
+  <div class="blk-head">COMM — Menu ใหม่ <span class="tag">common English</span></div>
+  <div class="blk-body">
+    <div class="inner-line"><span class="ico">▸</span> <s>Command Center</s> → <b>Tools</b> <span class="dim">(ศูนย์ควบคุม = น่ากลัว → Tools)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Score &amp; Ranking</s> → <b>Priority</b> <span class="dim">(จัดลำดับ = คำเทคนิค → Priority)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Content Hub</s> → <b>Content</b></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Smart Links</s> → <b>Links</b> <span class="dim">(Smart = AI smell)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>Operations</s> → <b>Advanced</b> <span class="dim">(Ops = เทคนิค → Advanced)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> <s>API Center</s> → <b>Connections</b> <span class="dim">(API = เทคนิค → Connections สำหรับ owner/admin)</span></div>
+    <div class="inner-line"><span class="ico">▸</span> Dashboard stays <b>Dashboard</b> · Requests · Campaigns · Calendar · Reports · Settings <span class="dim">(ผ่านอยู่แล้ว)</span></div>
+  </div>
+</div>
+
+<div class="note"><b>การใช้งาน:</b> เมื่อพัฒนาใหม่ ทุก label/ข้อความต้องผ่านกฎนี้ก่อนลงโค้ด — เขียนไว้ใน dev ว่าห้ามใช้คำในรายการ DON'T ข้างบน</div>
+
+<!-- ============ summary ============ -->
+<h2>3 · สรุปความลึก (depth summary)</h2>
+<div class="rule-line">ทั้ง 2 portal · เปรียบเทียบจำนวนคลิกลึกสุด</div>
+<div class="note" style="border-color:#0f766e">
+  <b>EDU</b> — ลึกสุด <b>L4</b> (หน้าแรก 1 ตี → Task Hub → เปิด ticket → action) · หมดจด modal กลางที่แชร์ทั้งระบบ
+</div>
+<div class="note" style="border-color:#1d4ed8">
+  <b>COMM</b> — ลึกสุด <b>L5</b> (Dashboard → Requests → เปิดคำขอ → แก้ → submit) · หน้าแรกเข้าถึงทุกโมดูลได้ใน 1–2 คลิก
+</div>
+
+<div class="note"><b>การใช้งาน blueprint:</b> แผ่นนี้คือ click-depth map สำหรับพัฒนา UX — กฎคือ <b>L≤2 สำหรับ action หลัก</b> และ <b>L≤4 สำหรับ secondary</b> อะไรที่ลึกเกิน L5 ต้องทบทวนโครงสร้าง</div>
+
 <footer>
-  SCP UX Blueprint · Structure-first แผ่นนี้ยังไม่แตะโค้ดจริง — เป็นโครงให้ตรวจก่อน หลัง approve แล้วค่อยลงมือในไฟล์จริงทั้ง EDU + COMM
+  UX Blueprint v2 · Click-Depth Map · อัปเดตตามโครงสร้างปัจจุบันของ EDU (SPA 8 nav) และ COMM (multi-page 12 nav) · แผ่นนี้เป็นแผนก่อนลงโค้ดจริง
 </footer>
 
 </div>

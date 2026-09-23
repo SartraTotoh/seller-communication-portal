@@ -3664,37 +3664,83 @@ const PortalSync = (()=>{
   // ช่องที่ 2: Cloud endpoint จาก Snapshot Publisher (Phase 1 = Cloudflare Worker)
   //           ตัวอย่าง: 'https://selleredu-tools.<subdomain>.workers.dev/snapshot'
   //           (Phase 2: เปลี่ยน URL นี้เป็นปลายทางที่ Secure — แก้จุดเดียว)
-  const CLOUD_URLS=['/data/source-snapshot-cloud.json',''];
+  const CLOUD_URLS=['/data/source-snapshot-2026.json',''];
+  // normalize helper (mirror new/js/app.js)
+  const normalize = value => String(value || '').trim().toLowerCase();
   function mapCloudSnapshotJson(j){
-    if(!j||!Array.isArray(j.requests))return null;
-    const rows=j.requests.map((r,i)=>({
-      id:String(r.id||r.row||('CLOUD-'+(i+1))),
-      source:r.source||'',
-      sourceId:String(r.row||''),
-      campaign:r.campaign||r.title||'',
-      title:r.title||'',
-      keyMessage:r.content||'',
-      requestor:r.requestor||'',
-      requestorEmail:r.requestor||'',
-      department:r.department||'',
-      team:r.team||'',
-      objective:r.objective||r.title||'',
-      assetType:r.assetType||r.channel||'',
-      channel:r.channel||r.assetType||'',
-      status:r.status||'Pending Review',
-      startDate:r.startDate||'',
-      endDate:r.endDate||'',
-      preferredTimeSlot:r.preferredTimeSlot||'',
-      destinationUrl:'',
-      finalistStatus:r.finalist||'',
-      allocationStatus:r.finalist||'',
-      legacySlot:r.finalist||''
-    }));
+    // shape 1: { requests: [...] }  (Phase 1 cloud endpoint)
+    if(Array.isArray(j.requests)){
+      const rows=j.requests.map((r,i)=>({
+        id:String(r.id||r.row||('CLOUD-'+(i+1))),
+        source:r.source||'',
+        sourceId:String(r.row||''),
+        campaign:r.campaign||r.title||'',
+        title:r.title||'',
+        keyMessage:r.content||'',
+        requestor:r.requestor||'',
+        requestorEmail:r.requestor||'',
+        department:r.department||'',
+        team:r.team||'',
+        objective:r.objective||r.title||'',
+        assetType:r.assetType||r.channel||'',
+        channel:r.channel||r.assetType||'',
+        status:r.status||'Pending Review',
+        startDate:r.startDate||'',
+        endDate:r.endDate||'',
+        preferredTimeSlot:r.preferredTimeSlot||'',
+        destinationUrl:'',
+        finalistStatus:r.finalist||'',
+        allocationStatus:r.finalist||'',
+        legacySlot:r.finalist||''
+      }));
+      return { data:{ requests:rows, meta:{
+        mode:'cloud', source:'Cloud Snapshot', sourceType:'cloud',
+        requestCount:rows.length, qualityGate:'CLOUD-V1',
+        sourceUpdatedAt:(j.generatedAt||''), lastSuccessfulSyncAt:(j.generatedAt||''),
+        cloudRowCount:rows.length, cloudSourceCount:j.sourceCount||0
+      } } };
+    }
+    // shape 2: { sources: [{key, sheets:[{headers, rows}]} ] }  (selleredu.source-snapshot.v1)
+    if(!j||!j.sources||!Array.isArray(j.sources))return null;
+    const rows=[];
+    j.sources.forEach(src=>{
+      (src.sheets||[]).forEach(sheet=>{
+        const headers=(sheet.headers||[]).map(normalize);
+        const idx={};
+        idx.cutoff=headers.findIndex(h=>h=== 'cutoff');
+        idx.dept=Headers.findIndex(h=>h=== 'business line' || h=== 'business line'); 
+        idx.campaign=Headers.findIndex(h=>h.indexOf('campaign name')===0);
+        idx.title=Headers.findIndex(h=>h=== 'title (max 40 characters)' || h=== 'title');
+        idx.content=Headers.findIndex(h=>h=== 'content (max 240 characters)' || h=== 'content');
+        idx.requestor=Headers.findIndex(h=>h=== 'requestor');
+        idx.asset=Headers.findIndex(h=>h=== 'asset type');
+        idx.start=Headers.findIndex(h=>h.indexOf('date')>=0);
+        (sheet.rows||[]).forEach((r, i)=>{
+          const normRow={};
+          (sheet.headers||[]).forEach((hdr, hi)=> { normRow[normalize(hdr)] = Array.isArray(r) ? r[hi] : (r && r[hdr]); });
+          const camp = idx.campaign>=0 ? normRow[normalize(sheet.headers[idx.campaign])]||'' : '';
+          const titre = idx.title>=0 ? normRow[normalize(sheet.headers[idx.title])]||'' : '';
+          const content = idx.content>=0 ? normRow[normalize(sheet.headers[idx.content])]||'' : '';
+          const requestor = idx.requestor>=0 ? normRow[normalize(sheet.headers[idx.requestor])]||'' : '';
+          const assetType = idx.asset>=0 ? normRow[normalize(sheet.headers[idx.asset])]||'' : '';
+          if(!camp && !titre) return;
+          rows.push({
+            id: String('CLD-'+src.key+'-'+(i+1)), source: src.key, sourceId: String(sheet.returnedRows ? (i+1) : ''),
+            campaign: String(camp), title: String(titre), keyMessage: String(content),
+            requestor: String(requestor), requestorEmail: String(requestor),
+            department: String(idx.dept>=0 ? normRow[normalize(sheet.headers[idx.dept])]||'' : ''),
+            team: '', objective: String(titre), assetType: String(assetType), channel: String(assetType),
+            status: 'Pending Review', startDate: String(idx.start>=0 ? normRow[normalize(sheet.headers[idx.start])]||'' : ''),
+            endDate: '', preferredTimeSlot: '', destinationUrl: String(normRow['destination link']||''),
+            finalistStatus: '', allocationStatus: '', legacySlot: ''
+          });
+        });
+      });
+    });
     return { data:{ requests:rows, meta:{
-      mode:'cloud', source:'Cloud Snapshot', sourceType:'cloud',
-      requestCount:rows.length, qualityGate:'CLOUD-V1',
+      mode:'cloud', source:'Cloud Snapshot', sourceType:'cloud', requestCount:rows.length, qualityGate:'CLOUD-V1',
       sourceUpdatedAt:(j.generatedAt||''), lastSuccessfulSyncAt:(j.generatedAt||''),
-      cloudRowCount:rows.length, cloudSourceCount:j.sourceCount||0
+      cloudRowCount:rows.length, cloudSourceCount:(j.sources||[]).length
     } } };
   }
   async function cloudSnapshot(){
@@ -3722,18 +3768,19 @@ const PortalSync = (()=>{
     const config=(APP.data?.businessConfig||[]).find(x=>x.id==='tracker_sync_interval');
     return Math.max(30,number(config?.value||60))*1000 || defaultInterval;
   }
-  function jsonp(url,action='portalData'){
+function jsonp(url,action='portalData'){
     return new Promise((resolve,reject)=>{
       const cb=`__portalSync_${Date.now()}_${Math.random().toString(36).slice(2)}`;
       const script=document.createElement('script');
-      const cleanup=()=>{delete window[cb];script.remove();};
-      const timeout=setTimeout(()=>{cleanup();reject(new Error('Tracker sync timed out.'));},20000);
-      window[cb]=payload=>{clearTimeout(timeout);cleanup();if(payload&&payload.ok===false)reject(new Error(payload.error||'Tracker sync failed.'));else resolve(payload);};
+      const settled = {done: false};
+      const cleanup=()=>{if(!settled.done){settled.done=true;window[cb]=()=>{};script.remove();}};
+      const timeout=setTimeout(()=>{settled.done=true;cleanup();reject(new Error('Tracker sync timed out.'));},45000);
+      window[cb]=payload=>{clearTimeout(timeout);if(!settled.done){settled.done=true;}if(payload&&payload.ok===false)reject(new Error(payload.error||'Tracker sync failed.'));else resolve(payload);};
       const workspaceSession=scpWorkspaceSession();
       if(!workspaceSession){clearTimeout(timeout);cleanup();return reject(new Error('WORKSPACE_SESSION_REQUIRED'));}
       const sep=url.includes('?')?'&':'?';
       script.src=`${url}${sep}action=${encodeURIComponent(action)}&callback=${encodeURIComponent(cb)}&session=${encodeURIComponent(workspaceSession)}&_=${Date.now()}`;
-      script.onerror=()=>{clearTimeout(timeout);cleanup();reject(new Error('Unable to reach Tracker sync endpoint.'));};
+      script.onerror=()=>{clearTimeout(timeout);cleanup();reject(new Error('Unable to reach Tracker sync endpoint.'))};
       document.head.appendChild(script);
     });
   }

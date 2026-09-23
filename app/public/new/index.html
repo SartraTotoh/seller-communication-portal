@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-release="v5.0-new">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="Seller Communication Portal — request, allocation and communication workspace for Shopee Seller Comms.">
+  <title>Seller Communication Portal</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1:-50..200" rel="stylesheet">
+</head>
+<body>
+  <div id="bootGate" class="boot-gate" role="status" aria-live="polite">
+    <div class="boot-inner">
+      <div class="boot-ring"></div>
+      <h1>Seller Communication Portal</h1>
+      <p id="bootStatus">Preparing your workspace…</p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div class="brand">
+        <span class="material-symbols-rounded brand-icon">campaign</span>
+        <div>
+          <div class="brand-name">Seller Communication Portal</div>
+          <div class="brand-sub" data-i18n="portalWordmark">ระบบสื่อสารกับผู้ขาย</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-page="dashboard" data-i18n="nav.dashboard">Dashboard</button>
+        <button class="nav-item" data-page="requests" data-i18n="nav.requests">Requests</button>
+      </nav>
+      <div class="topbar-right">
+        <span class="sync-pill" id="syncPill">—</span>
+        <button class="lang-toggle" id="langToggle" title="EN / TH">EN</button>
+        <div class="user-chip" id="userChip">
+          <span class="user-name" id="userName">Not signed in</span>
+        </div>
+      </div>
+    </header>
+
+    <button class="btn btn-primary new-request-fab" id="newRequestBtn" type="button">
+      <span class="material-symbols-rounded">add</span>
+      <span data-i18n="newRequest">New Request</span>
+    </button>
+
+    <main class="content">
+      <section id="page-dashboard" class="page active">
+        <div class="page-head">
+          <h2 data-i18n="dashboard.title">Dashboard</h2>
+          <p class="muted" data-i18n="dashboard.subtitle">Communication request overview for your team.</p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><span class="stat-num" id="statTotal">0</span><span class="stat-label" data-i18n="dashboard.total">All requests</span></div>
+          <div class="stat-card"><span class="stat-num amber" id="statPending">0</span><span class="stat-label" data-i18n="dashboard.pending">Pending review</span></div>
+          <div class="stat-card"><span class="stat-num green" id="statApproved">0</span><span class="stat-label" data-i18n="dashboard.approved">Ready</span></div>
+          <div class="stat-card"><span class="stat-num red" id="statUrgent">0</span><span class="stat-label" data-i18n="dashboard.urgent">Urgent</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3 data-i18n="dashboard.recentTitle">Recent Requests</h3></div>
+          <div id="dashboardRecent" class="recent-list"></div>
+        </div>
+      </section>
+
+      <section id="page-requests" class="page">
+        <div class="page-head">
+          <h2 data-i18n="requests.title">Requests</h2>
+          <div class="head-actions">
+            <input id="requestSearch" class="search-input" type="search" placeholder="Search campaign / requestor…">
+            <select id="requestStatusFilter" class="select-input"><option value="">All statuses</option></select>
+            <button class="btn btn-primary" id="newRequestBtn2">
+              <span class="material-symbols-rounded">add</span>
+              <span data-i18n="newRequest">New Request</span>
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th data-i18n="table.id">ID</th>
+                  <th data-i18n="table.campaign">Campaign</th>
+                  <th data-i18n="table.channel">Channel</th>
+                  <th data-i18n="table.requestor">Requestor</th>
+                  <th data-i18n="table.department">Department</th>
+                  <th data-i18n="table.priority">Priority</th>
+                  <th data-i18n="table.start">Start</th>
+                  <th data-i18n="table.status">Status</th>
+                </tr>
+              </thead>
+              <tbody id="requestsTable"></tbody>
+            </table>
+            <div id="requestsEmpty" class="empty-state hidden">
+              <span class="material-symbols-rounded">inbox</span>
+              <p data-i18n="requests.empty">No requests yet — create your first communication request.</p>
+            </div>
+          </div>
+          <div class="table-foot">
+            <span id="requestCount" class="muted">0 matching</span>
+            <span id="sourceMeta" class="pill pill-blue">static</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle">New Request</h3>
+        <button class="icon-button" data-close><span class="material-symbols-rounded">close</span></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <template id="reqRowTpl"></template>
+  <script src="js/app.js"></script>
+</body>
+</html>
