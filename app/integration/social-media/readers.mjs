@@ -5,7 +5,7 @@
  */
 function id(value, label) {
   const s = String(value || '').trim();
-  if (!/^[A-Za-z0-9_-]{1,160}$/.test(s)) throw new Error('INVALID_' + label);
+  if (!/^[A-Za-z0-9_.-]{1,160}$/.test(s)) throw new Error('INVALID_' + label);
   return s;
 }
 function version(value) {
@@ -56,7 +56,7 @@ export function createFacebookPageReader({ accessToken, graphVersion = 'v26.0', 
     listComments(postId, { after, limit = 100 } = {}) {
       return call(id(postId, 'POST_ID') + '/comments', {
         fields: 'id,message,created_time,parent{id},permalink_url',
-        filter: 'stream', limit: Math.min(100, Math.max(1, limit)), after
+        limit: Math.min(100, Math.max(1, limit)), after
       });
     },
     getPostInsights(postId, metricNames) {
