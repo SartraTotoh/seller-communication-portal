@@ -1,4 +1,8 @@
-const SCP_AUTH_BRIDGE_SECRET='__SCP_AUTH_SESSION_SECRET__';
+function scpAuthSecret_() {
+  const secret = String(PropertiesService.getScriptProperties().getProperty('PORTAL_AUTH_SESSION_SECRET') || '').trim();
+  if (!secret) throw new Error('PORTAL_AUTH_SESSION_SECRET_NOT_CONFIGURED');
+  return secret;
+}
 const SCP_AUTH_BRIDGE_AUDIENCE='seller-communication-portal';
 const SCP_AUTH_BRIDGE_RETURN='https://seller-communication-portal.web.app/';
 const SCP_AUTH_BRIDGE_TTL_MS=8*60*60*1000;
@@ -6,7 +10,7 @@ function scpAuthB64_(bytes){return Utilities.base64EncodeWebSafe(bytes).replace(
 function scpAuthIssue_(email){
   const now=Date.now();
   const payload=scpAuthB64_(Utilities.newBlob(JSON.stringify({v:1,email:String(email||'').trim().toLowerCase(),iat:now,exp:now+SCP_AUTH_BRIDGE_TTL_MS,aud:SCP_AUTH_BRIDGE_AUDIENCE,nonce:Utilities.getUuid()})).getBytes());
-  const sig=scpAuthB64_(Utilities.computeHmacSha256Signature(payload,SCP_AUTH_BRIDGE_SECRET,Utilities.Charset.UTF_8));
+  const sig=scpAuthB64_(Utilities.computeHmacSha256Signature(payload,scpAuthSecret_(),Utilities.Charset.UTF_8));
   return payload+'.'+sig;
 }
 function scpAuthEsc_(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c;});}
