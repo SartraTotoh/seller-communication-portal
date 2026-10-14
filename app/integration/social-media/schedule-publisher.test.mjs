@@ -50,7 +50,7 @@ test('reject unapproved Facebook Group and role misassignment',async()=>{
 test('Facebook provider scheduled POST verified by GET, no token in URL',async()=>{
   const x=deps(job(),(url,opts)=>{
     if(opts.method==='POST')return ok({id:'123456_789'});
-    if(opts.method==='GET')return ok({id:'123456_789',is_published:false,scheduled_publish_time:1893481200});
+    if(opts.method==='GET')return ok({id:'123456_789',is_published:false,scheduled_publish_time:Date.parse('2030-01-01T02:00:00Z')/1000});
     throw Error('UNEXPECTED');
   });
   const result=await scheduleApprovedJob({jobId:'JOB-1',actor:'publisher',now:new Date('2026-10-14')},x.d);
