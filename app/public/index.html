@@ -3765,7 +3765,7 @@ const PortalSync = (()=>{
     // Honor explicit deployment/configuration before any legacy default endpoint.
     // Refuse other hosts so authenticated sessions cannot be sent to arbitrary URLs.
     const configured=String(window.PORTAL_SYNC_จุดเชื่อมต่อ||config?.value||storageGet(จุดเชื่อมต่อ_KEY)||DEFAULT_จุดเชื่อมต่อ||'').trim();
-    const allow=/^https:\/\/script\.google\.com\/(?:(?:a\/macros\/(?:shopee\.com|shopeemobile-external\.com)\/)?s\/)[A-Za-z0-9_-]+\/exec$/i;
+    const allow=/^https:\/\/script\.google\.com\/(?:a\/macros\/(?:shopee\.com|shopeemobile-external\.com)\/s\/|macros\/s\/)[A-Za-z0-9_-]+\/exec$/i;
     return allow.test(configured)?configured:'';
   }
   function intervalMs(){
