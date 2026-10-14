@@ -108,3 +108,26 @@ Run locally: `node --test app/integration/social-media/social-media.test.mjs`.
 - Meta Graph API v25 changelog: https://developers.facebook.com/docs/graph-api/changelog/version25.0/
 - YouTube Data API: https://developers.google.com/youtube/v3/docs
 - YouTube Analytics: https://developers.google.com/youtube/analytics/reference/reports/query
+
+
+## APPROVAL-GATED NATIVE SCHEDULING ADAPTER (added 14 Oct 2026)
+
+This branch now contains \`schedule-publisher.mjs\` and \`schedule-publisher.test.mjs\`. It can perform actual authorized provider scheduling when wired to an approved backend, but **it is disabled by default, not connected to production, and contains no credentials**.
+
+Supported first cut:
+- **Meta Facebook Page text-only post:** \`POST /{page-id}/feed\`, \`published=false\`, \`unpublished_content_type=SCHEDULED\`, future \`scheduled_publish_time\`. Immediately verify \`GET /{post-id}\` with \`is_published=false\` and matching scheduled time. Requires approved Page app scopes, page task rights and current Graph version.
+- **YouTube existing private, never-published video:** owner OAuth; verify \`videos.list(part=status)\` returns private, then \`videos.update(part=status)\` with preserved writable status and \`privacyStatus=private,publishAt=<UTC>\`; read back and confirm \`publishAt\`. Uploading a new video and scheduling Facebook photo/video/Reels are separate approved adapters, **not implemented here**.
+- Facebook Group scheduled publishing is not supported through the discontinued Groups API.
+
+**Safe activation checklist — all mandatory:**
+1. Fix live Comms missing Requests and Sentiment missing LINE/Facebook settings first; do not replace current production with this older public mirror.
+2. Implement authenticated backend API and server-side feature flag \`enablePublishing=false\` until operations sign off. Frontend can never set this flag.
+3. Map stored \`requestId/commsItemId/assetRef\` to allowed provider account and staged draft. Assign two distinct Reviewer and Publisher roles, preserve revision and policy approval.
+4. Implement server-owned \`loadApprovedJob\`, \`assertCanPublish\`, \`assertAllowedAccount\`, atomic persistent \`claimDispatch(idempotencyKey,revision)\`, \`readSecret\`, and \`recordOutcome\`. **All six are required**, no in-memory locks.
+5. Never put OAuth/Page access tokens in Google Sheets, frontend, GitHub or browser storage. Only privileged backend secret store.
+6. Schedule a test post/video on an explicitly approved sandbox Page/channel, verify returned provider ID/time and native UI. On unknown provider outcome, leave dispatch locked for manual/provider reconciliation; never blindly retry.
+7. Add durable audit, separate last-run/errors, reconciliation of scheduled→published, cancel/edit if permitted, and recovery of expired credentials.
+8. Only after these steps allow \`enablePublishing=true\` for scoped test accounts, then progressive rollout. Keep \`apiCenterSendPublication\` blocked until the active Apps Script/Node backend has the approved contract.
+
+**Tests:**
+\`node --test app/integration/social-media/*.test.mjs\`. The PR includes CI workflow \`.github/workflows/social-integration-tests.yml\`. Provider-mock scheduling checks cover authorization, schedule readback, CAS refusal, no automatic retries, and YouTube private state. A mocked provider test is NOT a successful actual provider publication.
