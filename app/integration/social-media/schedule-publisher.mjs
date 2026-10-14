@@ -108,8 +108,15 @@ async function scheduleExistingPrivateYoutubeVideo(job, scheduledAt, fetchImpl, 
   const original = video?.items?.find(v=>v?.id===id);
   if (!original || original.status?.privacyStatus!=="private") throw new Error("YOUTUBE_PRIVATE_VIDEO_REQUIRED");
   if (original.status?.publishAt) throw new Error("YOUTUBE_ALREADY_SCHEDULED");
-  const status = {...original.status,privacyStatus:"private",publishAt:scheduledAt.toISOString()};
-  // videos.update(part=status) replaces status fields. Preserve originals.
+  // videos.update(part=status) replaces the whole status object.
+  // Preserve only writable status fields; exclude read-only uploadStatus,
+  // failureReason, rejectionReason, madeForKids and other provider fields.
+  const writable = ["license","embeddable","publicStatsViewable",
+    "selfDeclaredMadeForKids","containsSyntheticMedia"];
+  const status = {privacyStatus:"private",publishAt:scheduledAt.toISOString()};
+  for (const key of writable) {
+    if (Object.prototype.hasOwnProperty.call(original.status,key)) status[key]=original.status[key];
+  }
   const response = await fetchImpl(ytURL("videos",{part:"status"}),{
     method:"PUT",redirect:"error",
     headers:{...bearer(token),"Content-Type":"application/json"},
