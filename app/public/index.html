@@ -3708,13 +3708,13 @@ const PortalSync = (()=>{
         const headers=(sheet.headers||[]).map(normalize);
         const idx={};
         idx.cutoff=headers.findIndex(h=>h=== 'cutoff');
-        idx.dept=Headers.findIndex(h=>h=== 'business line' || h=== 'business line'); 
-        idx.campaign=Headers.findIndex(h=>h.indexOf('campaign name')===0);
-        idx.title=Headers.findIndex(h=>h=== 'title (max 40 characters)' || h=== 'title');
-        idx.content=Headers.findIndex(h=>h=== 'content (max 240 characters)' || h=== 'content');
-        idx.requestor=Headers.findIndex(h=>h=== 'requestor');
-        idx.asset=Headers.findIndex(h=>h=== 'asset type');
-        idx.start=Headers.findIndex(h=>h.indexOf('date')>=0);
+        idx.dept=headers.findIndex(h=>h=== 'business line' || h=== 'business line'); 
+        idx.campaign=headers.findIndex(h=>h.indexOf('campaign name')===0);
+        idx.title=headers.findIndex(h=>h=== 'title (max 40 characters)' || h=== 'title');
+        idx.content=headers.findIndex(h=>h=== 'content (max 240 characters)' || h=== 'content');
+        idx.requestor=headers.findIndex(h=>h=== 'requestor');
+        idx.asset=headers.findIndex(h=>h=== 'asset type');
+        idx.start=headers.findIndex(h=>h.indexOf('date')>=0);
         (sheet.rows||[]).forEach((r, i)=>{
           const normRow={};
           (sheet.headers||[]).forEach((hdr, hi)=> { normRow[normalize(hdr)] = Array.isArray(r) ? r[hi] : (r && r[hdr]); });
@@ -3762,7 +3762,11 @@ const PortalSync = (()=>{
   let timer=null;
   function endpoint(){
     const config=(APP.data?.businessConfig||[]).find(x=>x.id==='tracker_sync_endpoint');
-    return String(window.PORTAL_SYNC_จุดเชื่อมต่อ||DEFAULT_จุดเชื่อมต่อ||config?.value||storageGet(จุดเชื่อมต่อ_KEY)||'').trim();
+    // Honor explicit deployment/configuration before any legacy default endpoint.
+    // Refuse other hosts so authenticated sessions cannot be sent to arbitrary URLs.
+    const configured=String(window.PORTAL_SYNC_จุดเชื่อมต่อ||config?.value||storageGet(จุดเชื่อมต่อ_KEY)||DEFAULT_จุดเชื่อมต่อ||'').trim();
+    const allow=/^https:\/\/script\.google\.com\/(?:a\/macros\/(?:shopee\.com|shopeemobile-external\.com)\/s\/|macros\/s\/)[A-Za-z0-9_-]+\/exec$/i;
+    return allow.test(configured)?configured:'';
   }
   function intervalMs(){
     const config=(APP.data?.businessConfig||[]).find(x=>x.id==='tracker_sync_interval');
@@ -3772,15 +3776,21 @@ function jsonp(url,action='portalData'){
     return new Promise((resolve,reject)=>{
       const cb=`__portalSync_${Date.now()}_${Math.random().toString(36).slice(2)}`;
       const script=document.createElement('script');
-      const settled = {done: false};
-      const cleanup=()=>{if(!settled.done){settled.done=true;window[cb]=()=>{};script.remove();}};
-      const timeout=setTimeout(()=>{settled.done=true;cleanup();reject(new Error('Tracker sync timed out.'));},45000);
-      window[cb]=payload=>{clearTimeout(timeout);if(!settled.done){settled.done=true;}if(payload&&payload.ok===false)reject(new Error(payload.error||'Tracker sync failed.'));else resolve(payload);};
+      const settled = {done: false, cleaned: false};
+      const cleanup=()=>{if(settled.cleaned)return;settled.cleaned=true;script.remove();delete window[cb];};
+      let timeout;
+      const fail=message=>{if(settled.done)return;settled.done=true;clearTimeout(timeout);cleanup();reject(new Error(message));};
+      const succeed=payload=>{if(settled.done)return;settled.done=true;clearTimeout(timeout);cleanup();resolve(payload);};
+      timeout=setTimeout(()=>fail('Tracker sync timed out.'),45000);
+      window[cb]=payload=>{
+        if(payload&&payload.ok===false)fail(payload.error||'Tracker sync failed.');
+        else succeed(payload);
+      };
       const workspaceSession=scpWorkspaceSession();
-      if(!workspaceSession){clearTimeout(timeout);cleanup();return reject(new Error('WORKSPACE_SESSION_REQUIRED'));}
+      if(!workspaceSession)return fail('WORKSPACE_SESSION_REQUIRED');
       const sep=url.includes('?')?'&':'?';
       script.src=`${url}${sep}action=${encodeURIComponent(action)}&callback=${encodeURIComponent(cb)}&session=${encodeURIComponent(workspaceSession)}&_=${Date.now()}`;
-      script.onerror=()=>{clearTimeout(timeout);cleanup();reject(new Error('Unable to reach Tracker sync endpoint.'))};
+      script.onerror=()=>fail('Unable to reach Tracker sync endpoint.');
       document.head.appendChild(script);
     });
   }
@@ -4269,6 +4279,7 @@ async function loadPortalData(showMessage=false,silent=false){
   updateGlobalRefreshMeta();
   PortalSync.start();
 const live=APP.data?.sourceMeta?.mode==='live';
+  if(!live&&APP.data?.sourceMeta?.syncError)console.warn('[Comms] Live source unavailable; fallback data only.');
   if(showMessage) toast(live?`อัปเดตข้อมูลจากระบบแล้ว — ${APP.data.requests.length.toLocaleString()} รายการ.`:`รีเฟรชแล้ว — ข้อมูลล่าสุดที่โหลดได้ — ${APP.data.requests.length.toLocaleString()} รายการ.`, live?'success':'info');
   else if(silent && previousCount && previousCount!==APP.data.requests.length) toast(`ข้อมูลอัปเดตแล้ว — ${APP.data.requests.length.toLocaleString()} รายการ.`, 'success');
 }

@@ -1,0 +1,26 @@
+name: Comms P0 Source Sync Regression
+
+on:
+  pull_request:
+    paths:
+      - "app/public/index.html"
+      - "app/backend/LiveSyncEngine.gs"
+      - "app/tests/portal-sync-p0.test.cjs"
+      - "app/tests/live-sync-data-integrity.test.cjs"
+      - ".github/workflows/comms-p0-sync-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test source sync and JSONP fallback
+        run: node --test app/tests/portal-sync-p0.test.cjs app/tests/live-sync-data-integrity.test.cjs
