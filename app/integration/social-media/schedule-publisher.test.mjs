@@ -7,7 +7,7 @@ function job(platform='FACEBOOK_PAGE') {
     idempotencyKey:'FACEBOOK_PAGE:operation-1', revision:1,
     accountId:'123456', contentType:'POST', caption:'Approved test draft',
     providerVideoId: 'Video_test_123',
-    scheduledAt:'2030-01-01T02:00:00Z',
+    scheduledAt:'2026-10-25T02:00:00Z',
     approvalStatus:'APPROVED', approvedBy:'authorized-reviewer',
     approvedAt:'2026-10-14T08:00:00Z', reviewerApproved:true,
     policyApproved:true, deliveryStatus:'NOT_SENT', neverPublishedVerified:true,
@@ -50,7 +50,7 @@ test('reject unapproved Facebook Group and role misassignment',async()=>{
 test('Facebook provider scheduled POST verified by GET, no token in URL',async()=>{
   const x=deps(job(),(url,opts)=>{
     if(opts.method==='POST')return ok({id:'123456_789'});
-    if(opts.method==='GET')return ok({id:'123456_789',is_published:false,scheduled_publish_time:Date.parse('2030-01-01T02:00:00Z')/1000});
+    if(opts.method==='GET')return ok({id:'123456_789',is_published:false,scheduled_publish_time:Date.parse('2026-10-25T02:00:00Z')/1000});
     throw Error('UNEXPECTED');
   });
   const result=await scheduleApprovedJob({jobId:'JOB-1',actor:'publisher',now:new Date('2026-10-14')},x.d);
@@ -82,7 +82,7 @@ test('YouTube scheduling must target already private and never published video',
   assert.equal(x.outcomes.at(-1).state,'SCHEDULED');
   const put=x.calls.find(c=>c.opts.method==='PUT');
   assert.equal(JSON.parse(put.opts.body).status.privacyStatus,'private');
-  assert.equal(JSON.parse(put.opts.body).status.publishAt,j.scheduledAt);
+  assert.equal(Date.parse(JSON.parse(put.opts.body).status.publishAt),Date.parse(j.scheduledAt));
 });
 test('YouTube public video fails with no update to provider',async()=>{
   const j=job('YOUTUBE');const x=deps(j,()=>ok({items:[{id:j.providerVideoId,status:{privacyStatus:'public'}}]}));
