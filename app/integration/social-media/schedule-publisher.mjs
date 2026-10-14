@@ -61,9 +61,9 @@ function checkScheduleJob(job, now) {
   if (!PROVIDERS.has(job.platform)) throw new Error("PLATFORM_NOT_PUBLISHABLE");
   opaque(job.idempotencyKey, "idempotencyKey");
   opaque(job.accountId, "accountId");
-  const when = dateInFuture(job.scheduledAt, now, 10 * 60 * 1000);
-  if (job.platform === "FACEBOOK_PAGE" && when.getTime() - now.getTime() > 30 * 86400e3) {
-    throw new Error("META_SCHEDULE_EXCEEDS_30_DAYS");
+  const when = dateInFuture(job.scheduledAt, now, job.platform === "FACEBOOK_PAGE" ? 20 * 60 * 1000 : 10 * 60 * 1000);
+  if (job.platform === "FACEBOOK_PAGE" && when.getTime() - now.getTime() > 29 * 86400e3) {
+    throw new Error("META_SCHEDULE_EXCEEDS_29_DAYS");
   }
   if (job.platform === "FACEBOOK_PAGE") {
     if (job.contentType !== "POST" || !String(job.caption || "").trim()) {
