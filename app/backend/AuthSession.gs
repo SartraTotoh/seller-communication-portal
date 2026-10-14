@@ -5,7 +5,11 @@
  * DOMAIN + USER_DEPLOYING so source Sheets/Drive permissions stay centralized.
  */
 var PORTAL_HTTP_AUTH_EMAIL_ = '';
-const PORTAL_AUTH_SESSION_SECRET = '__SCP_AUTH_SESSION_SECRET__';
+function getPortalAuthSessionSecret_() {
+  var secret = String(PropertiesService.getScriptProperties().getProperty('PORTAL_AUTH_SESSION_SECRET') || '').trim();
+  if (!secret) throw new Error('PORTAL_AUTH_SESSION_SECRET_NOT_CONFIGURED');
+  return secret;
+}
 const PORTAL_AUTH_SESSION_AUDIENCE = 'seller-communication-portal';
 const PORTAL_AUTH_SESSION_MAX_MS = 8 * 60 * 60 * 1000;
 
@@ -23,7 +27,7 @@ function portalVerifyWorkspaceSession_(token) {
   if(!token)throw new Error('WORKSPACE_SESSION_REQUIRED');
   var parts=token.split('.');
   if(parts.length!==2||!parts[0]||!parts[1])throw new Error('WORKSPACE_SESSION_INVALID');
-  var expected=portalAuthBase64Url_(Utilities.computeHmacSha256Signature(parts[0],PORTAL_AUTH_SESSION_SECRET,Utilities.Charset.UTF_8));
+  var expected=portalAuthBase64Url_(Utilities.computeHmacSha256Signature(parts[0],getPortalAuthSessionSecret_(),Utilities.Charset.UTF_8));
   if(!portalAuthTimingSafeEqual_(expected,parts[1]))throw new Error('WORKSPACE_SESSION_INVALID');
   var payload={};
   try{payload=JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(parts[0])).getDataAsString('UTF-8'));}
