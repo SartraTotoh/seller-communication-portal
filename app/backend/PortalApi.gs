@@ -126,17 +126,17 @@ const PORTAL_BOOTSTRAP_ADMIN_EMAILS = [
   'sellereducation.th@shopee.com'
 ];
 function peopleBootstrapCompleted_(){
-  try{
-    const cfg=readObjects_(PORTAL_DB_SPREADSHEET_ID,'Config');
-    const row=cfg.find(function(x){return String(x.key||'').toUpperCase()==='PEOPLE_SEED_V474_STATUS';});
-    return !!row && String(row.value||'').toUpperCase()==='COMPLETED';
-  }catch(ignore){return false;}
+  // Do not silently enable bootstrap access if the Config sheet cannot be read.
+  const cfg=readObjects_(PORTAL_DB_SPREADSHEET_ID,'Config');
+  const row=cfg.find(function(x){return String(x.key||'').toUpperCase()==='PEOPLE_SEED_V474_STATUS';});
+  return !!row && String(row.value||'').toUpperCase()==='COMPLETED';
 }
 function assertAdminUser_(email){
   const rows=readObjects_(PORTAL_DB_SPREADSHEET_ID,'Users'),normalized=String(email||'').trim().toLowerCase();
   const u=rows.find(function(x){return String(x.email||'').trim().toLowerCase()===normalized;});
-  if(PORTAL_BOOTSTRAP_ADMIN_EMAILS.indexOf(normalized)>=0 && /@shopee\.com$/i.test(normalized))return true;
   if(u&&String(u.role||'').toUpperCase()==='ADMIN'&&String(u.status||'').toUpperCase()==='ACTIVE')return true;
+  // Bootstrap accounts lose their bypass as soon as People setup is completed.
+  if(PORTAL_BOOTSTRAP_ADMIN_EMAILS.indexOf(normalized)>=0 && /@shopee\.com$/i.test(normalized) && !peopleBootstrapCompleted_())return true;
   throw new Error('Admin permission required. Sign in with an active Portal Admin account.');
 }
 function corporateEmail_(v){return /^[^\s@]+@(shopee\.com|shopeemobile-external\.com)$/i.test(String(v||'').trim());}
