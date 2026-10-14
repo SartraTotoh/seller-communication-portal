@@ -1,0 +1,26 @@
+name: Three Portal Public Production Smoke
+
+on:
+  pull_request:
+    paths:
+      - "ops/three-portal-public-smoke.cjs"
+      - "ops/three-portal-public-smoke.test.cjs"
+      - ".github/workflows/three-portal-public-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Regression tests (zero credentials)
+        run: node --test ops/three-portal-public-smoke.test.cjs
+      - name: Read-only public site and route probe
+        run: node ops/three-portal-public-smoke.cjs
