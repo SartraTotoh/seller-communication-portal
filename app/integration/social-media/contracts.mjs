@@ -10,7 +10,7 @@ export const PLATFORMS = Object.freeze({
 });
 
 const SUPPORTED = new Set([PLATFORMS.FACEBOOK_PAGE, PLATFORMS.YOUTUBE]);
-const NON_SECRET_ID = /^[A-Za-z0-9_:-]{1,160}$/;
+const NON_SECRET_ID = /^[A-Za-z0-9_.:-]{1,160}$/;
 
 function required(value, field) {
   const v = String(value == null ? '' : value).trim();
