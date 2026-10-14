@@ -499,6 +499,45 @@ function parseSocialSource_(cfg,sourceModifiedAt){
 function socialChannelsFromText_(value){const raw=String(value||'').toUpperCase(),out=[];const add=function(v){if(out.indexOf(v)<0)out.push(v);};if(/\bFB\b|FACEBOOK(?!\s*GROUP)/.test(raw))add('Facebook');if(/\bGROUP\b|FACEBOOK\s*GROUP/.test(raw))add('Facebook Group');if(/\bYT\b|YOUTUBE/.test(raw))add('YouTube');if(/\bTT\b|TIKTOK|TIK TOK/.test(raw))add('TikTok');if(/\bIG\b|INSTAGRAM/.test(raw))add('Instagram');if(/\bLINE\b/.test(raw))add('LINE');if((/SOCIAL\s*MEDIA|\bSM\b/.test(raw))&&!out.length)add('Social Media');return out;}
 function evaluateSocialStatus_(value,cfg){const x=normUpper_(value),map=cfg.socialStatusMap||{};if(/CANCEL/.test(x))return {status:map.CANCELLED||'CANCELLED',substatus:'SOCIAL_CANCELLED'};if(x==='PUBLISHED')return {status:map.PUBLISHED||'PUBLISHED',substatus:'SOCIAL_PUBLISHED'};if(x==='DONE')return {status:map.DONE||'COMPLETED',substatus:'SOCIAL_DONE'};if(x==='SCHEDULED')return {status:map.SCHEDULED||'SCHEDULED',substatus:'SOCIAL_SCHEDULED'};if(x==='READY')return {status:map.READY||'READY_FOR_REVIEW',substatus:'SOCIAL_READY'};if(/POSTPONED|HOLD|WAITING/.test(x))return {status:map.HOLD||'SUBMITTED',substatus:'SOCIAL_HOLD'};if(/WORKING|IN\s*PROGRESS|BRIEFED/.test(x))return {status:map.WORKING||'IN_PRODUCTION',substatus:'SOCIAL_WORKING'};if(/TENTATIVE|PENDING|PLANNED|REC/.test(x))return {status:map.PENDING||'SUBMITTED',substatus:'SOCIAL_PLANNED'};return {status:map.DEFAULT||'SUBMITTED',substatus:x||'SOCIAL_SOURCE'};}
 
+
+/**
+ * Safety gate: an incomplete parser run must not mark most existing tickets as
+ * SOURCE_MISSING. force:true is intentionally NOT an override.
+ * All counters contain internal IDs only; no seller data is logged.
+ */
+function assertSourceSnapshotHealthy_(sourceId, parsed, previousStates) {
+  if (!parsed || !Array.isArray(parsed.records) || !Array.isArray(parsed.exclusions)) {
+    throw new Error('SYNC_SOURCE_SHAPE_INVALID_' + sourceId);
+  }
+  const states=(previousStates||[]).filter(function(s) {
+    return String(s.source_id)===String(sourceId) &&
+      String(s.missing_from_source||'').toUpperCase()!=='TRUE' &&
+      ['SOURCE_MISSING','SOURCE_EXCLUDED'].indexOf(String(s.canonical_status||'').toUpperCase())<0;
+  });
+  const current=parsed.records;
+  if (states.length && (!current.length || !(Number(parsed.scannedRows)>0))) {
+    throw new Error('SYNC_SOURCE_EMPTY_ABORTED_' + sourceId);
+  }
+  if (states.length<30) return {previous:states.length,received:current.length};
+  const byKey={},byRow={};
+  states.forEach(function(s) {
+    if(s.source_record_key) byKey[String(s.source_record_key)]=String(s.state_id);
+    if(s.source_row_locator) byRow[String(s.source_row_locator)]=String(s.state_id);
+  });
+  const matched={};
+  current.forEach(function(rec) {
+    const id=byKey[String(rec.sourceRecordKey||'')] || byRow[String(rec.sourceRowLocator||'')];
+    if(id) matched[id]=true;
+  });
+  const minRetained=Math.ceil(states.length*0.80);
+  const matchedCount=Object.keys(matched).length;
+  if (current.length<minRetained || matchedCount<minRetained) {
+    throw new Error('SYNC_MASS_MISSING_ABORTED_'+sourceId+
+      '_prior_'+states.length+'_current_'+current.length+'_matched_'+matchedCount);
+  }
+  return {previous:states.length,received:current.length,matched:matchedCount};
+}
+
 function reconcileSource_(db, sourceId, ruleSetId, ruleVersion, parsed, sourceModifiedAt, options) {
   const started = new Date();
   const runId = 'SYNC-' + Utilities.formatDate(started,'Asia/Bangkok','yyyyMMdd-HHmmss') + '-' + sourceId.replace('SRC-','') + '-' + Utilities.getUuid().slice(0,5).toUpperCase();
@@ -507,6 +546,8 @@ function reconcileSource_(db, sourceId, ruleSetId, ruleVersion, parsed, sourceMo
   const stateTable = loadTable_(db,'Sync_Record_State');
   const exclusionTable = loadTable_(db,'Sync_Exclusions');
   const teamTable = loadTable_(db,'Teams');
+  // Fail closed before ANY sync changes if a source read is incomplete.
+  assertSourceSnapshotHealthy_(sourceId, parsed, stateTable.objects);
   const requestMap = objectMapBy_(requestTable.objects,'request_id');
   const itemMap = objectMapBy_(itemTable.objects,'comms_item_id');
   const stateByKey = {}, stateByRow = {};
@@ -707,11 +748,43 @@ function tableObjectsRaw_(ss,name){return loadTable_(ss,name).objects;}
 
 function writeTableObjects_(table) {
   const sh=table.sheet,headers=table.headers,objects=table.objects||[];
+  if (!Array.isArray(headers)||!headers.length) throw new Error('SYNC_TABLE_HEADERS_MISSING');
+  const name=String(sh.getName());
+  const primary={Requests:'request_id',Comms_Items:'comms_item_id',Sync_Record_State:'state_id'}[name]||'';
+  const oldCount=Math.max(0,sh.getLastRow()-1);
+  // Never truncate a production table because a source parser returned too few rows.
+  // A deliberate large deletion needs an independently reviewed migration process.
+  if (primary && oldCount && (!objects.length ||
+      (oldCount>=25 && objects.length<Math.ceil(oldCount*0.80)))) {
+    throw new Error('SYNC_PROTECTED_TABLE_SHRINK_ABORTED_'+name);
+  }
+  const keyIndex=primary?headers.indexOf(primary):-1;
+  if (primary && keyIndex<0) throw new Error('SYNC_PROTECTED_TABLE_ID_COLUMN_MISSING_'+name);
+  if (primary) {
+    const seen={};
+    objects.forEach(function(o) {
+      const key=String(o[primary]||'');
+      if(!key||seen[key])throw new Error('SYNC_PROTECTED_TABLE_BAD_OR_DUPLICATE_ID_'+name);
+      seen[key]=true;
+    });
+  }
   ensureSheetSize_(sh,Math.max(2,objects.length+1),headers.length);
-  const clearRows=Math.max(0,sh.getLastRow()-1); if(clearRows)sh.getRange(2,1,clearRows,headers.length).clearContent();
-  if(!objects.length)return;
+  if (!objects.length) {
+    if (oldCount) sh.getRange(2,1,oldCount,headers.length).clearContent();
+    return;
+  }
   const rows=objects.map(function(o){return headers.map(function(h){return Object.prototype.hasOwnProperty.call(o,h)?o[h]:'';});});
+  // WRITE FIRST. Clearing all rows first could leave the table empty on timeout.
   sh.getRange(2,1,rows.length,headers.length).setValues(rows);
+  // On any failure, abort before touching the old trailing rows or Sync_Checkpoint.
+  if (primary) {
+    const ids=sh.getRange(2,keyIndex+1,rows.length,1).getValues();
+    if (ids.length!==objects.length ||
+        ids.some(function(r,i){return String(r[0])!==String(objects[i][primary]);})) {
+      throw new Error('SYNC_PROTECTED_TABLE_READBACK_FAILED_'+name);
+    }
+  }
+  if (oldCount>rows.length) sh.getRange(rows.length+2,1,oldCount-rows.length,headers.length).clearContent();
 }
 
 function appendObject_(sheet,obj){appendObjects_(sheet,[obj]);}
