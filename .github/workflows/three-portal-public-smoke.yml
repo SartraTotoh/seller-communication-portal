@@ -5,6 +5,7 @@ on:
     paths:
       - "ops/three-portal-public-smoke.cjs"
       - "ops/three-portal-public-smoke.test.cjs"
+      - "ops/three-portal-worker-health.cjs"
       - ".github/workflows/three-portal-public-smoke.yml"
   workflow_dispatch:
 
@@ -24,3 +25,5 @@ jobs:
         run: node --test ops/three-portal-public-smoke.test.cjs
       - name: Read-only public site and route probe
         run: node ops/three-portal-public-smoke.cjs
+      - name: Probe public worker health without tokens
+        run: node ops/three-portal-worker-health.cjs
