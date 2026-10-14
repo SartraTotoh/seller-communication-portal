@@ -1,0 +1,23 @@
+name: Social Integration Contract Tests
+
+on:
+  pull_request:
+    paths:
+      - "app/integration/social-media/**"
+      - ".github/workflows/social-integration-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run isolated provider and scheduler tests
+        run: node --test app/integration/social-media/*.test.mjs
