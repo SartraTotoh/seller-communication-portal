@@ -1,0 +1,27 @@
+name: Comms Security and Data Contract Tests
+
+on:
+  pull_request:
+    paths:
+      - "app/backend/AuthSession.gs"
+      - "app/auth-bridge/Code.gs"
+      - "app/backend/PortalApi.gs"
+      - "app/backend/TrackerSync.gs"
+      - "app/tests/production-contracts.test.cjs"
+      - ".github/workflows/comms-security-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate security regression contracts
+        run: node --test app/tests/production-contracts.test.cjs

@@ -107,6 +107,7 @@ function getPortalData_(viewer){
       scoringModels:normalizeScoringModelsV475_(readObjects_(PORTAL_DB_SPREADSHEET_ID,'Scoring_Models')),scoringRules:normalizeScoringRulesV475_(readObjects_(PORTAL_DB_SPREADSHEET_ID,'Scoring_Rules')),
       apiConnections:api.apiConnections,apiRoutes:api.apiRoutes,apiQueue:api.apiQueue,apiLogs:api.apiLogs,systemHealth:getPortalHealthSummary_()
     };
+    data.summary=portalChannelSummary_(requestRows);
     const encoded=JSON.stringify(data);if(encoded.length<95000)cache.put(key,encoded,PORTAL_CACHE_SECONDS);
   }
   data.user=viewer.user;data.permissions=viewer.permissions;return data;
@@ -115,6 +116,31 @@ function getPortalData_(viewer){
 function activePortalRequest_(r){
   const status=String(r.status||'').toUpperCase();
   return ['SOURCE_EXCLUDED','SOURCE_MISSING'].indexOf(status)<0;
+}
+
+// Request provenance is not the same as an asset's channel_group.
+function portalRequestChannel_(request) {
+  const source=String((request||{}).source_system||(request||{}).sourceSystem||'').trim().toUpperCase();
+  const channels={
+    GOOGLE_SHEETS_PN:'PN', GOOGLE_SHEETS_SC:'SC',
+    GOOGLE_SHEETS_SOCIAL:'Social', PORTAL_NATIVE:'Portal'
+  };
+  return Object.prototype.hasOwnProperty.call(channels,source)?channels[source]:'Unclassified';
+}
+function portalChannelSummary_(rows) {
+  const byChannel={PN:0,SC:0,Social:0,Portal:0,Unclassified:0};
+  let totalRequests=0;
+  (rows||[]).forEach(function(row){
+    if(!activePortalRequest_(row))return;
+    byChannel[portalRequestChannel_(row)]++;
+    totalRequests++;
+  });
+  return {totalRequests:totalRequests,byChannel:byChannel};
+}
+// Legacy PIC names/codes must never be treated as authenticated identities.
+function portalVerifiedOwnerEmail_(value) {
+  const email=String(value||'').trim().toLowerCase();
+  return /^[^\s@]+@(shopee\.com|shopeemobile-external\.com)$/.test(email)?email:'';
 }
 
 function portalRequestDto_(r,item,state,team,items){
@@ -132,7 +158,7 @@ function portalRequestDto_(r,item,state,team,items){
     sellerTarget:r.seller_target||raw.targetSellers||'',targetCriteria:r.target_criteria||'',targetSize:r.target_size||'',assetType:assetType,sourceAssetType:isNative?(nativeAssets.join(', ')||sourceAsset):sourceAsset,channels:isNative?nativeAssets:(raw.socialChannels||sourceAsset?[].concat(raw.socialChannels||sourceAsset):[]),sourceChannels:isNative?nativeAssets:(raw.socialChannels||sourceAsset?[].concat(raw.socialChannels||sourceAsset):[]),
     startDate:r.start_date||'',endDate:r.end_date||r.start_date||'',status:r.portal_workflow_status||r.status||r.request_status||state.canonical_status||'SUBMITTED',sourceStatus:sourceStatus,allocationStatus:state.canonical_substatus||raw.allocationStatus||'',
     completenessStatus:r.completeness_status||'',cycleId:r.cycle_id||'',editableUntil:r.editable_until||'',managerApprovalStatus:r.manager_approval_status||'NOT_REQUIRED',priorityLevel:isNative?(r.priority||''):'',priorityScore:isNative?Number(r.priority_score||0):0,tsTier:r.campaign_grade_ts||raw.opsInternalGrade||'',nsTier:r.campaign_grade_ns||raw.internalGrade||'',
-    createdAt:r.created_at||'',updatedAt:r.updated_at||'',owner:item.owner_email||'',preferredTimeSlot:r.preferred_time_slot||'',timeSource:r.time_source||'NOT_SPECIFIED',sourceSystem:r.source_system||'',
+    createdAt:r.created_at||'',updatedAt:r.updated_at||'',owner:item.owner_email||'',ownerPic:item.owner_email||'',ownerEmail:portalVerifiedOwnerEmail_(item.owner_email),channelCategory:portalRequestChannel_(r),preferredTimeSlot:r.preferred_time_slot||'',timeSource:r.time_source||'NOT_SPECIFIED',sourceSystem:r.source_system||'',
     sourceRecordKey:state.source_record_key||'',sourceRuleSet:state.rule_set_id||'',sourceRuleVersion:state.rule_version||''
   };
   if(isSc){
